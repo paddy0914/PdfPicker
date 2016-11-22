@@ -8,4 +8,5 @@ abstract public class Sniffer {
     public abstract String getSuffix();
     public abstract String getFolder();
     public abstract boolean sniff(String content);
+    public abstract void generateEntityJson(String content);
 }

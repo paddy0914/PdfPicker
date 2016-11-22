@@ -1,15 +1,20 @@
 package com.shubo.util;
 
 import com.shubo.entity.YearReportDes;
+import com.shubo.exception.NameConvertException;
 import com.shubo.sniff.TableSniffer;
 
 /**
  * Created by horseman on 2016/11/22.
  */
 public class NameUtils {
-    public static String getFileNameByFileName(String fileName) {
+    public static String getFileNameByFileName(String fileName) throws NameConvertException {
         YearReportDes des = getDes(fileName);
 
+        if (des == null) {
+            System.out.println("文件名识别错误");
+            throw new NameConvertException();
+        }
         return des.getYear() + "-" + des.getType() + "-" + des.getCompanyName() + TableSniffer.TABLE_SUFFIX;
     }
 
@@ -53,5 +58,9 @@ public class NameUtils {
         }
 
         return null;
+    }
+
+    public static void main(String args[]) {
+        NameUtils.getDes("深发展Ａ2012年第一季度报告正文.html");
     }
 }

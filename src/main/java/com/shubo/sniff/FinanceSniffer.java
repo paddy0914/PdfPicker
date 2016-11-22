@@ -1,15 +1,23 @@
 package com.shubo.sniff;
 
+import com.shubo.annotation.Horseman;
 import com.shubo.entity.FinanceData;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by horseman on 2016/11/22.
  */
 public class FinanceSniffer extends Sniffer {
-
+    Logger logger = LoggerFactory.getLogger(FinanceSniffer.class);
     public String getKey() {
         return "Finance";
     }
@@ -32,6 +40,66 @@ public class FinanceSniffer extends Sniffer {
         }
 
         return false;
+    }
+
+    /*
+     * 把处理过后的表格内容识别为对应实体
+     * 并作为json保存
+     */
+    public void generateEntityJson(String content) {
+        String lines[] = content.split("\n");
+        if (lines != null && lines.length > 0) {
+
+            FinanceData data = new FinanceData();
+
+            Field[] declaredFields = data.getClass().getDeclaredFields();
+            List<Field> fields = new ArrayList<Field>();
+
+            Collections.addAll(fields, declaredFields);
+
+            for (String line : lines) {
+                String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR);
+                if (contents != null && contents.length > 1) {
+
+                    try {
+                        Field needKickoutField = null;
+                        boolean found = false;
+                        for (Field field : fields) {
+                            Annotation[] annotations = field.getAnnotations();
+                            if (annotations.length > 0) {
+                                Horseman horsemen = (Horseman) annotations[0];
+                                String[] keys = horsemen.keys();
+                                for (String key : keys) {
+                                    if (key.equals(contents[0])) {
+                                        data.getClass().getDeclaredField(field.getName()).set(data, contents[1]);
+                                        needKickoutField = field;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (found) {
+                                break;
+                            }
+                        }
+
+                        if (found) {
+                            fields.remove(needKickoutField);
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    }
+
+                    logger.info("[{}] [{}]", contents[0], contents[1]);
+                }
+            }
+
+            System.out.println();
+//            return data;
+        }
     }
 
     private static final int MATCH_RULE = 3;

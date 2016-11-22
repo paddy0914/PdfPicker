@@ -35,11 +35,19 @@ public class TableSniffer {
     
     public static void sniffEachEntity(File file) throws IOException {
         String fileContent = FileUtils.readFileToString(file);
-        String[] tableContents = fileContent.split(TABLE_DIVIDOR);
+        String[] tableContents = fileContent.split(TABLE_DIVIDOR + "\n");
+
+        // 用于记录已经探测到的sniffer,防止重复探测到某一个表
+        // 每个文件只识别一个特定的表
+        List<String> snifferedRecords = new ArrayList<String>();
 
         for (String table : tableContents) {
             for (Sniffer sniffer : sniffers) {
-                if (sniffer.sniff(table)) {
+
+                if (!snifferedRecords.contains(sniffer.getKey()) && sniffer.sniff(table)) {
+
+                    snifferedRecords.add(sniffer.getKey());
+
                     String fileName = file.getName();
                     String outputFileName = fileName.replace(TABLE_SUFFIX, sniffer.getSuffix());
 
@@ -51,6 +59,8 @@ public class TableSniffer {
                     String outputFilePath = folder + File.separator + outputFileName;
 
                     FileUtils.write(new File(outputFilePath), table, false);
+
+                    sniffer.generateEntityJson(table);
                 }
             }
         }
@@ -64,13 +74,13 @@ public class TableSniffer {
                 Elements tds = tr.select("td");
                 for (Element td : tds) {
                     result += td.text() + ELEMENT_DIVIDOR;
-                    System.out.print(td.text());
+                    //System.out.print(td.text());
                 }
                 result += "\n";
-                System.out.println();
+                //System.out.println();
             }
             result += TABLE_DIVIDOR + "\n";
-            System.out.println(TABLE_DIVIDOR);
+            //System.out.println(TABLE_DIVIDOR);
         }
 
         return result;
