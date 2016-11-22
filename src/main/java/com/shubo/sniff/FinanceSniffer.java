@@ -1,7 +1,9 @@
 package com.shubo.sniff;
 
+import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
 import com.shubo.entity.FinanceData;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,9 +46,9 @@ public class FinanceSniffer extends Sniffer {
 
     /*
      * 把处理过后的表格内容识别为对应实体
-     * 并作为json保存
+     * 并作为json返回
      */
-    public void generateEntityJson(String content) {
+    public String generateEntityJson(String content) {
         String lines[] = content.split("\n");
         if (lines != null && lines.length > 0) {
 
@@ -70,8 +72,8 @@ public class FinanceSniffer extends Sniffer {
                                 Horseman horsemen = (Horseman) annotations[0];
                                 String[] keys = horsemen.keys();
                                 for (String key : keys) {
-                                    if (key.equals(contents[0])) {
-                                        data.getClass().getDeclaredField(field.getName()).set(data, contents[1]);
+                                    if (key.equals(contents[0].replace(" ", ""))) {
+                                        data.getClass().getDeclaredField(field.getName()).set(data, contents[1].replace(" ", ""));
                                         needKickoutField = field;
                                         found = true;
                                         break;
@@ -86,6 +88,8 @@ public class FinanceSniffer extends Sniffer {
 
                         if (found) {
                             fields.remove(needKickoutField);
+                        } else{
+                            logger.info("[{}] [{}]", contents[0], contents[1]);
                         }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
@@ -93,13 +97,15 @@ public class FinanceSniffer extends Sniffer {
                         e.printStackTrace();
                     }
 
-                    logger.info("[{}] [{}]", contents[0], contents[1]);
+//                    logger.info("[{}] [{}]", contents[0], contents[1]);
                 }
             }
 
             System.out.println();
-//            return data;
+            return JSON.toJSONString(data);
         }
+
+        return "";
     }
 
     private static final int MATCH_RULE = 3;

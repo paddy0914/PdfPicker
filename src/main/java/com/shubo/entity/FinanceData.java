@@ -7,46 +7,79 @@ import com.shubo.annotation.Horseman;
  */
 public class FinanceData {
     // 营业收入
+    @Horseman(keys={"营业收入"})
     public String operationRevenue;
 
     // 营业利润
+    @Horseman(keys={"营业利润"})
     public String operationProfits;
 
+    // 净利润
+    @Horseman(keys={"净利润"})
+    public String netProfits;
+
     // 利润总额
+    @Horseman(keys={"利润总额"})
     public String totalProfits;
 
+    // 归属于母公司股东的净利润
+    @Horseman(keys={"归属于母公司股东的净利润"})
+    public String shareholderMotherNetProfits;
+
+    // 归属于母公司股东的扣除非经常性损益后的净利润
+    @Horseman(keys={"归属于母公司股东的扣除非经常性损益后的净利润"})
+    public String shareholderMotherNetProfitsOfDNRGAL;
+
     // 归属于上市公司股东的股东权益
+    @Horseman(keys={"归属于上市公司股东的股东权益"})
     public String shareholderEquity;
 
     // 归属于上市公司股东的每股净资产
+    @Horseman(keys={"归属于上市公司股东的每股净资产"})
     public String shareholderNetAssetsPerShare;
 
     // 股本
+    @Horseman(keys={"股本"})
     public String equity;
 
     // 归属于上市公司股东的净利润
+    @Horseman(keys={"归属于上市公司股东的净利润"})
     public String shareholderProfits;
 
     // 经营活动产生的现金流量净额
+    @Horseman(keys={"经营活动产生的现金流量净额"})
     public String operationActivityNetCashFlows;
+
+    // 每股经营活动产生的现金流量净额（元）
+    @Horseman(keys={"每股经营活动产生的现金流量净额（元）"})
+    public String operationActivityNetCashFlowsPerShare;
 
     // 基本每股收益
     @Horseman(keys={"基本每股收益", "基本每股收益（元）"})
     public String basicEarningsPerShare;
 
+    // 基本每股收益
+    @Horseman(keys={"扣除非经常性损益后的基本每股收益（元）"})
+    public String basicEarningsPerShareOfDNRGAL;
+
     // 稀释每股收益
+    @Horseman(keys={"稀释每股收益", "稀释每股收益（元）"})
     public String dilutedEarningsPerShare;
 
     // 全面摊薄净资产收益率
+    @Horseman(keys={"全面摊薄净资产收益率"})
     public String fullyDilutedReturnOnNetAssets;
 
     // 加权平均净资产收益率
+    @Horseman(keys={"加权平均净资产收益率"})
     public String weightedAverageRateReturnOnNetAssets;
 
     // 资产总额
+    @Horseman(keys={"资产总额"})
     public String totalAssets;
 
     // 负债总额
+    @Horseman(keys={"负债总额"})
     public String totalDebt;
 
     public String getOperationRevenue() {

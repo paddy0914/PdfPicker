@@ -60,7 +60,7 @@ public class TableSniffer {
 
                     FileUtils.write(new File(outputFilePath), table, false);
 
-                    sniffer.generateEntityJson(table);
+                    FileUtils.write(new File(outputFilePath + ".json"), sniffer.generateEntityJson(table), false);
                 }
             }
         }

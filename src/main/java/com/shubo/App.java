@@ -3,6 +3,7 @@ package com.shubo;
 import com.shubo.exception.NameConvertException;
 import com.shubo.sniff.TableSniffer;
 import com.shubo.util.NameUtils;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 
@@ -10,8 +11,9 @@ import java.io.File;
  * Hello world!
  */
 public class App {
-    public static final String DIR = "d:\\年报";
-    public static final String OUTPUT = "d:\\表格\\";
+    public static final String DIR = "d:\\年报解析\\年报";
+    public static final String OUTPUT = "d:\\年报解析\\表格\\";
+    public static final String OUTPUT_JSON = "d:\\年报解析\\表格\\JSON";
 
     public static void main(String[] args) {
 
