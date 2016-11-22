@@ -1,4 +1,4 @@
-package com.shubo;
+package com.shubo.util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

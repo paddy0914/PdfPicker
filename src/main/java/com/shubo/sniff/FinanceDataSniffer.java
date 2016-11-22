@@ -1,5 +1,6 @@
 package com.shubo.sniff;
 
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,7 +13,7 @@ import java.io.IOException;
  * Created by horseman on 2016/11/21.
  */
 public class FinanceDataSniffer {
-    public static boolean sniff(File file) {
+    public static boolean sniff(File file, String outputFileName) throws IOException {
         Document doc = null;
         try {
             doc = Jsoup.parse(file, "UTF-8");
@@ -20,21 +21,44 @@ public class FinanceDataSniffer {
             e.printStackTrace();
         }
 
-        Element targetElement = sniffFinance(doc);
+        sniffAllTable(file, outputFileName);
 
-        if (targetElement != null) {
-            Elements trs = targetElement.select("tr");
+        return false;
+    }
+
+    private static String getTableText(Element table) {
+        String result = "";
+        if (table != null) {
+            Elements trs = table.select("tr");
             for (Element tr : trs) {
                 Elements tds = tr.select("td");
                 for (Element td : tds) {
+                    result += td.text();
                     System.out.print(td.text());
                 }
+                result += "\n";
                 System.out.println();
             }
+            result += "--------------------------------------------------------------------\n";
             System.out.println("--------------------------------------------------------------------");
         }
 
-        return false;
+        return result;
+    }
+
+    public static void sniffAllTable(File file, String outputFileName) throws IOException {
+        Document doc = null;
+        try {
+            doc = Jsoup.parse(file, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Elements tables = doc.select("table");
+        for (Element element : tables) {
+            FileUtils.write(new File(outputFileName), getTableText(element), true);
+        }
+
     }
 
     /*
