@@ -25,7 +25,9 @@ public class App
                     if (yrFolder.exists() && yrFolder.isDirectory()) {
                         for (File file : yrFolder.listFiles()) {
                             if (file.getName().endsWith("html") && !file.getName().contains("英文版") && !file.getName().contains("摘要")) {
-                                TableSniffer.sniff(file, OUTPUT + File.separator + NameUtils.getFileNameByFileName(file.getName()));
+                                String outputTableFile = OUTPUT + File.separator + NameUtils.getFileNameByFileName(file.getName());
+                                TableSniffer.sniff(file, outputTableFile);
+                                TableSniffer.sniffEachEntity(new File(outputTableFile));
                             }
                         }
                     }

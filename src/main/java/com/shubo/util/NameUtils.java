@@ -1,6 +1,7 @@
 package com.shubo.util;
 
 import com.shubo.entity.YearReportDes;
+import com.shubo.sniff.TableSniffer;
 
 /**
  * Created by horseman on 2016/11/22.
@@ -9,7 +10,7 @@ public class NameUtils {
     public static String getFileNameByFileName(String fileName) {
         YearReportDes des = getDes(fileName);
 
-        return des.getYear() + "-" + des.getType() + "-" + des.getCompanyName() + ".table";
+        return des.getYear() + "-" + des.getType() + "-" + des.getCompanyName() + TableSniffer.TABLE_SUFFIX;
     }
 
     public static YearReportDes getDes(String fileName) {

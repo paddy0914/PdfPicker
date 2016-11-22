@@ -8,18 +8,52 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by horseman on 2016/11/21.
  */
 public class TableSniffer {
-    public static final String DIVIDOR = "###!ERTIAO!###";
+    public static final String TABLE_SUFFIX = ".table";
+    public static final String ELEMENT_DIVIDOR = "###!ERTIAO!###";
+    public static final String TABLE_DIVIDOR = "----------------------------------------------------------------------";
 
+    public static List<Sniffer> sniffers = new ArrayList();
+    static {
+        sniffers.add(new FinanceSniffer());
+    }
+    /*
+     * 识别html文档中的表格，并按照一定格式存在 *.table文件中
+     */
     public static boolean sniff(File file, String outputFileName) throws IOException {
 
         sniffAllTable(file, outputFileName);
 
         return false;
+    }
+    
+    public static void sniffEachEntity(File file) throws IOException {
+        String fileContent = FileUtils.readFileToString(file);
+        String[] tableContents = fileContent.split(TABLE_DIVIDOR);
+
+        for (String table : tableContents) {
+            for (Sniffer sniffer : sniffers) {
+                if (sniffer.sniff(table)) {
+                    String fileName = file.getName();
+                    String outputFileName = fileName.replace(TABLE_SUFFIX, sniffer.getSuffix());
+
+                    String folder = file.getParent() + File.separator + sniffer.getFolder();
+                    if (!new File(folder).exists()) {
+                        new File(folder).mkdir();
+                    }
+
+                    String outputFilePath = folder + File.separator + outputFileName;
+
+                    FileUtils.write(new File(outputFilePath), table, false);
+                }
+            }
+        }
     }
 
     private static String getTableText(Element table) {
@@ -29,14 +63,14 @@ public class TableSniffer {
             for (Element tr : trs) {
                 Elements tds = tr.select("td");
                 for (Element td : tds) {
-                    result += td.text() + DIVIDOR;
+                    result += td.text() + ELEMENT_DIVIDOR;
                     System.out.print(td.text());
                 }
                 result += "\n";
                 System.out.println();
             }
-            result += "--------------------------------------------------------------------\n";
-            System.out.println("--------------------------------------------------------------------");
+            result += TABLE_DIVIDOR + "\n";
+            System.out.println(TABLE_DIVIDOR);
         }
 
         return result;
@@ -57,43 +91,5 @@ public class TableSniffer {
 
     }
 
-    /*
-     * 根据一定的规则探测文档是否包含主要财务数据
-     *
-     */
-    private static Element sniffFinance(Document doc) {
-        Elements tables = doc.select("table");
-        for (Element element : tables) {
-            if (sniffByKeywords(element.text())) {
-                return element;
-            }
-        }
 
-        return null;
-    }
-
-    private static final int MATCH_RULE = 3;
-    private static boolean sniffByKeywords(String content) {
-        int match = 0;
-        for (String keyword : financeDataKeyWords) {
-            if (content.contains(keyword)) {
-                match ++;
-            }
-
-            if (match == MATCH_RULE) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static final String[] financeDataKeyWords = {
-            "基本每股收益",
-            "稀释每股收益",
-            "经营活动产生的现金流量净额",
-            "营业收入",
-            "加权平均净资产收益",
-            "归属于上市公司股东的净利润",
-    };
 }
