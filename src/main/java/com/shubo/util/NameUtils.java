@@ -9,7 +9,7 @@ public class NameUtils {
     public static String getFileNameByFileName(String fileName) {
         YearReportDes des = getDes(fileName);
 
-        return des.getYear() + "-" + des.getType() + "-" + des.getCompanyName();
+        return des.getYear() + "-" + des.getType() + "-" + des.getCompanyName() + ".table";
     }
 
     public static YearReportDes getDes(String fileName) {

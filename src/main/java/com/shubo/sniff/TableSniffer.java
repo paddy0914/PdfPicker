@@ -12,14 +12,10 @@ import java.io.IOException;
 /**
  * Created by horseman on 2016/11/21.
  */
-public class FinanceDataSniffer {
+public class TableSniffer {
+    public static final String DIVIDOR = "###!ERTIAO!###";
+
     public static boolean sniff(File file, String outputFileName) throws IOException {
-        Document doc = null;
-        try {
-            doc = Jsoup.parse(file, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         sniffAllTable(file, outputFileName);
 
@@ -33,7 +29,7 @@ public class FinanceDataSniffer {
             for (Element tr : trs) {
                 Elements tds = tr.select("td");
                 for (Element td : tds) {
-                    result += td.text();
+                    result += td.text() + DIVIDOR;
                     System.out.print(td.text());
                 }
                 result += "\n";
