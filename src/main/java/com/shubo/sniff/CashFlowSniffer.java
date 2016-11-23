@@ -26,9 +26,9 @@ public class CashFlowSniffer extends Sniffer {
         return generateEntityJson(content, CashFlow.class);
     }
 
-    private static final int MATCH_RULE = 4;
+    private static final int MATCH_RULE = 8;
 
-    private static boolean sniffByKeywords(String content) {
+    public boolean sniffByKeywords(String content) {
         int match = 0;
         content = content.replace(" ", "");
         for (String keyword : financeDataKeyWords) {
@@ -44,7 +44,7 @@ public class CashFlowSniffer extends Sniffer {
         return false;
     }
 
-    private static final String[] financeDataKeyWords = {
+    private final String[] financeDataKeyWords = {
             "经营活动现金流入小计",
             "经营活动现金流出小计",
             "经营活动产生的现金流量净额",

@@ -2,9 +2,11 @@ package com.shubo.sniff;
 
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
+import com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,15 +18,21 @@ import java.util.List;
  */
 abstract public class Sniffer {
     public abstract String getKey();
+
     public abstract String getSuffix();
+
     public abstract String getFolder();
+
     public abstract boolean sniff(String content);
+
+    public abstract boolean sniffByKeywords(String content);
 
     // 从content中获取JSON,保存在返回数组的第一个String
     // 把content去除匹配成功的字符，保存在返回数组的第二个String
     public abstract String[] generateEntityJson(String content);
 
     public Logger logger = LoggerFactory.getLogger(Sniffer.class);
+
     /*
      * 把处理过后的表格内容识别为对应实体
      * 并作为json返回
@@ -47,11 +55,12 @@ abstract public class Sniffer {
             }
 
             Field[] declaredFields = data.getClass().getDeclaredFields();
-            List<Field> fields = new ArrayList<Field>();
+            List<Field> fields = new ArrayList<>();
 
             Collections.addAll(fields, declaredFields);
 
-            List<String> needKickoutLines = new ArrayList<String>();
+            List<String> needKickoutLines = new ArrayList<>();
+
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR);
                 if (contents != null && contents.length > 1) {
@@ -82,7 +91,7 @@ abstract public class Sniffer {
                         if (found) {
                             fields.remove(needKickoutField);
                             needKickoutLines.add(line);
-                        } else{
+                        } else {
                             logger.info("{} [{}] [{}]", this.getClass().getName(), contents[0], contents[1]);
                         }
                     } catch (IllegalAccessException e) {
@@ -108,5 +117,135 @@ abstract public class Sniffer {
         }
 
         return null;
+    }
+
+
+    /*
+     * 把处理过后的表格内容识别为对应实体
+     * 并作为json返回
+     */
+    public String[] generateEntityJsonArrays(String content, Class clazz) {
+
+        HeaderInfo info = sniffHeader(content, clazz);
+        List<String> fieldNames = info.headers;
+        List<Object> datas =  new ArrayList<>();
+        List<String> needKickoutLines = new ArrayList<>();
+        if (fieldNames != null && fieldNames.size() > 0) {
+
+            int itemCnt = fieldNames.size();
+
+            String lines[] = content.split("\n");
+            if (lines != null && lines.length > 0) {
+                for (int i = 0; i < lines.length; i ++) {
+                    String line = lines[i];
+                    // 排除自身！
+                    if (info.headerLineNumber != i) {
+                        String[] items = line.split(TableSniffer.ELEMENT_DIVIDOR);
+                        if (items.length == itemCnt) {
+                            try {
+                                Object data = clazz.newInstance();
+                                for (int k = 0; k < fieldNames.size(); k ++) {
+                                    String field = fieldNames.get(k);
+                                    data.getClass().getDeclaredField(field).set(data, items[k].replace(" ", ""));
+                                }
+                                datas.add(data);
+                            } catch (InstantiationException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchFieldException e) {
+                                e.printStackTrace();
+                            }
+                            needKickoutLines.add(line);
+                        } else {
+                            System.out.println("怎么回事?");
+                        }
+                    }
+                }
+            }
+        }
+
+        // 匹配过的行去掉
+        for (String deleteStr : needKickoutLines) {
+            content = content.replace(deleteStr + "\n", "");
+        }
+
+        String[] res = new String[2];
+
+        res[0] = JSON.toJSONString(datas);
+        res[1] = content;
+
+        return res;
+    }
+
+    private static boolean contains(String content, List<String> headers) {
+        int match = 0;
+        for (String header : headers) {
+            if (content.contains(header)) {
+                if (++ match > 2) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static class HeaderInfo {
+        // 所有的域
+        public List<String> headers;
+
+        //标识第几行是头
+        public int headerLineNumber;
+    }
+
+    private HeaderInfo sniffHeader(String content, Class clazz) {
+        HeaderInfo headerInfo = new HeaderInfo();
+        List<String> headers = new ArrayList<>();
+        headerInfo.headers = headers;
+
+        String lines[] = content.split("\n");
+        String header = null;
+
+        if (lines != null && lines.length > 0) {
+            for (int k = 0; k < lines.length; k ++) {
+                String line = lines[k];
+                if (sniffByKeywords(line)) {
+                    header = line;
+                    headerInfo.headerLineNumber = k;
+                    break;
+                }
+            }
+        }
+
+        if (header == null) {
+            return null;
+        }
+        Field[] fields = clazz.getDeclaredFields();
+        String items[] = header.split(TableSniffer.ELEMENT_DIVIDOR);
+
+        for (String item : items) {
+            item = item.replace(" ", "");
+            boolean found = false;
+            String fieldName = "";
+            for (Field field : fields) {
+                Annotation[] annotations = field.getAnnotations();
+                Horseman horsemen = (Horseman) annotations[0];
+                for (String key : horsemen.keys()) {
+                    if (key.equals(item)) {
+                        found = true;
+                        fieldName = field.getName();
+                        break;
+                    }
+                }
+            }
+            if (found) {
+                headers.add(fieldName);
+            } else {
+                headers.add("ertiao");
+            }
+        }
+
+        return headerInfo;
     }
 }

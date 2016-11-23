@@ -26,7 +26,7 @@ public class ShareHolderNLSniffer extends Sniffer {
 
     private static final int MATCH_RULE = 3;
 
-    private static boolean sniffByKeywords(String content) {
+    public boolean sniffByKeywords(String content) {
         int match = 0;
         content = content.replace(" ", "");
         for (String keyword : NrgalDataKeyWords) {

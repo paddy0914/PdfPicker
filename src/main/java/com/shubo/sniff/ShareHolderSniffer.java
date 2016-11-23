@@ -23,12 +23,12 @@ public class ShareHolderSniffer extends Sniffer {
     }
 
     public String[] generateEntityJson(String content) {
-        return generateEntityJson(content, ShareHolder.class);
+        return generateEntityJsonArrays(content, ShareHolder.class);
     }
 
     private static final int MATCH_RULE = 3;
 
-    private static boolean sniffByKeywords(String content) {
+    public boolean sniffByKeywords(String content) {
         int match = 0;
         content = content.replace(" ", "");
 
