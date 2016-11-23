@@ -219,7 +219,7 @@ abstract public class Sniffer {
         }
 
         if (header == null) {
-            return null;
+            return headerInfo;
         }
         Field[] fields = clazz.getDeclaredFields();
         String items[] = header.split(TableSniffer.ELEMENT_DIVIDOR);

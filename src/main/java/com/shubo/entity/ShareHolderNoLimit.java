@@ -11,7 +11,7 @@ public class ShareHolderNoLimit {
     @Horseman(keys = {"股东名称"})
     public String name;
 
-    @Horseman(keys = {"持有无限售条件股份数量"})
+    @Horseman(keys = {"持有无限售条件股份数量", "报告期末持有无限售条件股份数量"})
     public String noLimitAmount;
 
     @Horseman(keys = {"股份种类"})

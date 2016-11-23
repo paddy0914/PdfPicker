@@ -11,7 +11,7 @@ public class NrgalSniffer extends Sniffer {
     }
 
     public String getSuffix() {
-        return ".table2";
+        return ".nrgal";
     }
 
     public String getFolder() {

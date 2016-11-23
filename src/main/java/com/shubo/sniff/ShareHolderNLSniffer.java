@@ -1,5 +1,7 @@
 package com.shubo.sniff;
 
+import com.shubo.entity.ShareHolderNoLimit;
+
 /**
  * Created by horseman on 2016/11/23.
  */
@@ -21,7 +23,7 @@ public class ShareHolderNLSniffer extends Sniffer {
     }
 
     public String[] generateEntityJson(String content) {
-        return new String[0];
+        return generateEntityJsonArrays(content, ShareHolderNoLimit.class);
     }
 
     private static final int MATCH_RULE = 3;

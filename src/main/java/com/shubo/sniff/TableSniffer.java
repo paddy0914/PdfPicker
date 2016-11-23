@@ -67,7 +67,8 @@ public class TableSniffer {
                     String[] result = sniffer.generateEntityJson(table);
 
                     if (result != null && result.length == 2) {
-                        FileUtils.write(new File(outputFilePath + ".json"), result[0], false);
+                        String path = outputFilePath.replace(sniffer.getSuffix(), ".json");
+                        FileUtils.write(new File(path.replace("表格", "JSON")), result[0], false);
 
                         // 匹配过的行已经删除，产生新的table，以免重复匹配
                         table = result[1];

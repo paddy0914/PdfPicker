@@ -11,7 +11,7 @@ public class FinanceSniffer extends Sniffer {
     }
 
     public String getSuffix() {
-        return ".table1";
+        return ".finance";
     }
 
     public String getFolder() {
