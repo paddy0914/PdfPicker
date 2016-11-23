@@ -1,33 +1,29 @@
 package com.shubo.sniff;
 
-import com.shubo.entity.Nrgal;
+import com.shubo.entity.ShareHolder;
 
 /**
- * Created by horseman on 2016/11/22.
+ * Created by horseman on 2016/11/23.
  */
-public class NrgalSniffer extends Sniffer {
+public class ShareHolderSniffer extends Sniffer {
     public String getKey() {
-        return "Nrgal";
+        return "ShareHolder";
     }
 
     public String getSuffix() {
-        return ".table2";
+        return ".table.股东";
     }
 
     public String getFolder() {
-        return "非经常性损益";
+        return "前10名股东持股情况";
     }
 
     public boolean sniff(String content) {
-        if (sniffByKeywords(content)) {
-            return true;
-        }
-
-        return false;
+        return sniffByKeywords(content);
     }
 
     public String[] generateEntityJson(String content) {
-        return generateEntityJson(content, Nrgal.class);
+        return generateEntityJson(content, ShareHolder.class);
     }
 
     private static final int MATCH_RULE = 3;
@@ -35,6 +31,7 @@ public class NrgalSniffer extends Sniffer {
     private static boolean sniffByKeywords(String content) {
         int match = 0;
         content = content.replace(" ", "");
+
         for (String keyword : NrgalDataKeyWords) {
             if (content.contains(keyword)) {
                 match++;
@@ -49,10 +46,10 @@ public class NrgalSniffer extends Sniffer {
     }
 
     private static final String[] NrgalDataKeyWords = {
-            "非流动性资产处置损益",
-            "除上述各项以外的",
-            "以上调整对所得税的影响",
-            "加权平均净资产收益",
-            "少数股东承担部分",
+            "股东性质",
+            "持股数量",
+            "股份状态（质押或冻结情况）",
+            "持有有限售条件的股份数量",
+            "持有无限售条件的股份数量",
     };
 }

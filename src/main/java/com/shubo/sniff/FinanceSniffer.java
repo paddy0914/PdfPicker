@@ -38,6 +38,7 @@ public class FinanceSniffer extends Sniffer {
 
     private static boolean sniffByKeywords(String content) {
         int match = 0;
+        content = content.replace(" ", "");
         for (String keyword : financeDataKeyWords) {
             if (content.contains(keyword)) {
                 match++;

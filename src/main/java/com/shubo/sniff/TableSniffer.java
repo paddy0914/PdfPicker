@@ -23,6 +23,9 @@ public class TableSniffer {
     static {
         sniffers.add(new FinanceSniffer());
         sniffers.add(new NrgalSniffer());
+        sniffers.add(new ShareHolderSniffer());
+        sniffers.add(new ShareHolderNLSniffer());
+        sniffers.add(new CashFlowSniffer());
     }
     /*
      * 识别html文档中的表格，并按照一定格式存在 *.table文件中
