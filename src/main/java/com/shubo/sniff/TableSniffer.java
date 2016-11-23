@@ -22,6 +22,7 @@ public class TableSniffer {
     public static List<Sniffer> sniffers = new ArrayList();
     static {
         sniffers.add(new FinanceSniffer());
+        sniffers.add(new NrgalSniffer());
     }
     /*
      * 识别html文档中的表格，并按照一定格式存在 *.table文件中
@@ -60,7 +61,14 @@ public class TableSniffer {
 
                     FileUtils.write(new File(outputFilePath), table, false);
 
-                    FileUtils.write(new File(outputFilePath + ".json"), sniffer.generateEntityJson(table), false);
+                    String[] result = sniffer.generateEntityJson(table);
+
+                    if (result != null && result.length == 2) {
+                        FileUtils.write(new File(outputFilePath + ".json"), result[0], false);
+
+                        // 匹配过的行已经删除，产生新的table，以免重复匹配
+                        table = result[1];
+                    }
                 }
             }
         }

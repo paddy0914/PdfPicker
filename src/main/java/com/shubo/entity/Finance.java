@@ -5,7 +5,7 @@ import com.shubo.annotation.Horseman;
 /**
  * Created by horseman on 2016/11/22.
  */
-public class FinanceData {
+public class Finance {
 
     // 股本
     @Horseman(keys={"股本"})
@@ -96,7 +96,7 @@ public class FinanceData {
     public String qmtbjzcsylwnh;
 
     // 全面摊薄净资产收益率（年化）
-    @Horseman(keys={"全面摊薄净资产收益率（未年化）"})
+    @Horseman(keys={"全面摊薄净资产收益率（年化）"})
     public String qmtbjzcsylnh;
 
     // 加权平均净资产收益率（未年化）
