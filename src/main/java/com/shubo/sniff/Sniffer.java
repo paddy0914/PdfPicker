@@ -124,7 +124,8 @@ abstract public class Sniffer {
         str = str.replace(" ", "");
         if (!str.equals("项目") && !str.equals("非经常性损益项目") && !str.equals("非流动性资产处置损益")
                 && !str.equals("或有事项产生的损失") && !str.equals("除上述各项以外的其他营业外收入和支出")
-                && !str.equals("以上调整对所得税的影响") && !str.equals("少数股东承担部分") && !str.equals("合计")) {
+                && !str.equals("以上调整对所得税的影响") && !str.equals("少数股东承担部分") && !str.equals("合计")
+                && !str.equals("或有事项产生的损益") && !str.equals("单独进行减值测试的应收款项减值准备转回")) {
             logger.info("[{}]", str);
         }
     }
@@ -154,7 +155,7 @@ abstract public class Sniffer {
                                 Object data = clazz.newInstance();
                                 for (int k = 0; k < fieldNames.size(); k ++) {
                                     String field = fieldNames.get(k);
-                                    if (field.equals("")) {
+                                    if (!field.equals("")) {
                                         data.getClass().getDeclaredField(field).set(data, items[k].replace(" ", ""));
                                     }
                                 }

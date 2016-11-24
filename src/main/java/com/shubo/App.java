@@ -18,7 +18,11 @@ public class App {
     public static void main(String[] args) {
 
         File folder = new File(DIR);
+
         for (File subFolder : folder.listFiles()) {
+            if (Integer.valueOf(subFolder.getName()) < 12) {
+                continue;
+            }
             try {
                 if (subFolder.isDirectory()) {
                     File yrFolder = new File(subFolder.getAbsolutePath() + File.separator + "年报");

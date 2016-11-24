@@ -34,6 +34,11 @@ public class NameUtils {
             index = fileName.indexOf(typeStr);
         }
         if (index == -1) {
+            typeStr = "中期";
+            type = 2;
+            index = fileName.indexOf(typeStr);
+        }
+        if (index == -1) {
             typeStr = "第三季度";
             type = 3;
             index = fileName.indexOf(typeStr);
@@ -50,11 +55,18 @@ public class NameUtils {
 
         String prefix = fileName.substring(0, index);
 
-        if (prefix.endsWith("年")) {
-            String year = prefix.substring(prefix.length() - 5, prefix.length() - 1);
-            String companyName = prefix.substring(0, prefix.length() - 5);
 
-            return new YearReportDes(companyName, year, type);
+        if (prefix.endsWith("年") || prefix.endsWith("年度")) {
+            if (prefix.endsWith("年")) {
+                String year = prefix.substring(prefix.length() - 5, prefix.length() - 1);
+                String companyName = prefix.substring(0, prefix.length() - 5);
+                return new YearReportDes(companyName, year, type);
+            } else {
+                String year = prefix.substring(prefix.length() - 6, prefix.length() - 2);
+                String companyName = prefix.substring(0, prefix.length() - 6);
+                return new YearReportDes(companyName, year, type);
+            }
+
         }
 
         return null;

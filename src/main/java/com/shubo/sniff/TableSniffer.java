@@ -150,7 +150,7 @@ public class TableSniffer {
                 }
                 needWriteTables.add(element);
 
-                System.out.println(element.text());
+//                System.out.println(element.text());
                 Element e = element.nextElementSibling();
                 while (e != null) {
                     if (e.tag().getName().equals("table")) {
@@ -167,13 +167,12 @@ public class TableSniffer {
                     e = e.nextElementSibling();
                 }
                 FileUtils.write(new File(outputFileName), getTableText(needWriteTables), true);
+                interval = 0;
 
                 jump = needWriteTables.size() - 1;
                 needWriteTables.clear();
             }
         }
-
-
     }
 
 
