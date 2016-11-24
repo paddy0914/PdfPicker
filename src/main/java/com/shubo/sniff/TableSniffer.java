@@ -20,6 +20,7 @@ public class TableSniffer {
     public static final String TABLE_DIVIDOR = "----------------------------------------------------------------------";
 
     public static List<Sniffer> sniffers = new ArrayList();
+
     static {
         sniffers.add(new FinanceSniffer());
         sniffers.add(new NrgalSniffer());
@@ -27,6 +28,7 @@ public class TableSniffer {
         sniffers.add(new ShareHolderNLSniffer());
         sniffers.add(new CashFlowSniffer());
     }
+
     /*
      * 识别html文档中的表格，并按照一定格式存在 *.table文件中
      */
@@ -36,7 +38,7 @@ public class TableSniffer {
 
         return false;
     }
-    
+
     public static void sniffEachEntity(File file) throws IOException {
         String fileContent = FileUtils.readFileToString(file);
         String[] tableContents = fileContent.split(TABLE_DIVIDOR + "\n");
@@ -78,7 +80,7 @@ public class TableSniffer {
         }
     }
 
-    private static String getTableText(Element table) {
+    private static String getTableContnet(Element table) {
         String result = "";
         if (table != null) {
             Elements trs = table.select("tr");
@@ -86,13 +88,36 @@ public class TableSniffer {
                 Elements tds = tr.select("td");
                 for (Element td : tds) {
                     result += td.text() + ELEMENT_DIVIDOR;
-                    //System.out.print(td.text());
                 }
                 result += "\n";
-                //System.out.println();
             }
+        }
+
+        return result;
+    }
+
+    private static String getTableText(List<Element> tables) {
+        String result = "";
+        if (tables != null && tables.size() > 0) {
+            for (Element table : tables) {
+                if (table != null) {
+                    result += getTableContnet(table);
+                }
+            }
+        } else {
+            return result;
+        }
+
+        result += TABLE_DIVIDOR + "\n";
+
+        return result;
+    }
+
+    private static String getTableText(Element table) {
+        String result = "";
+        if (table != null) {
+            result += getTableContnet(table);
             result += TABLE_DIVIDOR + "\n";
-            //System.out.println(TABLE_DIVIDOR);
         }
 
         return result;
@@ -107,9 +132,47 @@ public class TableSniffer {
         }
 
         Elements tables = doc.select("table");
-        for (Element element : tables) {
-            FileUtils.write(new File(outputFileName), getTableText(element), true);
+
+        if (tables.size() > 0) {
+
+            // 用于合并相邻的表
+            // 判断标准：两个table之间的元素小于2
+            List<Element> needWriteTables = new ArrayList<>();
+
+            int interval = 0;
+
+            // 用于记录上一步是不是合并了table，如果合并了 则跳过当前table循环
+            int jump = 0;
+            for (Element element : tables) {
+                if (jump > 0) {
+                    jump --;
+                    continue;
+                }
+                needWriteTables.add(element);
+
+                System.out.println(element.text());
+                Element e = element.nextElementSibling();
+                while (e != null) {
+                    if (e.tag().getName().equals("table")) {
+                        needWriteTables.add(e);
+                        interval = 0;
+                    } else {
+                        interval ++;
+                    }
+
+                    if (interval > 2) {
+                        break;
+                    }
+
+                    e = e.nextElementSibling();
+                }
+                FileUtils.write(new File(outputFileName), getTableText(needWriteTables), true);
+
+                jump = needWriteTables.size() - 1;
+                needWriteTables.clear();
+            }
         }
+
 
     }
 
