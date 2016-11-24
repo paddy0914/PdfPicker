@@ -18,7 +18,7 @@ public class CashFlow {
     @Horseman(keys={"投资活动现金流入小计"})
     public String investCashIn;
 
-    @Horseman(keys={"资活动现金流出小计"})
+    @Horseman(keys={"投资活动现金流出小计"})
     public String investCashOut;
 
     @Horseman(keys={"投资活动产生的现金流量净额"})

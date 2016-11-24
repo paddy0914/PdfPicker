@@ -2,11 +2,9 @@ package com.shubo.sniff;
 
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
-import com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -92,7 +90,10 @@ abstract public class Sniffer {
                             fields.remove(needKickoutField);
                             needKickoutLines.add(line);
                         } else {
-                            logger.info("{} [{}] [{}]", this.getClass().getName(), contents[0], contents[1]);
+                            if (this instanceof FinanceSniffer) {
+                                filteredPrint(contents[0]);
+                            }
+//                            logger.info("{} [{}] [{}]", this.getClass().getName(), contents[0], contents[1]);
                         }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
@@ -119,7 +120,14 @@ abstract public class Sniffer {
         return null;
     }
 
-
+    public void filteredPrint(String str) {
+        str = str.replace(" ", "");
+        if (!str.equals("项目") && !str.equals("非经常性损益项目") && !str.equals("非流动性资产处置损益")
+                && !str.equals("或有事项产生的损失") && !str.equals("除上述各项以外的其他营业外收入和支出")
+                && !str.equals("以上调整对所得税的影响") && !str.equals("少数股东承担部分") && !str.equals("合计")) {
+            logger.info("[{}]", str);
+        }
+    }
     /*
      * 把处理过后的表格内容识别为对应实体
      * 并作为json返回
@@ -146,7 +154,9 @@ abstract public class Sniffer {
                                 Object data = clazz.newInstance();
                                 for (int k = 0; k < fieldNames.size(); k ++) {
                                     String field = fieldNames.get(k);
-                                    data.getClass().getDeclaredField(field).set(data, items[k].replace(" ", ""));
+                                    if (field.equals("")) {
+                                        data.getClass().getDeclaredField(field).set(data, items[k].replace(" ", ""));
+                                    }
                                 }
                                 datas.add(data);
                             } catch (InstantiationException e) {
@@ -158,7 +168,7 @@ abstract public class Sniffer {
                             }
                             needKickoutLines.add(line);
                         } else {
-                            System.out.println("怎么回事?");
+                            //System.out.println("怎么回事?");
                         }
                     }
                 }
@@ -242,7 +252,8 @@ abstract public class Sniffer {
             if (found) {
                 headers.add(fieldName);
             } else {
-                headers.add("ertiao");
+                System.out.println("**************************************************** " + item);
+                headers.add("");
             }
         }
 
