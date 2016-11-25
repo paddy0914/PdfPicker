@@ -30,7 +30,7 @@ public class NrgalSniffer extends Sniffer {
         return generateEntityJson(content, Nrgal.class);
     }
 
-    private static final int MATCH_RULE = 3;
+    private static final int MATCH_RULE = 4;
 
     public boolean sniffByKeywords(String content) {
         int match = 0;
@@ -49,10 +49,13 @@ public class NrgalSniffer extends Sniffer {
     }
 
     private static final String[] NrgalDataKeyWords = {
-            "非流动性资产处置损益",
-            "除上述各项以外的",
-            "以上调整对所得税的影响",
-            "加权平均净资产收益",
-            "少数股东承担部分",
+            "非流动",
+            "资产处置损益",
+            "营业外收入和支出",
+            "除上述各项",
+            "所得税",
+            "影响",
+            "少数股东",
+            "承担部分",
     };
 }
