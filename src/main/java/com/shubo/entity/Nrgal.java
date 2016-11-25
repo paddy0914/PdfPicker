@@ -9,8 +9,10 @@ import com.shubo.annotation.Horseman;
  * 简称 Nrgal !!
  */
 public class Nrgal {
-    // 非流动资产处置损益
-    @Horseman(keys = {"减：处置非流动资产收益",
+    @Horseman(
+            similar = true,
+            keys = {
+            "减：处置非流动资产收益",
             "非流动资产处置损益",
             "处置非流动资产净收益",
             "非流动性资产处置损益",
@@ -20,23 +22,28 @@ public class Nrgal {
             "非流动性资产处置损益（固定资产、抵债资产、长期股权投资处置损益）"})
     public String ncadgal;
 
-    // 交易性金融负债产生的公允价值变动损益，以及处置交易性金融负债和可供出售金融资产取得的投资收益
-    @Horseman(keys = {
+    @Horseman(
+            similar = true,
+            keys = {
             "交易价格显失公允的交易产生的超过公允价值部分的损益",
             "交易性金融负债产生的公允价值变动损益，以及处置交易性金融负债和可供出售金融资产取得的投资收益"})
     public String whatthehell;
 
-    // 出售、处理部门或投资单位收益
-    @Horseman(keys = {"出售、处理部门或投资单位收益"})
+    @Horseman(
+            similar = true,
+            keys = {"出售、处理部门或投资单位收益"})
     public String incomeByDisposalOrInvest;
 
-    // 或有事项产生的损失
-    @Horseman(keys = {"或有事项产生的损失",
+    @Horseman(keys = {
+            "或有事项产生的损失",
             "或有事项产生的损益",
             "或有事项产生的损益（预计负债）"})
     public String somethingLoss;
 
-    @Horseman(keys = {"除上述各项以外的其他营业外收入和支出",
+    @Horseman(
+            similar = true,
+            keys = {
+            "除上述各项以外的其他营业外收入和支出",
             "除了上述以外的营业外收支净额",
             "除上述以外的营业外收支净额",
             "除上述各项之外的其他营业外收支净额",
@@ -47,10 +54,13 @@ public class Nrgal {
             "除上述各项之外的其他营业外净收入",
             "除上述各项之外的其他营业外收入和支出",
             "除上述各项之外的其它营业外收入和支出",
+            "其他营业外收支净额",
             "除上述各项之外的营业外收入和支出"})
     public String others;
 
-    @Horseman(keys = {
+    @Horseman(
+            similar = true,
+            keys = {
             "减：所得税的影响数",
             "减：非经常性损益的所得税影响数",
             "减：非经常性损益对所得税的影响数",
@@ -65,7 +75,9 @@ public class Nrgal {
             "所得税影响额"})
     public String incomeTaxEffect;
 
-    @Horseman(keys = {
+    @Horseman(
+            similar = true,
+            keys = {
             "减：非经常性损益对少数股东权益影响数",
             "减：非经常性损益对少数股东损益的影响数",
             "减：归属于少数股东的非经常性损益",
@@ -82,11 +94,16 @@ public class Nrgal {
     })
     public String qtfudyxm;
 
-    @Horseman(keys = {"长期股权投资处置损益",
+    @Horseman(
+            similar = true,
+            keys = {
+            "长期股权投资处置损益",
             "处置长期股权投资收益",
             "处置股权投资损益"})
     public String cqgqtzczsy;
 
-    @Horseman(keys = {"合计"})
+    @Horseman(keys = {
+            "合计",
+            "非经常性损益项目影响额"})
     public String total;
 }

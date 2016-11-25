@@ -77,11 +77,21 @@ abstract public class Sniffer {
                                 Horseman horsemen = (Horseman) annotations[0];
                                 String[] keys = horsemen.keys();
                                 for (String key : keys) {
-                                    float similarity = Similarity.getSimilarityRatio(key, contents[0].replace(" ", ""));
-                                    if (similarity > 0.9f) {
-                                        if (similarity < 0.99f) {
-                                            System.out.println("similarity=" + similarity);
+                                    boolean useSimilarity = horsemen.similar();
+
+                                    // 判断该属性是否用模糊判断，如果模糊判断则计算相似度，相似度大于0.9则判定为该属性
+                                    // 如果不用模糊判断，则用全匹配
+                                    if (useSimilarity) {
+                                        float similarity = Similarity.getSimilarityRatio(key, contents[0].replace(" ", ""));
+                                        if (similarity > 0.9f) {
+                                            found = true;
                                         }
+                                    } else {
+                                        if (key.equals(contents[0])) {
+                                            found = true;
+                                        }
+                                    }
+                                    if (found) {
                                         data.getClass().getDeclaredField(field.getName()).set(data, contents[1].replace(" ", ""));
                                         needKickoutField = field;
                                         found = true;
