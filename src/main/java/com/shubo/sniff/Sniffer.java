@@ -2,9 +2,14 @@ package com.shubo.sniff;
 
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
+import com.shubo.entity.Nrgal;
+import com.shubo.util.Similarity;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -72,7 +77,11 @@ abstract public class Sniffer {
                                 Horseman horsemen = (Horseman) annotations[0];
                                 String[] keys = horsemen.keys();
                                 for (String key : keys) {
-                                    if (key.equals(contents[0].replace(" ", ""))) {
+                                    float similarity = Similarity.getSimilarityRatio(key, contents[0].replace(" ", ""));
+                                    if (similarity > 0.9f) {
+                                        if (similarity < 0.99f) {
+                                            System.out.println("similarity=" + similarity);
+                                        }
                                         data.getClass().getDeclaredField(field.getName()).set(data, contents[1].replace(" ", ""));
                                         needKickoutField = field;
                                         found = true;
@@ -90,14 +99,18 @@ abstract public class Sniffer {
                             fields.remove(needKickoutField);
                             needKickoutLines.add(line);
                         } else {
-                            if (this instanceof FinanceSniffer) {
-                                filteredPrint(contents[0]);
-                            }
+                            if (this instanceof NrgalSniffer && !contents[0].equals("")) {
 //                            logger.info("{} [{}] [{}]", this.getClass().getName(), contents[0], contents[1]);
+//                                filteredPrint(contents[0]);
+                                String name = "D:\\年报解析\\test\\";
+                                FileUtils.write(new File(name + contents[0]), "", false);
+                            }
                         }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
 
