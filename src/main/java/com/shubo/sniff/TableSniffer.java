@@ -22,11 +22,11 @@ public class TableSniffer {
     public static List<Sniffer> sniffers = new ArrayList();
 
     static {
-        sniffers.add(new FinanceSniffer());
-        sniffers.add(new NrgalSniffer());
+//        sniffers.add(new FinanceSniffer());
+//        sniffers.add(new NrgalSniffer());
         sniffers.add(new ShareHolderSniffer());
-        sniffers.add(new ShareHolderNLSniffer());
-        sniffers.add(new CashFlowSniffer());
+//        sniffers.add(new ShareHolderNLSniffer());
+//        sniffers.add(new CashFlowSniffer());
     }
 
     /*
@@ -86,8 +86,11 @@ public class TableSniffer {
             Elements trs = table.select("tr");
             for (Element tr : trs) {
                 Elements tds = tr.select("td");
-                for (Element td : tds) {
-                    result += td.text() + ELEMENT_DIVIDOR;
+                for (int i = 0; i  < tds.size(); i ++ ) {
+                    Element td = tds.get(i);
+
+                    result += td.text();
+                    result += (i == tds.size() - 1) ? "" : ELEMENT_DIVIDOR;
                 }
                 result += "\n";
             }

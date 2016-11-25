@@ -28,6 +28,18 @@ public class ShareHolderSniffer extends Sniffer {
 
     private static final int MATCH_RULE = 3;
 
+    @Override
+    public HeaderInfo sniffHeader(String content, Class clazz) {
+        HeaderInfo info = super.sniffHeader(content, clazz);
+
+        // 补全最后的一个数量，因为通用解析头的时候，股东情况的之家冻结情况在表头分成了两行
+        if (info != null && info.headers.size() > 0) {
+            info.headers.add("freezAmount");
+        }
+
+        return info;
+    }
+
     public boolean sniffByKeywords(String content) {
         int match = 0;
         content = content.replace(" ", "");
@@ -48,7 +60,8 @@ public class ShareHolderSniffer extends Sniffer {
     private static final String[] NrgalDataKeyWords = {
             "股东性质",
             "持股数量",
-            "股份状态（质押或冻结情况）",
+            "股份状态",
+            "质押或冻结情况",
             "持有有限售条件的股份数量",
             "持有无限售条件的股份数量",
     };

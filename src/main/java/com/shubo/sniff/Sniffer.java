@@ -109,7 +109,7 @@ abstract public class Sniffer {
                             fields.remove(needKickoutField);
                             needKickoutLines.add(line);
                         } else {
-                            if (this instanceof NrgalSniffer && !contents[0].equals("")) {
+                            if (this instanceof ShareHolderSniffer && !contents[0].equals("")) {
 //                            logger.info("{} [{}] [{}]", this.getClass().getName(), contents[0], contents[1]);
 //                                filteredPrint(contents[0]);
                                 String name = "D:\\年报解析\\test\\";
@@ -172,7 +172,7 @@ abstract public class Sniffer {
                     String line = lines[i];
                     // 排除自身！
                     if (info.headerLineNumber != i) {
-                        String[] items = line.split(TableSniffer.ELEMENT_DIVIDOR);
+                        String[] items = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
                         if (items.length == itemCnt) {
                             try {
                                 Object data = clazz.newInstance();
@@ -233,7 +233,7 @@ abstract public class Sniffer {
         public int headerLineNumber;
     }
 
-    private HeaderInfo sniffHeader(String content, Class clazz) {
+    public HeaderInfo sniffHeader(String content, Class clazz) {
         HeaderInfo headerInfo = new HeaderInfo();
         List<String> headers = new ArrayList<>();
         headerInfo.headers = headers;
@@ -271,6 +271,9 @@ abstract public class Sniffer {
                         fieldName = field.getName();
                         break;
                     }
+                }
+                if (found) {
+                    break;
                 }
             }
             if (found) {
