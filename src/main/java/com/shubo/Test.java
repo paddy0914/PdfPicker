@@ -14,7 +14,7 @@ public class Test {
     public static final String OUTPUT = "d:\\年报解析\\表格\\";
 
     public static void main(String args[]) {
-        File file = new File("D:\\年报解析\\年报\\000004\\年报\\ST国农2008年年度报告.html");
+        File file = new File("D:\\年报解析\\年报\\000005\\年报\\世纪星源2015年年度报告.html");
         String outputTableFile = null;
         try {
             outputTableFile = OUTPUT + File.separator + NameUtils.getFileNameByFileName(file.getName());

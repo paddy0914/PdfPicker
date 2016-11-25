@@ -24,7 +24,8 @@ public class TableSniffer {
     static {
 //        sniffers.add(new FinanceSniffer());
 //        sniffers.add(new NrgalSniffer());
-        sniffers.add(new ShareHolderSniffer());
+//        sniffers.add(new ShareHolderSniffer());
+          sniffers.add(new ConsolidatedCashFlowSniffer());
 //        sniffers.add(new ShareHolderNLSniffer());
 //        sniffers.add(new CashFlowSniffer());
     }
