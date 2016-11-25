@@ -11,16 +11,17 @@ import java.io.File;
  * Hello world!
  */
 public class App {
-    public static final String DIR = "d:\\年报解析\\年报";
-    public static final String OUTPUT = "d:\\年报解析\\表格\\";
-    public static final String OUTPUT_JSON = "d:\\年报解析\\JSON\\";
 
     public static void main(String[] args) {
 
-        File folder = new File(DIR);
+        if (args.length > 0) {
+            AppContext.rootFolder = args[0];
+        }
+        String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报";
+        File folder = new File(srcYRReportFolder);
 
         for (File subFolder : folder.listFiles()) {
-            if (Integer.valueOf(subFolder.getName()) < 12) {
+            if (Integer.valueOf(subFolder.getName()) < 0) {
                 continue;
             }
             try {
@@ -30,8 +31,10 @@ public class App {
                     if (yrFolder.exists() && yrFolder.isDirectory()) {
                         for (File file : yrFolder.listFiles()) {
                             if (file.getName().endsWith("html") && !file.getName().contains("英文版") && !file.getName().contains("摘要")) {
-                                String outputTableFile = OUTPUT + File.separator + NameUtils.getFileNameByFileName(file.getName());
                                 System.out.println("处理 " + file.getAbsolutePath());
+                                String outputTableFile = AppContext.rootFolder +
+                                        File.separator + AppContext.TABLE_OUTPUT +
+                                        File.separator + NameUtils.getFileNameByFileName(file.getName());
                                 TableSniffer.sniff(file, outputTableFile);
                                 TableSniffer.sniffEachEntity(new File(outputTableFile));
                             }
