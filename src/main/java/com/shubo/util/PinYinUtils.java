@@ -1,9 +1,9 @@
-package com.shubo;
+package com.shubo.util;
 
 /**
  * Created by horseman on 2016/11/25.
  */
-public class PinYin {
+public class PinYinUtils {
 
     // 简体中文的编码范围从B0A1（45217）一直到F7FE（63486）
     private static int BEGIN = 45217;
@@ -99,6 +99,6 @@ public class PinYin {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(cn2py("销售商品、提供劳务收到的现金"));
+        System.out.println(cn2py("非流动资产合计 1,419,005,730.61 1,122,088,769.99"));
     }
 }

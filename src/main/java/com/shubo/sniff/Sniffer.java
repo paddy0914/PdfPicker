@@ -2,8 +2,9 @@ package com.shubo.sniff;
 
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
-import com.shubo.entity.Nrgal;
-import com.shubo.util.Similarity;
+import com.shubo.entity.report.ConsolidatedBalanceSheet;
+import com.shubo.entity.report.ConsolidatedCashFlow;
+import com.shubo.util.SimilarityUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,9 +60,9 @@ abstract public class Sniffer {
 
     /*
      * 把处理过后的表格内容识别为对应实体,并作为json返回
-     * Content : 待转换内容
-     * class : 实体
-     * size : 每一行要转换多少参数
+     * @Param content : 待转换内容
+     * @Param clazz : 实体
+     * @Param colSpan : 每一行要转换多少参数
      */
     public String[] generateEntityJson(String content, Class clazz, int colSpan) {
         String lines[] = content.split("\n");
@@ -87,6 +88,9 @@ abstract public class Sniffer {
 
             List<String> needKickoutLines = new ArrayList<>();
 
+            // 财务报表中，有些年报中间多了一列“注释”,不许要这个字段
+            boolean containsNote = false;
+
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
                 if (contents != null && contents.length >= colSpan) {
@@ -105,7 +109,7 @@ abstract public class Sniffer {
                                     // 判断该属性是否用模糊判断，如果模糊判断则计算相似度，相似度大于0.9则判定为该属性
                                     // 如果不用模糊判断，则用全匹配
                                     if (useSimilarity) {
-                                        float similarity = Similarity.getSimilarityRatio(key, contents[0].replace(" ", ""));
+                                        float similarity = SimilarityUtils.getSimilarityRatio(key, contents[0].replace(" ", ""));
                                         if (similarity > 0.9f) {
                                             found = true;
                                         }
@@ -118,7 +122,7 @@ abstract public class Sniffer {
                                         if (colSpan > 1) {
                                             List<String> datas = new ArrayList<>();
                                             for (int k = 0; k < colSpan; k++) {
-                                                datas.add(contents[k + 1].replace(" ", ""));
+                                                datas.add(contents[k + (containsNote ? 2 : 1)].replace(" ", ""));
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
                                         } else {
@@ -155,6 +159,9 @@ abstract public class Sniffer {
                         e.printStackTrace();
                     }
 
+                }
+                if (isReportEntity(clazz) && line.contains("注释")) {
+                    containsNote = true;
                 }
             }
             // 匹配过的行去掉
@@ -316,5 +323,17 @@ abstract public class Sniffer {
         }
 
         return headerInfo;
+    }
+
+    /*
+     * 针对财务报表四大表中的特殊情况作判断
+     */
+    private boolean isReportEntity(Class clazz) {
+        if (clazz == ConsolidatedBalanceSheet.class ||
+                clazz == ConsolidatedCashFlow.class) {
+            return true;
+        }
+
+        return false;
     }
 }

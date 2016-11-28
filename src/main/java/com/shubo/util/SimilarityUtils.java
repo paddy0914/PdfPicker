@@ -7,7 +7,7 @@ package com.shubo.util;
  * 比较两个字符串的相似度
  */
 
-public class Similarity {
+public class SimilarityUtils {
 
     private static int compare(String str, String target) {
         int d[][]; // 矩阵
@@ -73,7 +73,7 @@ public class Similarity {
     public static void main(String[] args) {
         String str = "净资产收益率（加权平均）";
         String target = "加权平均净资产收益率（%）";
-        System.out.println("similarityRatio=" + Similarity.getSimilarityRatio(str, target));
+        System.out.println("similarityRatio=" + SimilarityUtils.getSimilarityRatio(str, target));
     }
 
 }

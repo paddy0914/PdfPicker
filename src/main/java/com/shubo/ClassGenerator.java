@@ -1,7 +1,6 @@
 package com.shubo;
 
-import com.shubo.annotation.Horseman;
-import org.apache.commons.io.FileUtils;
+import com.shubo.util.PinYinUtils;
 
 import java.io.*;
 
@@ -10,7 +9,7 @@ import java.io.*;
  */
 public class ClassGenerator {
     public static void main(String args[]) {
-        File file = new File("d:\\class.txt");
+        File file = new File("d:\\class4.txt");
         try {
             BufferedReader bio = new BufferedReader(new FileReader(file));
             String str;
@@ -18,7 +17,7 @@ public class ClassGenerator {
 //                @Horseman(keys = {"货币资金"})
 //                public String hbzj;
                 System.out.println("@Horseman(keys = {\"" + str + "\"})");
-                System.out.println("public String " + PinYin.cn2py(str) + ";");
+                System.out.println("public String " + PinYinUtils.cn2py(str) + ";");
                 System.out.println();
             }
         } catch (FileNotFoundException e) {
