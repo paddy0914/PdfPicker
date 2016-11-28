@@ -29,7 +29,7 @@ public class ConsolidatedProfitsSniffer extends Sniffer {
 
     @Override
     public String[] generateEntityJson(String content) {
-        return generateEntityJsonArrays(content, ConsolidatedProfits.class);
+        return generateEntityJson(content, ConsolidatedProfits.class, 2);
     }
 
     private static final String[] CPKeyWords = {

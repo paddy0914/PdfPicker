@@ -2,299 +2,301 @@ package com.shubo.entity.report;
 
 import com.shubo.annotation.Horseman;
 
+import java.util.List;
+
 /**
  * Created by horseman on 2016/11/25.
  * 合并资产负债表
  */
 public class ConsolidatedBalanceSheet {
     @Horseman(keys = {"流动资产："})
-    public String ldzc;
+    public List<String> ldzc;
 
     @Horseman(keys = {"货币资金"})
-    public String hbzj;
+    public List<String> hbzj;
 
     @Horseman(keys = {"结算备付金"})
-    public String jsbfj;
+    public List<String> jsbfj;
 
     @Horseman(keys = {"拆出资金"})
-    public String cczj;
+    public List<String> cczj;
 
     @Horseman(keys = {"以公允价值计量且其变动计入当期损益的金融资产"})
-    public String ygyjzjlqqbdjrdqsydjrzc;
+    public List<String> ygyjzjlqqbdjrdqsydjrzc;
 
     @Horseman(keys = {"衍生金融资产"})
-    public String ysjrzc;
+    public List<String> ysjrzc;
 
     @Horseman(keys = {"应收票据"})
-    public String yspj;
+    public List<String> yspj;
 
     @Horseman(keys = {"应收账款"})
-    public String yszk;
+    public List<String> yszk;
 
     @Horseman(keys = {"预付款项"})
-    public String yfkx;
+    public List<String> yfkx;
 
     @Horseman(keys = {"应收保费"})
-    public String ysbf;
+    public List<String> ysbf;
 
     @Horseman(keys = {"应收分保账款"})
-    public String ysfbzk;
+    public List<String> ysfbzk;
 
     @Horseman(keys = {"应收分保合同准备金"})
-    public String ysfbhtzbj;
+    public List<String> ysfbhtzbj;
 
     @Horseman(keys = {"应收利息"})
-    public String yslx;
+    public List<String> yslx;
 
     @Horseman(keys = {"应收股利"})
-    public String ysgl;
+    public List<String> ysgl;
 
     @Horseman(keys = {"其他应收款"})
-    public String qtysk;
+    public List<String> qtysk;
 
     @Horseman(keys = {"买入返售金融资产"})
-    public String mrfsjrzc;
+    public List<String> mrfsjrzc;
 
     @Horseman(keys = {"存货"})
-    public String ch;
+    public List<String> ch;
 
     @Horseman(keys = {"划分为持有待售的资产"})
-    public String hfwcydsdzc;
+    public List<String> hfwcydsdzc;
 
     @Horseman(keys = {"一年内到期的非流动资产"})
-    public String ynndqdfldzc;
+    public List<String> ynndqdfldzc;
 
     @Horseman(keys = {"其他流动资产"})
-    public String qtldzc;
+    public List<String> qtldzc;
 
     @Horseman(keys = {"流动资产合计"})
-    public String ldzchj;
+    public List<String> ldzchj;
 
     @Horseman(keys = {"非流动资产："})
-    public String fldzc;
+    public List<String> fldzc;
 
     @Horseman(keys = {"发放贷款及垫款"})
-    public String ffdkjdk;
+    public List<String> ffdkjdk;
 
     @Horseman(keys = {"可供出售金融资产"})
-    public String kgcsjrzc;
+    public List<String> kgcsjrzc;
 
     @Horseman(keys = {"持有至到期投资"})
-    public String cyzdqtz;
+    public List<String> cyzdqtz;
 
     @Horseman(keys = {"长期应收款"})
-    public String cqysk;
+    public List<String> cqysk;
 
     @Horseman(keys = {"长期股权投资"})
-    public String cqgqtz;
+    public List<String> cqgqtz;
 
     @Horseman(keys = {"投资性房地产"})
-    public String tzxfdc;
+    public List<String> tzxfdc;
 
     @Horseman(keys = {"固定资产"})
-    public String gdzc;
+    public List<String> gdzc;
 
     @Horseman(keys = {"在建工程"})
-    public String zjgc;
+    public List<String> zjgc;
 
     @Horseman(keys = {"工程物资"})
-    public String gcwz;
+    public List<String> gcwz;
 
     @Horseman(keys = {"固定资产清理"})
-    public String gdzcql;
+    public List<String> gdzcql;
 
     @Horseman(keys = {"生产性生物资产"})
-    public String scxswzc;
+    public List<String> scxswzc;
 
     @Horseman(keys = {"油气资产"})
-    public String yqzc;
+    public List<String> yqzc;
 
     @Horseman(keys = {"无形资产"})
-    public String wxzc;
+    public List<String> wxzc;
 
     @Horseman(keys = {"开发支出"})
-    public String kfzc;
+    public List<String> kfzc;
 
     @Horseman(keys = {"商誉"})
-    public String sy;
+    public List<String> sy;
 
     @Horseman(keys = {"长期待摊费用"})
-    public String cqdtfy;
+    public List<String> cqdtfy;
 
     @Horseman(keys = {"递延所得税资产"})
-    public String dysdszc;
+    public List<String> dysdszc;
 
     @Horseman(keys = {"其他非流动资产"})
-    public String qtfldzc;
+    public List<String> qtfldzc;
 
     @Horseman(keys = {"非流动资产合计"})
-    public String fldzchj;
+    public List<String> fldzchj;
 
     @Horseman(keys = {"资产总计"})
-    public String zczj;
+    public List<String> zczj;
 
     @Horseman(keys = {"流动负债："})
-    public String ldfz;
+    public List<String> ldfz;
 
     @Horseman(keys = {"短期借款"})
-    public String dqjk;
+    public List<String> dqjk;
 
     @Horseman(keys = {"向中央银行借款"})
-    public String xzyyxjk;
+    public List<String> xzyyxjk;
 
     @Horseman(keys = {"吸收存款及同业存放"})
-    public String xsckjtycf;
+    public List<String> xsckjtycf;
 
     @Horseman(keys = {"拆入资金"})
-    public String crzj;
+    public List<String> crzj;
 
     @Horseman(keys = {"以公允价值计量且其变动计入当期损益的金融负债"})
-    public String ygyjzjlqqbdjrdqsydjrfz;
+    public List<String> ygyjzjlqqbdjrdqsydjrfz;
 
     @Horseman(keys = {"衍生金融负债"})
-    public String ysjrfz;
+    public List<String> ysjrfz;
 
     @Horseman(keys = {"应付票据"})
-    public String yfpj;
+    public List<String> yfpj;
 
     @Horseman(keys = {"应付账款"})
-    public String yfzk;
+    public List<String> yfzk;
 
     @Horseman(keys = {"预收款项"})
-    public String yskx;
+    public List<String> yskx;
 
     @Horseman(keys = {"卖出回购金融资产款"})
-    public String mchgjrzck;
+    public List<String> mchgjrzck;
 
     @Horseman(keys = {"应付手续费及佣金"})
-    public String yfsxfjyj;
+    public List<String> yfsxfjyj;
 
     @Horseman(keys = {"应付职工薪酬"})
-    public String yfzgxc;
+    public List<String> yfzgxc;
 
     @Horseman(keys = {"应交税费"})
-    public String yjsf;
+    public List<String> yjsf;
 
     @Horseman(keys = {"应付利息"})
-    public String yflx;
+    public List<String> yflx;
 
     @Horseman(keys = {"应付股利"})
-    public String yfgl;
+    public List<String> yfgl;
 
     @Horseman(keys = {"其他应付款"})
-    public String qtyfk;
+    public List<String> qtyfk;
 
     @Horseman(keys = {"应付分保账款"})
-    public String yffbzk;
+    public List<String> yffbzk;
 
     @Horseman(keys = {"保险合同准备金"})
-    public String bxhtzbj;
+    public List<String> bxhtzbj;
 
     @Horseman(keys = {"代理买卖证券款"})
-    public String dlmmzqk;
+    public List<String> dlmmzqk;
 
     @Horseman(keys = {"代理承销证券款"})
-    public String dlcxzqk;
+    public List<String> dlcxzqk;
 
     @Horseman(keys = {"划分为持有待售的负债"})
-    public String hfwcydsdfz;
+    public List<String> hfwcydsdfz;
 
     @Horseman(keys = {"一年内到期的非流动负债"})
-    public String ynndqdfldfz;
+    public List<String> ynndqdfldfz;
 
     @Horseman(keys = {"其他流动负债"})
-    public String qtldfz;
+    public List<String> qtldfz;
 
     @Horseman(keys = {"流动负债合计"})
-    public String ldfzhj;
+    public List<String> ldfzhj;
 
     @Horseman(keys = {"非流动负债："})
-    public String fldfz;
+    public List<String> fldfz;
 
     @Horseman(keys = {"长期借款"})
-    public String cqjk;
+    public List<String> cqjk;
 
     @Horseman(keys = {"应付债券"})
-    public String yfzq;
+    public List<String> yfzq;
 
     @Horseman(keys = {"其中：优先股"})
-    public String yfzqqzyxg;
+    public List<String> yfzqqzyxg;
 
     @Horseman(keys = {"永续债"})
-    public String yfzqyxz;
+    public List<String> yfzqyxz;
 
     @Horseman(keys = {"长期应付款"})
-    public String cqyfk;
+    public List<String> cqyfk;
 
     @Horseman(keys = {"长期应付职工薪酬"})
-    public String cqyfzgxc;
+    public List<String> cqyfzgxc;
 
     @Horseman(keys = {"专项应付款"})
-    public String zxyfk;
+    public List<String> zxyfk;
 
     @Horseman(keys = {"预计负债"})
-    public String yjfz;
+    public List<String> yjfz;
 
     @Horseman(keys = {"递延收益"})
-    public String dysy;
+    public List<String> dysy;
 
     @Horseman(keys = {"递延所得税负债"})
-    public String dysdsfz;
+    public List<String> dysdsfz;
 
     @Horseman(keys = {"其他非流动负债"})
-    public String qtfldfz;
+    public List<String> qtfldfz;
 
     @Horseman(keys = {"非流动负债合计"})
-    public String fldfzhj;
+    public List<String> fldfzhj;
 
     @Horseman(keys = {"负债合计"})
-    public String fzhj;
+    public List<String> fzhj;
 
     @Horseman(keys = {"所有者权益："})
-    public String syzqy;
+    public List<String> syzqy;
 
     @Horseman(keys = {"股本"})
-    public String gb;
+    public List<String> gb;
 
     @Horseman(keys = {"其他权益工具"})
-    public String qtqygj;
+    public List<String> qtqygj;
 
     @Horseman(keys = {"其中：优先股"})
-    public String qtqygjqzyxg;
+    public List<String> qtqygjqzyxg;
 
     @Horseman(keys = {"永续债"})
-    public String qtqygjyxz;
+    public List<String> qtqygjyxz;
 
     @Horseman(keys = {"资本公积"})
-    public String zbgj;
+    public List<String> zbgj;
 
     @Horseman(keys = {"减：库存股"})
-    public String jkcg;
+    public List<String> jkcg;
 
     @Horseman(keys = {"其他综合收益"})
-    public String qtzhsy;
+    public List<String> qtzhsy;
 
     @Horseman(keys = {"专项储备"})
-    public String zxcb;
+    public List<String> zxcb;
 
     @Horseman(keys = {"盈余公积"})
-    public String yygj;
+    public List<String> yygj;
 
     @Horseman(keys = {"一般风险准备"})
-    public String ybfxzb;
+    public List<String> ybfxzb;
 
     @Horseman(keys = {"未分配利润"})
-    public String wfplr;
+    public List<String> wfplr;
 
     @Horseman(keys = {"归属于母公司所有者权益合计"})
-    public String gsymgssyzqyhj;
+    public List<String> gsymgssyzqyhj;
 
     @Horseman(keys = {"少数股东权益"})
-    public String ssgdqy;
+    public List<String> ssgdqy;
 
     @Horseman(keys = {"所有者权益合计"})
-    public String syzqyhj;
+    public List<String> syzqyhj;
 
     @Horseman(keys = {"负债和所有者权益总计"})
-    public String fzhsyzqyzj;
+    public List<String> fzhsyzqyzj;
 }

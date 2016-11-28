@@ -53,11 +53,17 @@ abstract public class Sniffer {
         return false;
     }
 
-    /*
-     * 把处理过后的表格内容识别为对应实体
-     * 并作为json返回
-     */
     public String[] generateEntityJson(String content, Class clazz) {
+        return generateEntityJson(content, clazz, 1);
+    }
+
+    /*
+     * 把处理过后的表格内容识别为对应实体,并作为json返回
+     * Content : 待转换内容
+     * class : 实体
+     * size : 每一行要转换多少参数
+     */
+    public String[] generateEntityJson(String content, Class clazz, int colSpan) {
         String lines[] = content.split("\n");
 
         if (lines != null && lines.length > 0) {
@@ -82,8 +88,8 @@ abstract public class Sniffer {
             List<String> needKickoutLines = new ArrayList<>();
 
             for (String line : lines) {
-                String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR);
-                if (contents != null && contents.length > 1) {
+                String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
+                if (contents != null && contents.length >= colSpan) {
 
                     try {
                         Field needKickoutField = null;
@@ -104,12 +110,20 @@ abstract public class Sniffer {
                                             found = true;
                                         }
                                     } else {
-                                        if (key.equals(contents[0])) {
+                                        if (key.equals(contents[0].replace(" ", ""))) {
                                             found = true;
                                         }
                                     }
                                     if (found) {
-                                        data.getClass().getDeclaredField(field.getName()).set(data, contents[1].replace(" ", ""));
+                                        if (colSpan > 1) {
+                                            List<String> datas = new ArrayList<>();
+                                            for (int k = 0; k < colSpan; k++) {
+                                                datas.add(contents[k + 1].replace(" ", ""));
+                                            }
+                                            data.getClass().getDeclaredField(field.getName()).set(data, datas);
+                                        } else {
+                                            data.getClass().getDeclaredField(field.getName()).set(data, contents[1].replace(" ", ""));
+                                        }
                                         needKickoutField = field;
                                         found = true;
                                         break;

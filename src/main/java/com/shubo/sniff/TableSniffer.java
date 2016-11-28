@@ -1,6 +1,9 @@
 package com.shubo.sniff;
 
+import com.shubo.sniff.report.ConsolidatedBalanceShellSniffer;
 import com.shubo.sniff.report.ConsolidatedCashFlowSniffer;
+import com.shubo.sniff.report.ConsolidatedEquityChangeSniffer;
+import com.shubo.sniff.report.ConsolidatedProfitsSniffer;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,6 +30,9 @@ public class TableSniffer {
 //        sniffers.add(new NrgalSniffer());
 //        sniffers.add(new ShareHolderSniffer());
           sniffers.add(new ConsolidatedCashFlowSniffer());
+        sniffers.add(new ConsolidatedBalanceShellSniffer());
+          sniffers.add(new ConsolidatedEquityChangeSniffer());
+        sniffers.add(new ConsolidatedProfitsSniffer());
 //        sniffers.add(new ShareHolderNLSniffer());
 //        sniffers.add(new CashFlowSniffer());
     }

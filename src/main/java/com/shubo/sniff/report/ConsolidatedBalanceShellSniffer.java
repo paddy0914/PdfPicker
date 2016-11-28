@@ -29,7 +29,7 @@ public class ConsolidatedBalanceShellSniffer extends Sniffer {
 
     @Override
     public String[] generateEntityJson(String content) {
-        return generateEntityJson(content, ConsolidatedBalanceSheet.class);
+        return generateEntityJson(content, ConsolidatedBalanceSheet.class, 2);
     }
 
     private static final String[] CBSKeyWords = {
