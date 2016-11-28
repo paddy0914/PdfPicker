@@ -9,7 +9,8 @@ import com.shubo.sniff.Sniffer;
  */
 @Todd(key = "ConsolidatedCashFlow",
         suffix = ".ccf",
-        folder = "合并现金流量表")
+        folder = "合并现金流量表",
+        title = {"合并现金流量表", "母公司现金流量表"})
 public class ConsolidatedCashFlowSniffer extends Sniffer {
 
     @Override

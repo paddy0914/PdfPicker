@@ -7,6 +7,7 @@ import com.shubo.entity.report.ConsolidatedBalanceSheet;
 import com.shubo.entity.report.ConsolidatedCashFlow;
 import com.shubo.entity.report.ConsolidatedEquityChange;
 import com.shubo.entity.report.ConsolidatedProfits;
+import com.shubo.exception.AnnotationException;
 import com.shubo.util.SimilarityUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by horseman on 2016/11/22.
  */
 abstract public class Sniffer {
-    public String getKey() {
+    public String getKey() throws AnnotationException {
         Annotation[] annotations = getClass().getAnnotations();
         if (annotations != null && annotations.length > 0) {
             Annotation annotation = annotations[0];
@@ -32,10 +33,11 @@ abstract public class Sniffer {
 
             return todd.key();
         }
-        return "";
+
+        throw new AnnotationException();
     }
 
-    public String getSuffix() {
+    public String getSuffix() throws AnnotationException {
         Annotation[] annotations = getClass().getAnnotations();
         if (annotations != null && annotations.length > 0) {
             Annotation annotation = annotations[0];
@@ -43,10 +45,11 @@ abstract public class Sniffer {
 
             return todd.suffix();
         }
-        return "";
+
+        throw new AnnotationException();
     }
 
-    public String getFolder() {
+    public String getFolder()  throws AnnotationException {
         Annotation[] annotations = getClass().getAnnotations();
         if (annotations != null && annotations.length > 0) {
             Annotation annotation = annotations[0];
@@ -54,10 +57,35 @@ abstract public class Sniffer {
 
             return todd.folder();
         }
-        return "";
+
+        throw new AnnotationException();
+    }
+
+    public String[] getTitle()  throws AnnotationException {
+        Annotation[] annotations = getClass().getAnnotations();
+        if (annotations != null && annotations.length > 0) {
+            Annotation annotation = annotations[0];
+            Todd todd = (Todd) annotation;
+
+            return todd.title();
+        }
+
+        throw new AnnotationException();
     }
 
     public abstract boolean sniff(String content);
+
+    public boolean sniffWithTitle(String title) throws AnnotationException {
+        String[] titles = getTitle();
+
+        for (String sniffTitle : titles) {
+            if (title.contains(sniffTitle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     // 从content中获取JSON,保存在返回数组的第一个String
     // 把content去除匹配成功的字符，保存在返回数组的第二个String

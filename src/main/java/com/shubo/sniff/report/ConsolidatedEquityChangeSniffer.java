@@ -10,7 +10,8 @@ import com.shubo.sniff.Sniffer;
  */
 @Todd(key = "ConsolidatedEquityChange",
         suffix = ".ces",
-        folder = "合并所有者权益变动表")
+        folder = "合并所有者权益变动表",
+        title = {"合并所有者权益变动表"})
 public class ConsolidatedEquityChangeSniffer extends Sniffer {
 
     @Override

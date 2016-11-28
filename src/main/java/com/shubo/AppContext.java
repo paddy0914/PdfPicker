@@ -5,8 +5,8 @@ package com.shubo;
  */
 public class AppContext {
 
-    public static final String TABLE_OUTPUT = "表格";
-    public static final String JSON_OUTPUT = "JSON";
+    public static final String TABLE_OUTPUT_DIR = "表格";
+    public static final String JSON_OUTPUT_DIR = "JSON";
 
     public static String rootFolder = "d:\\年报解析";
 }

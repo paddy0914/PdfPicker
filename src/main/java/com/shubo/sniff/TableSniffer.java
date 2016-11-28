@@ -1,5 +1,7 @@
 package com.shubo.sniff;
 
+import com.shubo.AppContext;
+import com.shubo.exception.AnnotationException;
 import com.shubo.sniff.report.ConsolidatedBalanceShellSniffer;
 import com.shubo.sniff.report.ConsolidatedCashFlowSniffer;
 import com.shubo.sniff.report.ConsolidatedEquityChangeSniffer;
@@ -30,9 +32,9 @@ public class TableSniffer {
 //        sniffers.add(new NrgalSniffer());
 //        sniffers.add(new ShareHolderSniffer());
           sniffers.add(new ConsolidatedCashFlowSniffer());
-        sniffers.add(new ConsolidatedBalanceShellSniffer());
+          sniffers.add(new ConsolidatedBalanceShellSniffer());
           sniffers.add(new ConsolidatedEquityChangeSniffer());
-        sniffers.add(new ConsolidatedProfitsSniffer());
+          sniffers.add(new ConsolidatedProfitsSniffer());
 //        sniffers.add(new ShareHolderNLSniffer());
 //        sniffers.add(new CashFlowSniffer());
     }
@@ -47,13 +49,35 @@ public class TableSniffer {
         return false;
     }
 
-    public static void sniffEachEntity(File file) throws IOException {
+    public static void sniffEntity(String table, String title, String fileName) throws IOException, AnnotationException {
+
+        for (Sniffer sniffer : sniffers) {
+
+            if (sniffer.sniffWithTitle(title)) {
+
+                String tableStr = getTableContent(Jsoup.parse(table));
+                String[] result = sniffer.generateEntityJson(tableStr);
+
+                if (result != null && result.length == 2) {
+
+                    String outputPath = AppContext.rootFolder +
+                            File.separator + AppContext.JSON_OUTPUT_DIR +
+                            File.separator + sniffer.getFolder() +
+                            File.separator + fileName.replace("html", "json");
+
+                    FileUtils.write(new File(outputPath), result[0], false);
+                }
+            }
+        }
+    }
+
+    public static void sniffEachEntity(File file) throws IOException, AnnotationException {
         String fileContent = FileUtils.readFileToString(file);
         String[] tableContents = fileContent.split(TABLE_DIVIDOR + "\n");
 
         // 用于记录已经探测到的sniffer,防止重复探测到某一个表
         // 每个文件只识别一个特定的表
-        List<String> snifferedRecords = new ArrayList<String>();
+        List<String> snifferedRecords = new ArrayList<>();
 
         for (String table : tableContents) {
             for (Sniffer sniffer : sniffers) {
@@ -88,13 +112,17 @@ public class TableSniffer {
         }
     }
 
-    private static String getTableContnet(Element table) {
+    private static void handleTable(String table) {
+
+    }
+
+    private static String getTableContent(Element table) {
         String result = "";
         if (table != null) {
             Elements trs = table.select("tr");
             for (Element tr : trs) {
                 Elements tds = tr.select("td");
-                for (int i = 0; i  < tds.size(); i ++ ) {
+                for (int i = 0; i < tds.size(); i++) {
                     Element td = tds.get(i);
 
                     result += td.text();
@@ -112,7 +140,7 @@ public class TableSniffer {
         if (tables != null && tables.size() > 0) {
             for (Element table : tables) {
                 if (table != null) {
-                    result += getTableContnet(table);
+                    result += getTableContent(table);
                 }
             }
         } else {
@@ -127,7 +155,7 @@ public class TableSniffer {
     private static String getTableText(Element table) {
         String result = "";
         if (table != null) {
-            result += getTableContnet(table);
+            result += getTableContent(table);
             result += TABLE_DIVIDOR + "\n";
         }
 
@@ -156,7 +184,7 @@ public class TableSniffer {
             int jump = 0;
             for (Element element : tables) {
                 if (jump > 0) {
-                    jump --;
+                    jump--;
                     continue;
                 }
                 needWriteTables.add(element);
@@ -168,7 +196,7 @@ public class TableSniffer {
                         needWriteTables.add(e);
                         interval = 0;
                     } else {
-                        interval ++;
+                        interval++;
                     }
 
                     if (interval > 2) {

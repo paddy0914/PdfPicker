@@ -9,7 +9,8 @@ import com.shubo.sniff.Sniffer;
  */
 @Todd(key = "ConsolidatedProfits",
         suffix = ".cp",
-        folder = "合并利润表")
+        folder = "合并利润表",
+        title = {"合并利润表", "母公司利润表"})
 public class ConsolidatedProfitsSniffer extends Sniffer {
 
     @Override

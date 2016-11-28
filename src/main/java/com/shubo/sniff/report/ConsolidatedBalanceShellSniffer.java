@@ -9,7 +9,8 @@ import com.shubo.sniff.Sniffer;
  */
 @Todd(key = "ConsolidatedBalanceShell",
         suffix = ".cbs",
-        folder = "合并资产负债表")
+        folder = "合并资产负债表",
+        title = {"合并资产负债表", "母公司资产负债表"})
 public class ConsolidatedBalanceShellSniffer extends Sniffer {
 
     @Override

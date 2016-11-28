@@ -33,7 +33,7 @@ public class App {
                             if (file.getName().endsWith("html") && !file.getName().contains("英文版") && !file.getName().contains("摘要")) {
                                 System.out.println("处理 " + file.getAbsolutePath());
                                 String outputTableFile = AppContext.rootFolder +
-                                        File.separator + AppContext.TABLE_OUTPUT +
+                                        File.separator + AppContext.TABLE_OUTPUT_DIR +
                                         File.separator + NameUtils.getFileNameByFileName(file.getName());
                                 TableSniffer.sniff(file, outputTableFile);
                                 TableSniffer.sniffEachEntity(new File(outputTableFile));
