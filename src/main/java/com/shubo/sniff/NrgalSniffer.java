@@ -1,22 +1,15 @@
 package com.shubo.sniff;
 
+import com.shubo.annotation.Todd;
 import com.shubo.entity.Nrgal;
 
 /**
  * Created by horseman on 2016/11/22.
  */
+@Todd(key = "Nrgal",
+        suffix = ".nrgal",
+        folder = "非经常性损益")
 public class NrgalSniffer extends Sniffer {
-    public String getKey() {
-        return "Nrgal";
-    }
-
-    public String getSuffix() {
-        return ".nrgal";
-    }
-
-    public String getFolder() {
-        return "非经常性损益";
-    }
 
     public boolean sniff(String content) {
         return sniffByKeywords(content, NrgalDataKeyWords, MATCH_CNT);

@@ -1,22 +1,15 @@
 package com.shubo.sniff;
 
+import com.shubo.annotation.Todd;
 import com.shubo.entity.CashFlow;
 
 /**
  * Created by horseman on 2016/11/23.
  */
+@Todd(key = "CashFlow",
+        suffix = ".cashflow",
+        folder = "现金流")
 public class CashFlowSniffer extends Sniffer {
-    public String getKey() {
-        return "CashFlow";
-    }
-
-    public String getSuffix() {
-        return ".table.cashflow";
-    }
-
-    public String getFolder() {
-        return "现金流";
-    }
 
     public boolean sniff(String content) {
         return sniffByKeywords(content, financeDataKeyWords, MATCH_CNT);

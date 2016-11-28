@@ -2,8 +2,11 @@ package com.shubo.sniff;
 
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
+import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedBalanceSheet;
 import com.shubo.entity.report.ConsolidatedCashFlow;
+import com.shubo.entity.report.ConsolidatedEquityChange;
+import com.shubo.entity.report.ConsolidatedProfits;
 import com.shubo.util.SimilarityUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -21,11 +24,38 @@ import java.util.List;
  * Created by horseman on 2016/11/22.
  */
 abstract public class Sniffer {
-    public abstract String getKey();
+    public String getKey() {
+        Annotation[] annotations = getClass().getAnnotations();
+        if (annotations != null && annotations.length > 0) {
+            Annotation annotation = annotations[0];
+            Todd todd = (Todd) annotation;
 
-    public abstract String getSuffix();
+            return todd.key();
+        }
+        return "";
+    }
 
-    public abstract String getFolder();
+    public String getSuffix() {
+        Annotation[] annotations = getClass().getAnnotations();
+        if (annotations != null && annotations.length > 0) {
+            Annotation annotation = annotations[0];
+            Todd todd = (Todd) annotation;
+
+            return todd.suffix();
+        }
+        return "";
+    }
+
+    public String getFolder() {
+        Annotation[] annotations = getClass().getAnnotations();
+        if (annotations != null && annotations.length > 0) {
+            Annotation annotation = annotations[0];
+            Todd todd = (Todd) annotation;
+
+            return todd.folder();
+        }
+        return "";
+    }
 
     public abstract boolean sniff(String content);
 
@@ -330,7 +360,9 @@ abstract public class Sniffer {
      */
     private boolean isReportEntity(Class clazz) {
         if (clazz == ConsolidatedBalanceSheet.class ||
-                clazz == ConsolidatedCashFlow.class) {
+                clazz == ConsolidatedCashFlow.class ||
+                clazz == ConsolidatedProfits.class ||
+                clazz == ConsolidatedEquityChange.class) {
             return true;
         }
 

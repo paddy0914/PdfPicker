@@ -1,22 +1,16 @@
 package com.shubo.sniff;
 
+import com.shubo.annotation.Todd;
 import com.shubo.entity.Finance;
 
 /**
  * Created by horseman on 2016/11/22.
+ * 主要财务数据
  */
+@Todd(key = "Finance",
+        suffix = ".finance",
+        folder = "主要财务数据")
 public class FinanceSniffer extends Sniffer {
-    public String getKey() {
-        return "Finance";
-    }
-
-    public String getSuffix() {
-        return ".finance";
-    }
-
-    public String getFolder() {
-        return "主要财务数据";
-    }
 
     /*
      * 根据一定的规则探测文档是否包含主要财务数据

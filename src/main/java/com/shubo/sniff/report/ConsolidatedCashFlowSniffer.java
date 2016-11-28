@@ -1,26 +1,16 @@
 package com.shubo.sniff.report;
 
+import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedCashFlow;
 import com.shubo.sniff.Sniffer;
 
 /**
  * Created by horseman on 2016/11/25.
  */
+@Todd(key = "ConsolidatedCashFlow",
+        suffix = ".ccf",
+        folder = "合并现金流量表")
 public class ConsolidatedCashFlowSniffer extends Sniffer {
-    @Override
-    public String getKey() {
-        return "ConsolidatedCashFlow";
-    }
-
-    @Override
-    public String getSuffix() {
-        return ".ccf";
-    }
-
-    @Override
-    public String getFolder() {
-        return "合并現金流量表";
-    }
 
     @Override
     public boolean sniff(String content) {

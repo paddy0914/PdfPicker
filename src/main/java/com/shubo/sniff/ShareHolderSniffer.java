@@ -1,22 +1,16 @@
 package com.shubo.sniff;
 
+import com.shubo.annotation.Todd;
 import com.shubo.entity.ShareHolder;
 
 /**
  * Created by horseman on 2016/11/23.
+ * 前10名股东持股情况
  */
+@Todd(key = "ShareHolder",
+        suffix = ".shareHolder",
+        folder = "前10名股东持股情况")
 public class ShareHolderSniffer extends Sniffer {
-    public String getKey() {
-        return "ShareHolder";
-    }
-
-    public String getSuffix() {
-        return ".table.股东";
-    }
-
-    public String getFolder() {
-        return "前10名股东持股情况";
-    }
 
     public boolean sniff(String content) {
         return sniffByKeywords(content, ShareHolderDataKeyWords, MATCH_CNT);

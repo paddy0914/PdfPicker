@@ -1,5 +1,6 @@
 package com.shubo.sniff.report;
 
+import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedEquityChange;
 import com.shubo.sniff.Sniffer;
 
@@ -7,21 +8,10 @@ import com.shubo.sniff.Sniffer;
  * Created by horseman on 2016/11/28.
  * 合并所有者权益变动表
  */
+@Todd(key = "ConsolidatedEquityChange",
+        suffix = ".ces",
+        folder = "合并所有者权益变动表")
 public class ConsolidatedEquityChangeSniffer extends Sniffer {
-    @Override
-    public String getKey() {
-        return "ConsolidatedEquityChange";
-    }
-
-    @Override
-    public String getSuffix() {
-        return ".ces";
-    }
-
-    @Override
-    public String getFolder() {
-        return "合并所有者权益变动表";
-    }
 
     @Override
     public boolean sniff(String content) {

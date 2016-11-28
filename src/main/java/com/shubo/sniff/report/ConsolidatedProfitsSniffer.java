@@ -1,26 +1,16 @@
 package com.shubo.sniff.report;
 
+import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedProfits;
 import com.shubo.sniff.Sniffer;
 
 /**
  * Created by horseman on 2016/11/28.
  */
+@Todd(key = "ConsolidatedProfits",
+        suffix = ".cp",
+        folder = "合并利润表")
 public class ConsolidatedProfitsSniffer extends Sniffer {
-    @Override
-    public String getKey() {
-        return "ConsolidatedProfits";
-    }
-
-    @Override
-    public String getSuffix() {
-        return ".cp";
-    }
-
-    @Override
-    public String getFolder() {
-        return "合并利润表";
-    }
 
     @Override
     public boolean sniff(String content) {

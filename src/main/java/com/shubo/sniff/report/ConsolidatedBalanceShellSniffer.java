@@ -1,26 +1,16 @@
 package com.shubo.sniff.report;
 
+import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedBalanceSheet;
 import com.shubo.sniff.Sniffer;
 
 /**
  * Created by horseman on 2016/11/28.
  */
+@Todd(key = "ConsolidatedBalanceShell",
+        suffix = ".cbs",
+        folder = "合并资产负债表")
 public class ConsolidatedBalanceShellSniffer extends Sniffer {
-    @Override
-    public String getKey() {
-        return "ConsolidatedBalanceShell";
-    }
-
-    @Override
-    public String getSuffix() {
-        return ".cbs";
-    }
-
-    @Override
-    public String getFolder() {
-        return "合并资产负债表";
-    }
 
     @Override
     public boolean sniff(String content) {
