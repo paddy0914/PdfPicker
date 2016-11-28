@@ -4,6 +4,7 @@ import com.shubo.annotation.Horseman;
 
 /**
  * Created by horseman on 2016/11/25.
+ * 合并现金流量表
  */
 public class ConsolidatedCashFlow {
     @Horseman(keys = {"销售商品、提供劳务收到的现金"})

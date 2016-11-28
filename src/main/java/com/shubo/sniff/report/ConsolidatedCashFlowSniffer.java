@@ -1,6 +1,7 @@
-package com.shubo.sniff;
+package com.shubo.sniff.report;
 
 import com.shubo.entity.report.ConsolidatedCashFlow;
+import com.shubo.sniff.Sniffer;
 
 /**
  * Created by horseman on 2016/11/25.
@@ -23,30 +24,12 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
 
     @Override
     public boolean sniff(String content) {
-        return sniffByKeywords(content);
+        return sniffByKeywords(content, CCFKeyWords, 3);
     }
 
     @Override
     public String[] generateEntityJson(String content) {
         return generateEntityJson(content, ConsolidatedCashFlow.class);
-    }
-
-    private static final int MATCH_RULE = 3;
-
-    public boolean sniffByKeywords(String content) {
-        int match = 0;
-        content = content.replace(" ", "");
-        for (String keyword : CCFKeyWords) {
-            if (content.contains(keyword)) {
-                match++;
-            }
-
-            if (match == MATCH_RULE) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private static final String[] CCFKeyWords = {

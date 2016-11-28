@@ -28,13 +28,30 @@ abstract public class Sniffer {
 
     public abstract boolean sniff(String content);
 
-    public abstract boolean sniffByKeywords(String content);
-
     // 从content中获取JSON,保存在返回数组的第一个String
     // 把content去除匹配成功的字符，保存在返回数组的第二个String
     public abstract String[] generateEntityJson(String content);
 
     public Logger logger = LoggerFactory.getLogger(Sniffer.class);
+
+    /*
+     * 通过内容是否包含某些关键字判定是不是那张表
+     */
+    public boolean sniffByKeywords(String content, String[] keyWords, int matchCount) {
+        int match = 0;
+        content = content.replace(" ", "");
+        for (String keyword : keyWords) {
+            if (content.contains(keyword)) {
+                match++;
+            }
+
+            if (match == matchCount) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /*
      * 把处理过后的表格内容识别为对应实体
@@ -244,7 +261,7 @@ abstract public class Sniffer {
         if (lines != null && lines.length > 0) {
             for (int k = 0; k < lines.length; k ++) {
                 String line = lines[k];
-                if (sniffByKeywords(line)) {
+                if (sniff(line)) {
                     header = line;
                     headerInfo.headerLineNumber = k;
                     break;

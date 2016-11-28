@@ -23,34 +23,14 @@ public class FinanceSniffer extends Sniffer {
      *
      */
     public boolean sniff(String content) {
-        if (sniffByKeywords(content)) {
-            return true;
-        }
-
-        return false;
+        return sniffByKeywords(content, financeDataKeyWords, MATCH_CNT);
     }
 
     public String[] generateEntityJson(String content) {
         return generateEntityJson(content, Finance.class);
     }
 
-    private static final int MATCH_RULE = 3;
-
-    public boolean sniffByKeywords(String content) {
-        int match = 0;
-        content = content.replace(" ", "");
-        for (String keyword : financeDataKeyWords) {
-            if (content.contains(keyword)) {
-                match++;
-            }
-
-            if (match == MATCH_RULE) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    private static final int MATCH_CNT = 3;
 
     private static final String[] financeDataKeyWords = {
             "基本每股收益",

@@ -4,6 +4,7 @@ import com.shubo.annotation.Horseman;
 
 /**
  * Created by horseman on 2016/11/25.
+ * 合并资产负债表
  */
 public class ConsolidatedBalanceSheet {
     @Horseman(keys = {"流动资产："})

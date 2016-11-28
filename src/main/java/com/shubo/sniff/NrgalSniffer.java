@@ -19,34 +19,14 @@ public class NrgalSniffer extends Sniffer {
     }
 
     public boolean sniff(String content) {
-        if (sniffByKeywords(content)) {
-            return true;
-        }
-
-        return false;
+        return sniffByKeywords(content, NrgalDataKeyWords, MATCH_CNT);
     }
 
     public String[] generateEntityJson(String content) {
         return generateEntityJson(content, Nrgal.class);
     }
 
-    private static final int MATCH_RULE = 4;
-
-    public boolean sniffByKeywords(String content) {
-        int match = 0;
-        content = content.replace(" ", "");
-        for (String keyword : NrgalDataKeyWords) {
-            if (content.contains(keyword)) {
-                match++;
-            }
-
-            if (match == MATCH_RULE) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    private static final int MATCH_CNT = 4;
 
     private static final String[] NrgalDataKeyWords = {
             "非流动",

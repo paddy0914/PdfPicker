@@ -19,30 +19,14 @@ public class CashFlowSniffer extends Sniffer {
     }
 
     public boolean sniff(String content) {
-        return sniffByKeywords(content);
+        return sniffByKeywords(content, financeDataKeyWords, MATCH_CNT);
     }
 
     public String[] generateEntityJson(String content) {
         return generateEntityJson(content, CashFlow.class);
     }
 
-    private static final int MATCH_RULE = 8;
-
-    public boolean sniffByKeywords(String content) {
-        int match = 0;
-        content = content.replace(" ", "");
-        for (String keyword : financeDataKeyWords) {
-            if (content.contains(keyword)) {
-                match++;
-            }
-
-            if (match == MATCH_RULE) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    private static final int MATCH_CNT = 8;
 
     private final String[] financeDataKeyWords = {
             "经营活动现金流入小计",

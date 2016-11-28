@@ -19,32 +19,16 @@ public class ShareHolderNLSniffer extends Sniffer {
     }
 
     public boolean sniff(String content) {
-        return sniffByKeywords(content);
+        return sniffByKeywords(content, ShareHolderNLDataKeyWords, MATCH_CNT);
     }
 
     public String[] generateEntityJson(String content) {
         return generateEntityJsonArrays(content, ShareHolderNoLimit.class);
     }
 
-    private static final int MATCH_RULE = 3;
+    private static final int MATCH_CNT = 3;
 
-    public boolean sniffByKeywords(String content) {
-        int match = 0;
-        content = content.replace(" ", "");
-        for (String keyword : NrgalDataKeyWords) {
-            if (content.contains(keyword)) {
-                match++;
-            }
-
-            if (match == MATCH_RULE) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static final String[] NrgalDataKeyWords = {
+    private static final String[] ShareHolderNLDataKeyWords = {
             "持有无限售条件股份数量",
             "股份种类",
             "股东名称",

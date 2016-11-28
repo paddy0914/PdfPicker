@@ -19,14 +19,14 @@ public class ShareHolderSniffer extends Sniffer {
     }
 
     public boolean sniff(String content) {
-        return sniffByKeywords(content);
+        return sniffByKeywords(content, ShareHolderDataKeyWords, MATCH_CNT);
     }
 
     public String[] generateEntityJson(String content) {
         return generateEntityJsonArrays(content, ShareHolder.class);
     }
 
-    private static final int MATCH_RULE = 3;
+    private static final int MATCH_CNT = 3;
 
     @Override
     public HeaderInfo sniffHeader(String content, Class clazz) {
@@ -40,24 +40,7 @@ public class ShareHolderSniffer extends Sniffer {
         return info;
     }
 
-    public boolean sniffByKeywords(String content) {
-        int match = 0;
-        content = content.replace(" ", "");
-
-        for (String keyword : NrgalDataKeyWords) {
-            if (content.contains(keyword)) {
-                match++;
-            }
-
-            if (match == MATCH_RULE) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static final String[] NrgalDataKeyWords = {
+    private static final String[] ShareHolderDataKeyWords = {
             "股东性质",
             "持股数量",
             "股份状态",

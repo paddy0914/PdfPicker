@@ -1,5 +1,6 @@
 package com.shubo.sniff;
 
+import com.shubo.sniff.report.ConsolidatedCashFlowSniffer;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

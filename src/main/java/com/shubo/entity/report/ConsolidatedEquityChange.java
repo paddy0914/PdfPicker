@@ -4,6 +4,7 @@ import com.shubo.annotation.Horseman;
 
 /**
  * Created by horseman on 2016/11/25.
+ * 合并所有者权益变动表
  */
 public class ConsolidatedEquityChange {
     @Horseman(keys = {"一、上年期末余额"})
