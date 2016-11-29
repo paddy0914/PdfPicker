@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,14 +52,21 @@ public class ReportParser {
 
                                     List<String> list = PDF2TXT.parsePDFStructure(needHandleFilePath);
 
+                                    /* 存储除了八大表以外的其他表字符串 */
+                                    List<String> otherEntityString = new ArrayList<>();
                                     String title = "";
                                     for (String str : list) {
                                         if (str.startsWith("title#_#")) {
                                             title = str;
                                         } else if (str.startsWith("table#_#") ) {
-                                            TableSniffer.sniffEntity(str, title, needHandleFileName);
+                                            if(!TableSniffer.sniffEntity(str, title, needHandleFileName)) {
+                                                otherEntityString.add(str);
+                                            }
+                                        } else {
+                                            /* what's this */
                                         }
                                     }
+                                    TableSniffer.sniffEachEntity(otherEntityString, needHandleFileName);
                                 }
                             }
                         }

@@ -36,7 +36,7 @@ public class App {
                                         File.separator + AppContext.TABLE_OUTPUT_DIR +
                                         File.separator + NameUtils.getFileNameByFileName(file.getName());
                                 TableSniffer.sniff(file, outputTableFile);
-                                TableSniffer.sniffEachEntity(new File(outputTableFile));
+//                                TableSniffer.sniffEachEntity(new File(outputTableFile));
                             }
                         }
                     }

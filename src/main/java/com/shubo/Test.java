@@ -22,12 +22,10 @@ public class Test {
 
             System.out.println("处理 " + file.getAbsolutePath());
             TableSniffer.sniff(file, outputTableFile);
-            TableSniffer.sniffEachEntity(new File(outputTableFile));
+//            TableSniffer.sniffEachEntity(new File(outputTableFile));
         } catch (NameConvertException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (AnnotationException e) {
             e.printStackTrace();
         }
     }
