@@ -21,7 +21,7 @@ public class App {
         File folder = new File(srcYRReportFolder);
 
         for (File subFolder : folder.listFiles()) {
-            if (Integer.valueOf(subFolder.getName()) < 0) {
+            if (Integer.valueOf(subFolder.getName()) != 5) {
                 continue;
             }
             try {
