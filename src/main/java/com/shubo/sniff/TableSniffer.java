@@ -33,6 +33,9 @@ public class TableSniffer {
         reportSniffers.add(new ConsolidatedProfitsSniffer());
 
         reportSniffers.add(new ParentBalanceShellSniffer());
+        reportSniffers.add(new ParentCashFlowSniffer());
+        reportSniffers.add(new ParentEquityChangeSniffer());
+        reportSniffers.add(new ParentProfitsSniffer());
 
         otherSniffers.add(new FinanceSniffer());
         otherSniffers.add(new NrgalSniffer());
