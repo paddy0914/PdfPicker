@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.print.Doc;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,6 +66,16 @@ public class TableSniffer {
             if (sniffer.sniffWithTitle(title)) {
 
                 String tableStr = getTableContent(Jsoup.parse(table));
+
+                // 母公司权益变动表中，有两个table，一个是本期，一个是上期，这里取第一个本期的
+                if (sniffer instanceof ParentEquityChangeSniffer) {
+                    Document doc = Jsoup.parse(table);
+                    Elements elements = doc.select("tbody");
+                    if (elements.size() > 0) {
+                        tableStr = getTableContent(elements.get(0));
+                    }
+                }
+
                 String[] result = sniffer.generateEntityJson(tableStr);
 
                 if (result != null && result.length == 2) {
@@ -137,6 +148,7 @@ public class TableSniffer {
                     Element td = tds.get(i);
 
                     result += td.text();
+                    //System.out.println(td.text());
                     result += (i == tds.size() - 1) ? "" : ELEMENT_DIVIDOR;
                 }
                 result += "\n";

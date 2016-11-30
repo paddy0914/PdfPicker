@@ -27,7 +27,7 @@ public class ConsolidatedEquityChange {
     @Horseman(keys = {"二、本年期初余额"})
     public List<String> ebnqcye;
 
-    @Horseman(keys = {"三、本期增减变动金额（减少以“－”号填列）"})
+    @Horseman(similar = true, keys = {"三、本期增减变动金额（减少以“－”号填列）"})
     public List<String> sbqzjbdjejsyhtl;
 
     @Horseman(keys = {"（一）综合收益总额"})

@@ -123,6 +123,7 @@ abstract public class Sniffer {
      * @Param colSpan : 每一行要转换多少参数
      */
     public String[] generateEntityJson(String content, Class clazz, int colSpan) {
+        System.out.println(clazz);
         String lines[] = content.split("\n");
 
         if (lines != null && lines.length > 0) {
@@ -183,6 +184,7 @@ abstract public class Sniffer {
                                                 datas.add(contents[k + (containsNote ? 2 : 1)].replace(" ", ""));
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
+                                            System.out.println("设置域 " + field.getName());
                                         } else {
                                             data.getClass().getDeclaredField(field.getName()).set(data, contents[1].replace(" ", ""));
                                         }
@@ -227,7 +229,7 @@ abstract public class Sniffer {
                 content = content.replace(deleteStr + "\n", "");
             }
 
-            System.out.println();
+//            System.out.println();
 
             String[] res = new String[2];
             res[0] = JSON.toJSONString(data);
@@ -375,7 +377,7 @@ abstract public class Sniffer {
             if (found) {
                 headers.add(fieldName);
             } else {
-                System.out.println("**************************************************** " + item);
+                //System.out.println("**************************************************** " + item);
                 headers.add("");
             }
         }

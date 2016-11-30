@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shubo.parser.PDF2TXT.splitChar;
+import static com.shubo.parser.PDF2TXT.typeTable;
+import static com.shubo.parser.PDF2TXT.typeTitle;
+
 /**
  * Created by horseman on 2016/11/28.
  */
@@ -56,9 +60,9 @@ public class ReportParser {
                                     List<String> otherEntityString = new ArrayList<>();
                                     String title = "";
                                     for (String str : list) {
-                                        if (str.startsWith("title#_#")) {
+                                        if (str.startsWith(typeTitle + splitChar)) {
                                             title = str;
-                                        } else if (str.startsWith("table#_#") ) {
+                                        } else if (str.startsWith(typeTable + splitChar) ) {
                                             if(!TableSniffer.sniffEntity(str, title, needHandleFileName)) {
                                                 otherEntityString.add(str);
                                             }
