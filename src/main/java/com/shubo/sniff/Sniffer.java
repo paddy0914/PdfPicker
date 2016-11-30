@@ -116,13 +116,22 @@ abstract public class Sniffer {
         return generateEntityJson(content, clazz, 1);
     }
 
+    private static int computeCols(int len, int[] options) {
+        for(int i : options) {
+            if (i == len) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
     /*
      * 把处理过后的表格内容识别为对应实体,并作为json返回
      * @Param content : 待转换内容
      * @Param clazz : 实体
      * @Param colSpan : 每一行要转换多少参数
      */
-    public String[] generateEntityJson(String content, Class clazz, int colSpan) {
+    public String[] generateEntityJson(String content, Class clazz, int... colSpan) {
         System.out.println(clazz);
         String lines[] = content.split("\n");
 
@@ -152,7 +161,10 @@ abstract public class Sniffer {
 
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
-                if (contents != null && contents.length >= colSpan) {
+
+                // 计算准备识别多少列的数据
+                int colCnt = computeCols(contents.length - 1, colSpan);
+                if (contents != null && colCnt > 0) {
 
                     try {
                         Field needKickoutField = null;
@@ -178,9 +190,9 @@ abstract public class Sniffer {
                                         }
                                     }
                                     if (found) {
-                                        if (colSpan > 1) {
+                                        if (colCnt > 1) {
                                             List<String> datas = new ArrayList<>();
-                                            for (int k = 0; k < colSpan; k++) {
+                                            for (int k = 0; k < (containsNote ? colCnt - 1 : colCnt); k++) {
                                                 datas.add(contents[k + (containsNote ? 2 : 1)].replace(" ", ""));
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);

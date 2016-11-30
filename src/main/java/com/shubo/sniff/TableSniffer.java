@@ -69,13 +69,13 @@ public class TableSniffer {
                 String tableStr = getTableContent(Jsoup.parse(table));
 
                 // 母公司权益变动表中，有两个table，一个是本期，一个是上期，这里取第一个本期的
-//                if (sniffer instanceof ParentEquityChangeSniffer) {
-//                    Document doc = Jsoup.parse(table);
+                if (sniffer instanceof ParentEquityChangeSniffer) {
+                    Document doc = Jsoup.parse(table);
 //                    Elements elements = doc.select("tbody");
 //                    if (elements.size() > 0) {
 //                        tableStr = getTableContent(doc);
 //                    }
-//                }
+                }
 
                 String[] result = sniffer.generateEntityJson(tableStr);
 

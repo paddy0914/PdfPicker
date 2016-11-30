@@ -20,7 +20,7 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
 
     @Override
     public String[] generateEntityJson(String content) {
-        return generateEntityJson(content, ConsolidatedCashFlow.class, 2);
+        return generateEntityJson(content, ConsolidatedCashFlow.class, 2, 3);
     }
 
     private static final String[] CCFKeyWords = {

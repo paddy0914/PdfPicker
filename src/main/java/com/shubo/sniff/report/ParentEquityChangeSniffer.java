@@ -13,6 +13,6 @@ import com.shubo.entity.report.ConsolidatedEquityChange;
 public class ParentEquityChangeSniffer extends ConsolidatedEquityChangeSniffer {
     @Override
     public String[] generateEntityJson(String content) {
-        return generateEntityJson(content, ConsolidatedEquityChange.class, 11);
+        return generateEntityJson(content, ConsolidatedEquityChange.class, 11, 8);
     }
 }

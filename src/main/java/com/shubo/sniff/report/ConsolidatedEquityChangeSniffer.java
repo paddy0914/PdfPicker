@@ -21,7 +21,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
 
     @Override
     public String[] generateEntityJson(String content) {
-        return generateEntityJson(content, ConsolidatedEquityChange.class, 13);
+        return generateEntityJson(content, ConsolidatedEquityChange.class, 13, 10, 9, 8);
     }
 
     private static final String[] CECKeyWords = {
