@@ -59,11 +59,14 @@ public class ReportParser {
                                     /* 存储除了八大表以外的其他表字符串 */
                                     List<String> otherEntityString = new ArrayList<>();
                                     String title = "";
+
+                                    // 记录已经获取过实体的类，防止重复获取
+                                    List<String> capturedEntityKeys = new ArrayList<>();
                                     for (String str : list) {
                                         if (str.startsWith(typeTitle + splitChar)) {
                                             title = str;
                                         } else if (str.startsWith(typeTable + splitChar) ) {
-                                            if(!TableSniffer.sniffEntity(str, title, needHandleFileName)) {
+                                            if(!TableSniffer.sniffEntity(str, title, needHandleFileName, capturedEntityKeys)) {
                                                 otherEntityString.add(str);
                                             }
                                         } else {

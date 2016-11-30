@@ -59,22 +59,23 @@ public class TableSniffer {
      *  通过title名识别表格
      *  适用于八大表
      */
-    public static boolean sniffEntity(String table, String title, String fileName) throws IOException, AnnotationException {
+    public static boolean sniffEntity(String table, String title, String fileName, List<String> capturedKeys) throws IOException, AnnotationException {
 
+        System.out.println("title=" + title);
         for (Sniffer sniffer : reportSniffers) {
 
-            if (sniffer.sniffWithTitle(title)) {
+            if (sniffer.sniffWithTitle(title) && !capturedKeys.contains(sniffer.getKey())) {
 
                 String tableStr = getTableContent(Jsoup.parse(table));
 
                 // 母公司权益变动表中，有两个table，一个是本期，一个是上期，这里取第一个本期的
-                if (sniffer instanceof ParentEquityChangeSniffer) {
-                    Document doc = Jsoup.parse(table);
-                    Elements elements = doc.select("tbody");
-                    if (elements.size() > 0) {
-                        tableStr = getTableContent(elements.get(0));
-                    }
-                }
+//                if (sniffer instanceof ParentEquityChangeSniffer) {
+//                    Document doc = Jsoup.parse(table);
+//                    Elements elements = doc.select("tbody");
+//                    if (elements.size() > 0) {
+//                        tableStr = getTableContent(doc);
+//                    }
+//                }
 
                 String[] result = sniffer.generateEntityJson(tableStr);
 
@@ -86,7 +87,7 @@ public class TableSniffer {
                             File.separator + fileName.replace("html", "json");
 
                     FileUtils.write(new File(outputPath), result[0], false);
-
+                    capturedKeys.add(sniffer.getKey());
                     return true;
                 } else {
                     return false;

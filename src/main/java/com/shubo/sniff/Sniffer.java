@@ -184,7 +184,7 @@ abstract public class Sniffer {
                                                 datas.add(contents[k + (containsNote ? 2 : 1)].replace(" ", ""));
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
-                                            System.out.println("设置域 " + field.getName());
+//                                            System.out.println("设置域 " + field.getName());
                                         } else {
                                             data.getClass().getDeclaredField(field.getName()).set(data, contents[1].replace(" ", ""));
                                         }
