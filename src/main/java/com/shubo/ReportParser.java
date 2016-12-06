@@ -73,6 +73,8 @@ public class ReportParser {
                                             /* what's this */
                                         }
                                     }
+
+                                    // 其他
                                     TableSniffer.sniffEachEntity(otherEntityString, needHandleFileName);
                                 }
                             }

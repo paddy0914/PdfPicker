@@ -4,6 +4,7 @@ import com.shubo.annotation.Horseman;
 
 /**
  * Created by horseman on 2016/11/22.
+ * 主要财务数据
  */
 public class Finance {
 
