@@ -19,6 +19,16 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         return sniffByKeywords(content, CECKeyWords, 4);
     }
 
+    /**
+     * @param table  需要完善
+     * @return
+     */
+    @Override
+    public int[] getColCnt(String table){
+        int[] result =new int[2];
+        return result;
+    }
+
     @Override
     public String[] generateEntityJson(String content) {
         return generateEntityJson(content, ConsolidatedEquityChange.class, 13, 10, 9, 8);

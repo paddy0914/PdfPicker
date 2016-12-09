@@ -1,7 +1,9 @@
 package com.shubo.sniff;
 
 import com.shubo.AppContext;
+import com.shubo.ReportParser;
 import com.shubo.exception.AnnotationException;
+import com.shubo.exception.ExceptionEnum;
 import com.shubo.sniff.report.*;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
@@ -66,6 +68,7 @@ public class TableSniffer {
 
             if (sniffer.sniffWithTitle(title) && !capturedKeys.contains(sniffer.getKey())) {
 
+                ReportParser.sum++;//测试
                 String tableStr = getTableContent(Jsoup.parse(table));
 
                 // 母公司权益变动表中，有两个table，一个是本期，一个是上期，这里取第一个本期的
@@ -96,6 +99,33 @@ public class TableSniffer {
         }
 
         return false;
+    }
+
+
+        /*
+         *  通过内容识别表格
+         *  适用于八大表
+         */
+    public static void ContentSniffEntity(String table, String fileName, List<String> snifferedRecords) throws AnnotationException, IOException {
+        for (Sniffer sniffer : reportSniffers) {
+
+            if (!snifferedRecords.contains(sniffer.getKey()) && sniffer.sniff(table)) {
+
+                snifferedRecords.add(sniffer.getKey());
+
+                String outputPath = AppContext.rootFolder +
+                        File.separator + AppContext.JSON_OUTPUT_DIR +
+                        File.separator + sniffer.getFolder() +
+                        File.separator + fileName.replace("html", "json");
+
+                String[] result = sniffer.generateEntityJson(table);
+
+                if (result != null && result.length == 2) {
+                    FileUtils.write(new File(outputPath), result[0], false);
+                    break;
+                }
+            }
+        }
     }
 
     /*
@@ -139,6 +169,11 @@ public class TableSniffer {
         }
     }
 
+    /**
+    * 表格内容用ELEMENT_DIVIDOR字符连接
+    * @param table
+    * @return
+    */
     private static String getTableContent(Element table) {
         String result = "";
         if (table != null) {
@@ -158,7 +193,6 @@ public class TableSniffer {
 
         return result;
     }
-
     private static String getTableText(List<Element> tables) {
         String result = "";
         if (tables != null && tables.size() > 0) {
@@ -237,6 +271,4 @@ public class TableSniffer {
             }
         }
     }
-
-
 }

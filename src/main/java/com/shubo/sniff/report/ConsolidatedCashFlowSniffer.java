@@ -18,6 +18,16 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
         return sniffByKeywords(content, CCFKeyWords, 3);
     }
 
+    /**
+     *   需要完善
+     * @param table
+     * @return
+     */
+    @Override
+    public int[] getColCnt(String table) {
+        return new int[0];
+    }
+
     @Override
     public String[] generateEntityJson(String content) {
         return generateEntityJson(content, ConsolidatedCashFlow.class, 2, 3);

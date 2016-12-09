@@ -78,38 +78,10 @@ abstract public class Sniffer {
     public abstract boolean sniff(String content);
 
     /**
-     * @param table 适合只需要单列数据的表
+     * @param table
      * @return int[2] : 1,需要几列数据; 2, 数据在哪一列
      */
-    public int[] getColCnt(String table) {
-        int[] result = new int[2];
-        result[0] = 1;
-        String lines[] = table.split("\n");
-        int[] value_place = new int[5];
-        int sum = 0;
-        for (String line : lines) {
-            String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
-            String regex = "([0-9]{0,}[,]?[0-9]{1,}[,][0-9]{1,})|([0-9]{1,}[-][0-9]{1,}[-][0-9]{1,})";
-            for (int i = 0; i < contents.length; i++) {
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(contents[i]);
-                boolean b = matcher.matches();
-                if (b && i < 5) {
-                    value_place[sum++] = i;
-                    break;
-                }
-            }
-        }
-        int compare = value_place[0];
-        for (int i = 0; i < value_place.length; i++) {
-            if (value_place[i] != compare)
-                result[1] = -1;
-            else if (i == 4) {
-                result[1] = compare;
-            }
-        }
-        return result;
-    }
+    public abstract int[] getColCnt(String table);
 
     public boolean sniffWithTitle(String title) throws AnnotationException {
         String[] titles = getTitle();
@@ -231,7 +203,7 @@ abstract public class Sniffer {
                                     if (found) {
                                         if (colCnt > 1) {
                                             List<String> datas = new ArrayList<>();
-                                            for (int k = 0; k < (containsNote ? colCnt - 1 : colCnt); k++) {
+                                            for (int k = 0; k < colCnt; k++) {
                                                 datas.add(contents[k + (containsNote ? 2 : 1)].replace(" ", ""));
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
