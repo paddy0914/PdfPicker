@@ -11,6 +11,11 @@ import com.shubo.entity.Nrgal;
         folder = "非经常性损益")
 public class NrgalSniffer extends Sniffer {
 
+    @Override
+    public int[] getColCnt(String table) {
+        return new int[0];
+    }
+
     public boolean sniff(String content) {
         return sniffByKeywords(content, NrgalDataKeyWords, MATCH_CNT);
     }

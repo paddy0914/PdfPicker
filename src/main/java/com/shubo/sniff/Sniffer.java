@@ -123,7 +123,7 @@ abstract public class Sniffer {
     public String[] generateEntityJson(String content, Class clazz) {
         return generateEntityJson(content, clazz, 1);
     }
-
+/*
     private static int computeCols(int len, int[] options) {
         for (int i : options) {
             if (i == len) {
@@ -133,7 +133,7 @@ abstract public class Sniffer {
 
         return -1;
     }
-
+*/
     /*
      * 把处理过后的表格内容识别为对应实体,并作为json返回
      * @Param content : 待转换内容

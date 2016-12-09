@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shubo.ReportParser.analyticalResultList;
+
 /**
  * Created by horseman on 2016/11/21.
  */
@@ -83,15 +85,20 @@ public class TableSniffer {
                 String[] result = sniffer.generateEntityJson(tableStr);
 
                 if (result != null && result.length == 2) {
+                    //如果得到的result[0]的内容为{}表示解析失败
+                    if (result[0].length() > 2) {
+                        String outputPath = AppContext.rootFolder +
+                                File.separator + AppContext.JSON_OUTPUT_DIR +
+                                File.separator + sniffer.getFolder() +
+                                File.separator + fileName.replace("html", "json");
 
-                    String outputPath = AppContext.rootFolder +
-                            File.separator + AppContext.JSON_OUTPUT_DIR +
-                            File.separator + sniffer.getFolder() +
-                            File.separator + fileName.replace("html", "json");
+                        FileUtils.write(new File(outputPath), result[0], false);
+                        capturedKeys.add(sniffer.getKey());
+                        return true;
+                    }else{
 
-                    FileUtils.write(new File(outputPath), result[0], false);
-                    capturedKeys.add(sniffer.getKey());
-                    return true;
+                    }
+
                 } else {
                     return false;
                 }
@@ -106,6 +113,7 @@ public class TableSniffer {
          *  通过内容识别表格
          *  适用于八大表
          */
+
     public static void ContentSniffEntity(String table, String fileName, List<String> snifferedRecords) throws AnnotationException, IOException {
         for (Sniffer sniffer : reportSniffers) {
 
@@ -170,10 +178,11 @@ public class TableSniffer {
     }
 
     /**
-    * 表格内容用ELEMENT_DIVIDOR字符连接
-    * @param table
-    * @return
-    */
+     * 表格内容用ELEMENT_DIVIDOR字符连接
+     *
+     * @param table
+     * @return
+     */
     private static String getTableContent(Element table) {
         String result = "";
         if (table != null) {
@@ -193,6 +202,7 @@ public class TableSniffer {
 
         return result;
     }
+
     private static String getTableText(List<Element> tables) {
         String result = "";
         if (tables != null && tables.size() > 0) {

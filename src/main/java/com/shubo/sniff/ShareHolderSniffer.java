@@ -16,6 +16,11 @@ public class ShareHolderSniffer extends Sniffer {
         return sniffByKeywords(content, ShareHolderDataKeyWords, MATCH_CNT);
     }
 
+    @Override
+    public int[] getColCnt(String table) {
+        return new int[0];
+    }
+
     public String[] generateEntityJson(String content) {
         return generateEntityJsonArrays(content, ShareHolder.class);
     }

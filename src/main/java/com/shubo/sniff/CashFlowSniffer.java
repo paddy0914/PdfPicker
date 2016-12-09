@@ -15,6 +15,11 @@ public class CashFlowSniffer extends Sniffer {
         return sniffByKeywords(content, financeDataKeyWords, MATCH_CNT);
     }
 
+    @Override
+    public int[] getColCnt(String table) {
+        return new int[0];
+    }
+
     public String[] generateEntityJson(String content) {
         return generateEntityJson(content, CashFlow.class);
     }
