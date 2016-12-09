@@ -20,6 +20,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by horseman on 2016/11/22.
@@ -49,7 +51,7 @@ abstract public class Sniffer {
         throw new AnnotationException();
     }
 
-    public String getFolder()  throws AnnotationException {
+    public String getFolder() throws AnnotationException {
         Annotation[] annotations = getClass().getAnnotations();
         if (annotations != null && annotations.length > 0) {
             Annotation annotation = annotations[0];
@@ -61,7 +63,7 @@ abstract public class Sniffer {
         throw new AnnotationException();
     }
 
-    public String[] getTitle()  throws AnnotationException {
+    public String[] getTitle() throws AnnotationException {
         Annotation[] annotations = getClass().getAnnotations();
         if (annotations != null && annotations.length > 0) {
             Annotation annotation = annotations[0];
@@ -74,6 +76,40 @@ abstract public class Sniffer {
     }
 
     public abstract boolean sniff(String content);
+
+    /**
+     * @param table 适合只需要单列数据的表
+     * @return int[2] : 1,需要几列数据; 2, 数据在哪一列
+     */
+    public int[] getColCnt(String table) {
+        int[] result = new int[2];
+        result[0] = 1;
+        String lines[] = table.split("\n");
+        int[] value_place = new int[5];
+        int sum = 0;
+        for (String line : lines) {
+            String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
+            String regex = "([0-9]{0,}[,]?[0-9]{1,}[,][0-9]{1,})|([0-9]{1,}[-][0-9]{1,}[-][0-9]{1,})";
+            for (int i = 0; i < contents.length; i++) {
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(contents[i]);
+                boolean b = matcher.matches();
+                if (b && i < 5) {
+                    value_place[sum++] = i;
+                    break;
+                }
+            }
+        }
+        int compare = value_place[0];
+        for (int i = 0; i < value_place.length; i++) {
+            if (value_place[i] != compare)
+                result[1] = -1;
+            else if (i == 4) {
+                result[1] = compare;
+            }
+        }
+        return result;
+    }
 
     public boolean sniffWithTitle(String title) throws AnnotationException {
         String[] titles = getTitle();
@@ -117,7 +153,7 @@ abstract public class Sniffer {
     }
 
     private static int computeCols(int len, int[] options) {
-        for(int i : options) {
+        for (int i : options) {
             if (i == len) {
                 return i;
             }
@@ -125,6 +161,7 @@ abstract public class Sniffer {
 
         return -1;
     }
+
     /*
      * 把处理过后的表格内容识别为对应实体,并作为json返回
      * @Param content : 待转换内容
@@ -159,11 +196,13 @@ abstract public class Sniffer {
             // 财务报表中，有些年报中间多了一列“注释”,不许要这个字段
             boolean containsNote = false;
 
+            int[] result = getColCnt(content);//获得数据中有用数据有几个、哪一列是需要的数据
+
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
-                // 计算准备识别多少列的数据
-                int colCnt = computeCols(contents.length - 1, colSpan);
+                int colCnt = result[0];//数据中有用数据的个数
+
                 if (contents != null && colCnt > 0) {
 
                     try {
@@ -262,6 +301,7 @@ abstract public class Sniffer {
             logger.info("[{}]", str);
         }
     }
+
     /*
      * 把处理过后的表格内容识别为对应实体
      * 并作为json返回
@@ -270,7 +310,7 @@ abstract public class Sniffer {
 
         HeaderInfo info = sniffHeader(content, clazz);
         List<String> fieldNames = info.headers;
-        List<Object> datas =  new ArrayList<>();
+        List<Object> datas = new ArrayList<>();
         List<String> needKickoutLines = new ArrayList<>();
         if (fieldNames != null && fieldNames.size() > 0) {
 
@@ -278,7 +318,7 @@ abstract public class Sniffer {
 
             String lines[] = content.split("\n");
             if (lines != null && lines.length > 0) {
-                for (int i = 0; i < lines.length; i ++) {
+                for (int i = 0; i < lines.length; i++) {
                     String line = lines[i];
                     // 排除自身！
                     if (info.headerLineNumber != i) {
@@ -286,7 +326,7 @@ abstract public class Sniffer {
                         if (items.length == itemCnt) {
                             try {
                                 Object data = clazz.newInstance();
-                                for (int k = 0; k < fieldNames.size(); k ++) {
+                                for (int k = 0; k < fieldNames.size(); k++) {
                                     String field = fieldNames.get(k);
                                     if (!field.equals("")) {
                                         data.getClass().getDeclaredField(field).set(data, items[k].replace(" ", ""));
@@ -326,7 +366,7 @@ abstract public class Sniffer {
         int match = 0;
         for (String header : headers) {
             if (content.contains(header)) {
-                if (++ match > 2) {
+                if (++match > 2) {
                     return true;
                 }
             }
@@ -352,7 +392,7 @@ abstract public class Sniffer {
         String header = null;
 
         if (lines != null && lines.length > 0) {
-            for (int k = 0; k < lines.length; k ++) {
+            for (int k = 0; k < lines.length; k++) {
                 String line = lines[k];
                 if (sniff(line)) {
                     header = line;
