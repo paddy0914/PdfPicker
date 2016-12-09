@@ -252,7 +252,7 @@ public class ConsolidatedBalanceSheet {
     @Horseman(keys = {"负债合计"})
     public List<String> fzhj;
 
-    @Horseman(keys = {"所有者权益："})
+    @Horseman(keys = {"所有者权益：","所有者权益（或股东权益）："})
     public List<String> syzqy;
 
     @Horseman(keys = {"股本"})
@@ -294,9 +294,23 @@ public class ConsolidatedBalanceSheet {
     @Horseman(keys = {"少数股东权益"})
     public List<String> ssgdqy;
 
-    @Horseman(keys = {"所有者权益合计"})
+    @Horseman(keys = {"所有者权益合计","所有者权益（或股东权益）合计"})
     public List<String> syzqyhj;
 
-    @Horseman(keys = {"负债和所有者权益总计"})
+    @Horseman(keys = {"负债和所有者权益总计","负债和所有者权益（或股东权益）总计"})
     public List<String> fzhsyzqyzj;
+
+    @Horseman(keys = {"交易性金融资产"})
+    public List<String> jyxjrzc;
+
+    @Horseman(keys = {"交易性金融负债"})
+    public List<String> jyxjrfz;
+
+    @Horseman(keys = {"实收资本（或股本）"})
+    public List<String> sszb;
+
+    @Horseman(keys = {"外币报表折算差额"})
+    public List<String> wbbbzsce;
+
+
 }
