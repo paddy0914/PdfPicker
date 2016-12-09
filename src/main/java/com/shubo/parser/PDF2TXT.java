@@ -1,7 +1,11 @@
 package com.shubo.parser;
 
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +26,27 @@ public class PDF2TXT {
     private static final String imageMatch = ".*<img.*src=.*";
 
     public static void main(String[] args) throws IOException {
-        // String string ="徐工机械、本公司或公司指徐工集团工程机械股份有限院";
-        // System.out.println(string.matches(".*指.*(公司|院)"));
+        String path = "d://resultPDF/000006-深振业Ａ2012年年度报告.html";
+        parsePDFStructure(path);
+        List<String> list = parsePDFStructure(path);
+        writeList(path + "1.txt", list, "utf-8");
+    }
+
+    public static void writeList(String savePath, List<String> list, String charSet) {
+        StringBuilder sBuilder = new StringBuilder();
+        for (String listTmp : list) {
+            sBuilder.append(listTmp + "\n");
+        }
+        try {
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(savePath, false), charSet));
+            try {
+                out.println(sBuilder.toString());
+            } finally {
+                out.close();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     public static List<String> parsePDFStructure(String path) throws IOException {
@@ -38,7 +61,9 @@ public class PDF2TXT {
             for (Element element : elements) {
                 String tmp = element.toString();
                 isHasTitle = tmp.matches(titleMatch);
-                break;
+                if (isHasTitle) {
+                    break;
+                }
             }
 
         }
@@ -124,8 +149,8 @@ public class PDF2TXT {
                 // 识别table
                 if (typeTable.equals(proElement.tagName())) {
                     // 合并表格
-                    list.remove(list.size() - 1);
-                    html = mergeTable(proElement, elementNow);
+                    String proHtml = list.remove(list.size() - 1);
+                    html = mergeTable(proHtml, elementNow);
                 }
                 list.add(typeTable + splitChar + html);
             }
@@ -168,8 +193,8 @@ public class PDF2TXT {
                 // 识别table
                 if (typeTable.equals(proElement.tagName())) {
                     // 合并表格
-                    list.remove(list.size() - 1);
-                    html = mergeTable(proElement, elementNow);
+                    String proStr = list.remove(list.size() - 1);
+                    html = mergeTable(proStr, elementNow);
                 }
                 list.add(typeTable + splitChar + html);
             } else if (tag.equals("p")) {
@@ -210,14 +235,15 @@ public class PDF2TXT {
         return list;
     }
 
-    private static String mergeTable(Element first, Element second) {
+    private static String mergeTable(String firstStr, Element second) {
         // TODO Auto-generated method stub
-        if (first == null) {
+        if (firstStr == null) {
             return second.toString();
         }
         if (second == null) {
-            return first.toString();
+            return firstStr;
         }
+        Element first = Jsoup.parse(firstStr).select("table").first();
         return first.append(second.select("tbody").toString()).toString();
     }
 
@@ -255,4 +281,3 @@ public class PDF2TXT {
     }
 
 }
-
