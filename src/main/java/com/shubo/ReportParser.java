@@ -5,8 +5,7 @@ import com.shubo.parser.PDF2TXT;
 import com.shubo.sniff.TableSniffer;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import static com.shubo.parser.PDF2TXT.typeTitle;
  */
 public class ReportParser {
     public static void main(String args[]) {
+        System.out.println("------");
         try {
             String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报";
 
@@ -33,9 +33,11 @@ public class ReportParser {
             File folder = new File(srcYRReportFolder);
 
             for (File subFolder : folder.listFiles()) {
+                /*
                 if (Integer.valueOf(subFolder.getName()) != 5) {
                     continue;
                 }
+                */
                 try {
                     /* subFolder : 000001 002625 */
                     if (subFolder.isDirectory()) {
@@ -59,14 +61,26 @@ public class ReportParser {
                                     /* 存储除了八大表以外的其他表字符串 */
                                     List<String> otherEntityString = new ArrayList<>();
                                     String title = "";
-
+                                    /*
+                                    //添加测试的代码
+                                    int i=1;
+                                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("D:\\年报解析\\list.txt", true)));
+                                    for (String str : list) {
+                                        bw.write(i+" "+str+"\r\n");
+                                        bw.flush();
+                                        i++;
+                                    }
+                                    bw.close();
+                                    */
+                                    //int j=0;
                                     // 记录已经获取过实体的类，防止重复获取
                                     List<String> capturedEntityKeys = new ArrayList<>();
                                     for (String str : list) {
+                                        //System.out.println(j++);
                                         if (str.startsWith(typeTitle + splitChar)) {
                                             title = str;
-                                        } else if (str.startsWith(typeTable + splitChar) ) {
-                                            if(!TableSniffer.sniffEntity(str, title, needHandleFileName, capturedEntityKeys)) {
+                                        } else if (str.startsWith(typeTable + splitChar)) {
+                                            if (!TableSniffer.sniffEntity(str, title, needHandleFileName, capturedEntityKeys)) {
                                                 otherEntityString.add(str);
                                             }
                                         } else {
@@ -81,10 +95,12 @@ public class ReportParser {
                         }
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
 
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

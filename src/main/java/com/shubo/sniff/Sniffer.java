@@ -201,15 +201,18 @@ abstract public class Sniffer {
                                         }
                                     }
                                     if (found) {
+                                        List<String> datas = new ArrayList<>();
+                                        //当colCnt>1的时候说明，表中需要解析的数据不止一列，这种情况暂时没有考虑
                                         if (colCnt > 1) {
-                                            List<String> datas = new ArrayList<>();
+                                            //List<String> datas = new ArrayList<>();
                                             for (int k = 0; k < colCnt; k++) {
                                                 datas.add(contents[k + (containsNote ? 2 : 1)].replace(" ", ""));
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
 //                                            System.out.println("设置域 " + field.getName());
                                         } else {
-                                            data.getClass().getDeclaredField(field.getName()).set(data, contents[1].replace(" ", ""));
+                                            datas.add(contents[result[1]].replace(" ",""));
+                                            data.getClass().getDeclaredField(field.getName()).set(data, datas);
                                         }
                                         needKickoutField = field;
                                         found = true;

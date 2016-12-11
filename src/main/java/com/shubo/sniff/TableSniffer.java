@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.shubo.ReportParser.analyticalResultList;
+//import static com.shubo.ReportParser.analyticalResultList;
 
 /**
  * Created by horseman on 2016/11/21.
@@ -70,7 +70,7 @@ public class TableSniffer {
 
             if (sniffer.sniffWithTitle(title) && !capturedKeys.contains(sniffer.getKey())) {
 
-                ReportParser.sum++;//测试
+                //ReportParser.sum++;//测试
                 String tableStr = getTableContent(Jsoup.parse(table));
 
                 // 母公司权益变动表中，有两个table，一个是本期，一个是上期，这里取第一个本期的

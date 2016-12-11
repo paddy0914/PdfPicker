@@ -25,7 +25,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
      */
     @Override
     public int[] getColCnt(String table){
-        int[] result =new int[2];
+        int[] result ={-1,-1};
         return result;
     }
 

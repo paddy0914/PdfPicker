@@ -35,7 +35,7 @@ public class ConsolidatedProfitsSniffer extends Sniffer {
         int sum = 0;
         for (String line : lines) {
             String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
-            String regex = "([0-9]{0,}[,]?[0-9]{1,}[,][0-9]{1,})|([0-9]{1,}[-][0-9]{1,}[-][0-9]{1,})";
+            String regex = "([0-9]{0,}[,]?[0-9]{1,}[,]?[0-9]{0,}[,]?[0-9]{0,}[/.]?[0-9]{0,})|([0-9]{1,}[-][0-9]{1,}[-][0-9]{1,})";
             for (int i = 0; i < contents.length; i++) {
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(contents[i]);
@@ -45,6 +45,8 @@ public class ConsolidatedProfitsSniffer extends Sniffer {
                     break;
                 }
             }
+            if(sum>4)
+                break;
         }
         int compare = value_place[0];
         for (int i = 0; i < value_place.length; i++) {

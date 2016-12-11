@@ -17,7 +17,8 @@ public class ShareHolderNLSniffer extends Sniffer {
 
     @Override
     public int[] getColCnt(String table) {
-        return new int[0];
+        int[] result ={-1,-1};
+        return result;
     }
 
     public String[] generateEntityJson(String content) {
