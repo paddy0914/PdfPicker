@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by horseman on 2016/11/25.
+ * 合并利润表
  */
 public class ConsolidatedProfits {
     @Horseman(keys = {"一、营业总收入"})
@@ -77,7 +78,7 @@ public class ConsolidatedProfits {
     @Horseman(keys = {"汇兑收益（损失以“-”号填列）"})
     public List<String> hdsyssyhtl;
 
-    @Horseman(keys = {"三、营业利润（亏损以“－”号填列）"})
+    @Horseman(keys = {"三、营业利润（亏损以“－”号填列）", "三、营业利润（亏损以“ ”号填列）"})
     public List<String> syylrksyhtl;
 
     @Horseman(keys = {"加：营业外收入"})
@@ -92,16 +93,16 @@ public class ConsolidatedProfits {
     @Horseman(keys = {"其中：非流动资产处置损失","其中：非流动资产处置损"})
     public List<String> qzfldzcczss;
 
-    @Horseman(keys = {"四、利润总额（亏损总额以“－”号填列）"})
+    @Horseman(keys = {"四、利润总额（亏损总额以“－”号填列）","四、利润总额（亏损总额以“ ”号填列）"})
     public List<String> slrzekszeyhtl;
 
     @Horseman(keys = {"减：所得税费用"})
     public List<String> jsdsfy;
 
-    @Horseman(keys = {"五、净利润（净亏损以“－”号填列"})
+    @Horseman(keys = {"五、净利润（净亏损以“－”号填列","五、净利润（净亏损以“ ”号填列）"})
     public List<String> wjlrjksyhtl;
 
-    @Horseman(keys = {"其中：被合并方在合并前实现的 净利润","其中：被合并方在合并前实现的 净利润"})
+    @Horseman(keys = {"其中：被合并方在合并前实现的 净利润","其中：被合并方在合并前实现的净利润","其中：被合并方在合并前实现的"})
     public List<String> qzbhbfzhbqsxdjlr;
 
     @Horseman(keys = {"归属于母公司所有者的净利润"})

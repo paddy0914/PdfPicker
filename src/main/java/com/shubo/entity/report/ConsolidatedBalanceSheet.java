@@ -312,7 +312,7 @@ public class ConsolidatedBalanceSheet {
     @Horseman(keys = {"实收资本（或股本）"})
     public List<String> sszb;
 
-    @Horseman(keys = {"外币报表折算差额"})
+    @Horseman(keys = {"外币报表折算差额","外币报表J算差额"})
     public List<String> wbbbzsce;
 
 
