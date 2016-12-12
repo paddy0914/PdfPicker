@@ -89,7 +89,7 @@ public class ConsolidatedProfits {
     @Horseman(keys = {"减：营业外支出"})
     public List<String> jyywzc;
 
-    @Horseman(keys = {"其中：非流动资产处置损失"})
+    @Horseman(keys = {"其中：非流动资产处置损失","其中：非流动资产处置损"})
     public List<String> qzfldzcczss;
 
     @Horseman(keys = {"四、利润总额（亏损总额以“－”号填列）"})
@@ -100,6 +100,9 @@ public class ConsolidatedProfits {
 
     @Horseman(keys = {"五、净利润（净亏损以“－”号填列"})
     public List<String> wjlrjksyhtl;
+
+    @Horseman(keys = {"其中：被合并方在合并前实现的 净利润","其中：被合并方在合并前实现的 净利润"})
+    public List<String> qzbhbfzhbqsxdjlr;
 
     @Horseman(keys = {"归属于母公司所有者的净利润"})
     public List<String> gsymgssyzdjlr;
@@ -146,7 +149,7 @@ public class ConsolidatedProfits {
     @Horseman(keys = {"归属于少数股东的其他综合收益的税后净额"})
     public List<String> gsyssgddqtzhsydshje;
 
-    @Horseman(keys = {"七、综合收益总额"})
+    @Horseman(keys = {"七、综合收益总额","八、综合收益总额"})
     public List<String> qzhsyze;
 
     @Horseman(keys = {"归属于母公司所有者的综合收益总额"})
@@ -155,7 +158,7 @@ public class ConsolidatedProfits {
     @Horseman(keys = {"归属于少数股东的综合收益总额"})
     public List<String> gsyssgddzhsyze;
 
-    @Horseman(keys = {"八、每股收益："})
+    @Horseman(keys = {"八、每股收益：","六、每股收益："})
     public List<String> bmgsy;
 
     @Horseman(keys = {"（一）基本每股收益"})
@@ -163,4 +166,7 @@ public class ConsolidatedProfits {
 
     @Horseman(keys = {"（二）稀释每股收益"})
     public List<String> exsmgsy;
+
+    @Horseman(keys = {"七、其他综合收益"})
+    public List<String> qtzhsy;
 }

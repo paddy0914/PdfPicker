@@ -75,8 +75,11 @@ public class ConsolidatedBalanceSheet {
     @Horseman(keys = {"非流动资产："})
     public List<String> fldzc;
 
-    @Horseman(keys = {"发放贷款及垫款"})
+    @Horseman(keys = {"发放贷款及垫款","发放委托贷款及垫款"})
     public List<String> ffdkjdk;
+
+    @Horseman(keys = {"发放委托贷款及垫款"})
+    public List<String> ffwtdkjdk;
 
     @Horseman(keys = {"可供出售金融资产"})
     public List<String> kgcsjrzc;

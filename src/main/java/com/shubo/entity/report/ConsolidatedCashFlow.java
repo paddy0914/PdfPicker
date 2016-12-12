@@ -9,6 +9,9 @@ import java.util.List;
  * 合并现金流量表
  */
 public class ConsolidatedCashFlow {
+    @Horseman(keys = {"一、经营活动产生的现金流量："})
+    public List<String> yjyhdcsdxjll;
+
     @Horseman(keys = {"销售商品、提供劳务收到的现金"})
     public List<String> xssptglwsddxj;
 
@@ -33,6 +36,9 @@ public class ConsolidatedCashFlow {
     @Horseman(keys = {"处置以公允价值计量且其变动计"})
     public List<String> czygyjzjlqqbdj;
 
+    @Horseman(keys = {"处置交易性金融资产净增加额"})
+    public List<String> czjyxjezcjzje;
+
     @Horseman(keys = {"入当期损益的金融资产净增加额"})
     public List<String> rdqsydjrzcjzje;
 
@@ -53,6 +59,9 @@ public class ConsolidatedCashFlow {
 
     @Horseman(keys = {"经营活动现金流入小计"})
     public List<String> jyhdxjlrxj;
+
+    @Horseman(keys = {"二、投资活动产生的现金流量："})
+    public List<String> etzhdcsdxjll;
 
     @Horseman(keys = {"购买商品、接受劳务支付的现金"})
     public List<String> gmspjslwzfdxj;
@@ -93,7 +102,8 @@ public class ConsolidatedCashFlow {
     @Horseman(keys = {"取得投资收益收到的现金"})
     public List<String> qdtzsysddxj;
 
-    @Horseman(keys = {"处置固定资产、无形资产和其他"})
+    @Horseman(keys = {"处置固定资产、无形资产和其他","处置固定资产、无形资产和其他长期资产收回的现金净\n" +
+            "额"})
     public List<String> czgdzcwxzchqt;
 
     @Horseman(keys = {"长期资产收回的现金净额"})
@@ -108,7 +118,7 @@ public class ConsolidatedCashFlow {
     @Horseman(keys = {"投资活动现金流入小计"})
     public List<String> tzhdxjlrxj;
 
-    @Horseman(keys = {"购建固定资产、无形资产和其他"})
+    @Horseman(keys = {"购建固定资产、无形资产和其他","购建固定资产、无形资产和其他长期资产支付的现金"})
     public List<String> gjgdzcwxzchqt;
 
     @Horseman(keys = {"长期资产支付的现金"})
@@ -128,6 +138,9 @@ public class ConsolidatedCashFlow {
 
     @Horseman(keys = {"投资活动现金流出小计"})
     public List<String> tzhdxjlcxj;
+
+    @Horseman(keys = {"三、筹资活动产生的现金流量："})
+    public List<String> sczhdcsdxjll;
 
     @Horseman(keys = {"投资活动产生的现金流量净额"})
     public List<String> tzhdcsdxjllje;

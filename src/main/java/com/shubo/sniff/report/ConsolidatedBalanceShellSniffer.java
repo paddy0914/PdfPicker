@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @Todd(key = "ConsolidatedBalanceShell",
         suffix = ".cbs",
         folder = "合并资产负债表",
-        title = {"合并资产负债表","审计意见"})
+        title = {"合并资产负债表"})
 public class ConsolidatedBalanceShellSniffer extends Sniffer {
 
     @Override

@@ -86,7 +86,7 @@ public class PDF2TXT {
                 if ("".equals(content)) {
                     continue;
                 }
-                if (content.replaceAll("\\d+", "").equals("")) {
+                if (content.replaceAll("(\\d|\\,|\\.)+", "").equals("")) {
                     continue;
                 }
 
@@ -177,7 +177,7 @@ public class PDF2TXT {
             if ("".equals(content)) {
                 continue;
             }
-            if (content.replaceAll("\\d+", "").equals("")) {
+            if (content.replaceAll("(\\d|\\,|\\.)+", "").equals("")) {
                 continue;
             }
             if (html.matches(titleMatch)) {
