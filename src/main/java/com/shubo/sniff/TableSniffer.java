@@ -2,6 +2,7 @@ package com.shubo.sniff;
 
 import com.shubo.AppContext;
 import com.shubo.ReportParser;
+import com.shubo.entity.report.IndexEntity;
 import com.shubo.exception.AnnotationException;
 import com.shubo.exception.ExceptionEnum;
 import com.shubo.sniff.report.*;
@@ -15,6 +16,7 @@ import javax.print.Doc;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 //import static com.shubo.ReportParser.analyticalResultList;
@@ -72,7 +74,7 @@ public class TableSniffer {
 
                 //ReportParser.sum++;//测试
                 String tableStr = getTableContent(Jsoup.parse(table));
-
+                List<IndexEntity> tableList=getTableStructure(table);
                 // 母公司权益变动表中，有两个table，一个是本期，一个是上期，这里取第一个本期的
                 if (sniffer instanceof ParentEquityChangeSniffer) {
                     Document doc = Jsoup.parse(table);
@@ -96,7 +98,8 @@ public class TableSniffer {
                         capturedKeys.add(sniffer.getKey());
                         return true;
                     }else{
-
+                        //解析失败，可以设置解析失败的原因
+                        return false;
                     }
 
                 } else {
@@ -107,8 +110,6 @@ public class TableSniffer {
 
         return false;
     }
-
-
         /*
          *  通过内容识别表格
          *  适用于八大表
@@ -201,6 +202,62 @@ public class TableSniffer {
         }
 
         return result;
+    }
+
+    //专门处理所有者权益变动表
+    private static List<IndexEntity> getTableStructure(String table) {
+        List<IndexEntity>  list_indexEntity=new ArrayList<>();
+        Element table_element = Jsoup.parse(table);
+        int k = 1;
+        if (table != null) {
+            Elements trs = table_element.select("tr");
+            Elements trs_one = trs.get(0).select("td");
+            Elements trs_two = trs.get(1).select("td");
+            Elements trs_three = trs.get(2).select("td");
+            //表格中有本期和上期
+            if(trs_one.size()>2){
+                if(trs_two.size()/2<4){
+                    for (int i=0;i<trs_three.size()/2;i++) {
+                        list_indexEntity.add(new IndexEntity(k,trs_three.get(i).text()));
+                        k++;
+                    }
+                    for (int j = 1; j < trs_two.size()/2; j++) {
+                        //hm.put(new Integer(k), tds2.get(m).text());
+                        list_indexEntity.add(new IndexEntity(k,trs_two.get(j).text()));
+                        k++;
+                    }
+                }
+                else{
+                    for (int j = 0; j < trs_two.size()/2; j++) {
+                        //hm.put(new Integer(k), tds2.get(m).text());
+                        list_indexEntity.add(new IndexEntity(k,trs_two.get(j).text()));
+                        k++;
+                    }
+                }
+            }
+            else {
+                if(trs_two.size()<4){
+                    for (int i = 0;i<trs_three.size();i++) {
+                        list_indexEntity.add(new IndexEntity(k,trs_three.get(i).text()));
+                        k++;
+                    }
+                    for (int j = 1; j < trs_two.size(); j++) {
+                        //hm.put(new Integer(k), tds2.get(m).text());
+                        list_indexEntity.add(new IndexEntity(k,trs_two.get(j).text()));
+                        k++;
+                    }
+                }
+                else {
+                    for (int j = 0; j < trs_two.size(); j++) {
+                        //hm.put(new Integer(k), tds2.get(m).text());
+                        list_indexEntity.add(new IndexEntity(k,trs_two.get(j).text()));
+                        k++;
+                    }
+                }
+            }
+            return list_indexEntity;
+        } else
+            return null;
     }
 
     private static String getTableText(List<Element> tables) {
