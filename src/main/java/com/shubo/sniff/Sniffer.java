@@ -153,7 +153,7 @@ abstract public class Sniffer {
      * @Param colSpan : 每一行要转换多少参数
      */
     public String[] generateEntityJson(String content, Class clazz, int... colSpan) {
-        System.out.println(clazz);
+//        System.out.println(clazz);
         String lines[] = content.split("\n");
 
         if (lines != null && lines.length > 0) {

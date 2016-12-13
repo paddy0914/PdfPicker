@@ -69,8 +69,6 @@ public class TableSniffer {
 
             if (sniffer.sniffWithTitle(title) && !capturedKeys.contains(sniffer.getKey())) {
 
-
-
                 String tableStr = getTableContent(Jsoup.parse(table));
 
                 System.out.println("sniff " + fileName);
@@ -148,8 +146,15 @@ public class TableSniffer {
                 String[] result = sniffer.generateEntityJson(table);
 
                 if (result != null && result.length == 2) {
-                    FileUtils.write(new File(outputPath), result[0], false);
+                    if (result[0].length() > 2) {
+                        FileUtils.write(new File(outputPath), result[0], false);
+                        AnalyticalResult.results[sniffer.getIndex()] = "成功";
+                    } else {
+                        AnalyticalResult.results[sniffer.getIndex()] = "JSON空";
+                    }
                     break;
+                } else {
+                    AnalyticalResult.results[sniffer.getIndex()] += "-失败";
                 }
             }
         }

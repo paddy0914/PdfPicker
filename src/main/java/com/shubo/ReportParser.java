@@ -56,6 +56,7 @@ public class ReportParser {
                                     String needHandleFileName = subFolder.getName() + "-" + file.getName();
                                     AnalyticalResult.filename = needHandleFileName;
 
+                                    System.out.println("start:" + needHandleFileName);
                                     String needHandleFilePath = yearReportFolder + File.separator + needHandleFileName;
 
                                     FileUtils.copyFile(file, new File(needHandleFilePath));

@@ -131,7 +131,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                 for (int i = 0; i < likedKeyWordsSet.size(); i++) {
                     List<String> keys = likedKeyWordsSet.get(i);
                     if (keys.contains(element)) {
-                        System.out.println(element);
+                        //System.out.println(element);
                         keywords.get(i).add(element);
 
                         lastIndex = i;
