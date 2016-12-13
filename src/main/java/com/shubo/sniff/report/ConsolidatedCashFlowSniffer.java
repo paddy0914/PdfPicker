@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * Created by horseman on 2016/11/25.
  */
 @Todd(key = "ConsolidatedCashFlow",
+        index = 1,
         suffix = ".ccf",
         folder = "合并现金流量表",
         title = {"合并现金流量表"})
@@ -22,13 +23,23 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
         return sniffByKeywords(content, CCFKeyWords, 3);
     }
 
+    @Override
+    public int[] getColCnt(String table) {
+        int[] result = new int[3];
+        result[0] = 2;
+        result[1] = 1;
+        result[2] = 2;
+
+        return result;
+    }
+
     /**
-     *   需要完善
+     * 需要完善
+     *
      * @param table
      * @return
      */
-    @Override
-    public int[] getColCnt(String table) {
+    public int[] getColCnt2(String table) {
         int[] result = new int[2];
         result[0] = 1;
         String lines[] = table.split("\n");
@@ -46,7 +57,7 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
                     break;
                 }
             }
-            if(sum>4)
+            if (sum > 4)
                 break;
         }
         int compare = value_place[0];

@@ -7,6 +7,7 @@ import com.shubo.entity.ShareHolderNoLimit;
  * Created by horseman on 2016/11/23.
  */
 @Todd(key = "ShareHolderNL",
+        index = 11,
         suffix = ".shareHolderNL",
         folder = "前10名无限售条件股东持股情况")
 public class ShareHolderNLSniffer extends Sniffer {
@@ -17,7 +18,7 @@ public class ShareHolderNLSniffer extends Sniffer {
 
     @Override
     public int[] getColCnt(String table) {
-        int[] result ={-1,-1};
+        int[] result = {1, 1};
         return result;
     }
 

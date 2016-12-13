@@ -3,10 +3,10 @@ package com.shubo.sniff.report;
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
 import com.shubo.annotation.Todd;
+import com.shubo.stastics.AnalyticalResult;
 import com.shubo.entity.report.ConsolidatedEquityChange;
 import com.shubo.entity.report.EquityChange;
-import com.shubo.entity.report.IndexEntity;
-import com.shubo.sniff.ShareHolderSniffer;
+import com.shubo.exception.AnnotationException;
 import com.shubo.sniff.Sniffer;
 import com.shubo.sniff.TableSniffer;
 import com.shubo.util.HorsemanUtils;
@@ -26,6 +26,7 @@ import java.util.List;
  * 合并所有者权益变动表
  */
 @Todd(key = "ConsolidatedEquityChange",
+        index = 2,
         suffix = ".ces",
         folder = "合并所有者权益变动表",
         title = {"合并所有者权益变动表"})
@@ -84,7 +85,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         likedKeyWordsSet.add(likedKeyWord4);
     }
 
-    private List<IndexEntity> getHeaders(String tableStr) {
+    private List<IndexEntity> getHeaders(String tableStr) throws AnnotationException{
 
         tableStr = HorsemanUtils.removeBlank(tableStr);
         String[] lines = tableStr.split("\n");
@@ -130,7 +131,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                 for (int i = 0; i < likedKeyWordsSet.size(); i++) {
                     List<String> keys = likedKeyWordsSet.get(i);
                     if (keys.contains(element)) {
-                        System.out.println(element);
+                        //System.out.println(element);
                         keywords.get(i).add(element);
 
                         lastIndex = i;
@@ -145,6 +146,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         if (colCnt - 1 !=
                 keyWords1.size() + keyWords2.size() + keyWords3.size() + keyWords4.size()) {
             HorsemanUtils.doSomeThing();
+            AnalyticalResult.results[getIndex()] = "识别头部错误";
             return null;
         }
 
@@ -163,7 +165,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
     }
 
     @Override
-    public String[] generateEntityJson(String content) {
+    public String[] generateEntityJson(String content) throws AnnotationException {
         List<IndexEntity> indexes = getHeaders(content);
         if (indexes == null) {
             return null;
@@ -226,8 +228,13 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                                         }
                                     }
                                     if (found) {
+<<<<<<< HEAD
                                         quityChange = generateEntity(contents, indexes);
                                         data.getClass().getDeclaredField(field.getName()).set(data, quityChange);
+=======
+                                        EquityChange ec = generateEntity(contents, indexes);
+                                        field.set(data, ec);
+>>>>>>> a89e4115363349066cc5ad63336b93b83e9f5813
                                     }
                                 }
                             }
@@ -252,8 +259,11 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                         e.printStackTrace();
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
+<<<<<<< HEAD
                     } catch (NoSuchFieldException e) {
                         e.printStackTrace();
+=======
+>>>>>>> a89e4115363349066cc5ad63336b93b83e9f5813
                     }
 
                 }

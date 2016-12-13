@@ -7,13 +7,14 @@ import com.shubo.entity.Nrgal;
  * Created by horseman on 2016/11/22.
  */
 @Todd(key = "Nrgal",
+        index = 10,
         suffix = ".nrgal",
         folder = "非经常性损益")
 public class NrgalSniffer extends Sniffer {
 
     @Override
     public int[] getColCnt(String table) {
-        int[] result ={-1,-1};
+        int[] result = {1, 1};
         return result;
     }
 

@@ -8,6 +8,7 @@ import com.shubo.entity.ShareHolder;
  * 前10名股东持股情况
  */
 @Todd(key = "ShareHolder",
+        index = 12,
         suffix = ".shareHolder",
         folder = "前10名股东持股情况")
 public class ShareHolderSniffer extends Sniffer {
@@ -18,7 +19,7 @@ public class ShareHolderSniffer extends Sniffer {
 
     @Override
     public int[] getColCnt(String table) {
-        int[] result ={-1,-1};
+        int[] result = {1, 1};
         return result;
     }
 

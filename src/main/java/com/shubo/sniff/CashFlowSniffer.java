@@ -7,6 +7,7 @@ import com.shubo.entity.CashFlow;
  * Created by horseman on 2016/11/23.
  */
 @Todd(key = "CashFlow",
+        index = 9,
         suffix = ".cashflow",
         folder = "现金流")
 public class CashFlowSniffer extends Sniffer {
@@ -17,7 +18,7 @@ public class CashFlowSniffer extends Sniffer {
 
     @Override
     public int[] getColCnt(String table) {
-        int[] result ={-1,-1};
+        int[] result = {1, 1};
         return result;
     }
 
