@@ -23,6 +23,7 @@ public class AnalyticalResult {
     int parentEquityEquityChangeTable;
     //母公司利润表
     int parentProfitsTable;
+
     public String getFilename() {
         return filename;
     }

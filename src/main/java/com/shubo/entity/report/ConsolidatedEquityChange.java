@@ -185,7 +185,7 @@ public class ConsolidatedEquityChange {
 }
 */
 public class ConsolidatedEquityChange {
-    @Horseman(keys = {"一、上年期末余额"})
+    @Horseman(keys = {"一、上年期末余额", "一、上年年末余额"})
     public EquityChange ysnqmye;
 
     @Horseman(keys = {"加：会计政策变更"})

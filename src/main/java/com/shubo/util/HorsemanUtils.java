@@ -19,4 +19,12 @@ public class HorsemanUtils {
         contents = contents.replace("h", "oo");
         cnt --;
     }
+
+    public static String removeBlank(String content) {
+        return content.replace(" ", "");
+    }
+
+    public static void doSomeThing() {
+
+    }
 }
