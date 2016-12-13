@@ -34,21 +34,21 @@ public class TableSniffer {
 
     static {
 
-        reportSniffers.add(new ConsolidatedCashFlowSniffer());
-        reportSniffers.add(new ConsolidatedBalanceShellSniffer());
+//        reportSniffers.add(new ConsolidatedCashFlowSniffer());
+//        reportSniffers.add(new ConsolidatedBalanceShellSniffer());
         reportSniffers.add(new ConsolidatedEquityChangeSniffer());
-        reportSniffers.add(new ConsolidatedProfitsSniffer());
+//        reportSniffers.add(new ConsolidatedProfitsSniffer());
 
-        reportSniffers.add(new ParentBalanceShellSniffer());
-        reportSniffers.add(new ParentCashFlowSniffer());
-        reportSniffers.add(new ParentEquityChangeSniffer());
-        reportSniffers.add(new ParentProfitsSniffer());
-
-        otherSniffers.add(new FinanceSniffer());
-        otherSniffers.add(new NrgalSniffer());
-        otherSniffers.add(new ShareHolderSniffer());
-        otherSniffers.add(new ShareHolderNLSniffer());
-        otherSniffers.add(new CashFlowSniffer());
+//        reportSniffers.add(new ParentBalanceShellSniffer());
+//        reportSniffers.add(new ParentCashFlowSniffer());
+//        reportSniffers.add(new ParentEquityChangeSniffer());
+//        reportSniffers.add(new ParentProfitsSniffer());
+//
+//        otherSniffers.add(new FinanceSniffer());
+//        otherSniffers.add(new NrgalSniffer());
+//        otherSniffers.add(new ShareHolderSniffer());
+//        otherSniffers.add(new ShareHolderNLSniffer());
+//        otherSniffers.add(new CashFlowSniffer());
     }
 
     /*
@@ -67,14 +67,15 @@ public class TableSniffer {
      */
     public static boolean sniffEntity(String table, String title, String fileName, List<String> capturedKeys) throws IOException, AnnotationException {
 
-        System.out.println("title=" + title);
+//        System.out.println("title=" + title);
         for (Sniffer sniffer : reportSniffers) {
 
             if (sniffer.sniffWithTitle(title) && !capturedKeys.contains(sniffer.getKey())) {
 
                 //ReportParser.sum++;//测试
                 String tableStr = getTableContent(Jsoup.parse(table));
-                List<IndexEntity> tableList=getTableStructure(table);
+//                List<IndexEntity> indexList = getTableStructure(table);
+
                 // 母公司权益变动表中，有两个table，一个是本期，一个是上期，这里取第一个本期的
                 if (sniffer instanceof ParentEquityChangeSniffer) {
                     Document doc = Jsoup.parse(table);
@@ -83,7 +84,7 @@ public class TableSniffer {
 //                        tableStr = getTableContent(doc);
 //                    }
                 }
-
+                System.out.println("sniff " + fileName);
                 String[] result = sniffer.generateEntityJson(tableStr);
 
                 if (result != null && result.length == 2) {
@@ -97,7 +98,7 @@ public class TableSniffer {
                         FileUtils.write(new File(outputPath), result[0], false);
                         capturedKeys.add(sniffer.getKey());
                         return true;
-                    }else{
+                    } else {
                         //解析失败，可以设置解析失败的原因
                         return false;
                     }
@@ -205,8 +206,14 @@ public class TableSniffer {
     }
 
     //专门处理所有者权益变动表
+
+    /**
+     *
+     * @param table
+     * @return
+     */
     private static List<IndexEntity> getTableStructure(String table) {
-        List<IndexEntity>  list_indexEntity=new ArrayList<>();
+        List<IndexEntity> list_indexEntity = new ArrayList<>();
         Element table_element = Jsoup.parse(table);
         int k = 1;
         if (table != null) {
@@ -215,42 +222,39 @@ public class TableSniffer {
             Elements trs_two = trs.get(1).select("td");
             Elements trs_three = trs.get(2).select("td");
             //表格中有本期和上期
-            if(trs_one.size()>2){
-                if(trs_two.size()/2<4){
-                    for (int i=0;i<trs_three.size()/2;i++) {
-                        list_indexEntity.add(new IndexEntity(k,trs_three.get(i).text()));
+            if (trs_one.size() > 2) {
+                if (trs_two.size() / 2 < 4) {
+                    for (int i = 0; i < trs_three.size() / 2; i++) {
+                        list_indexEntity.add(new IndexEntity(k, trs_three.get(i).text()));
                         k++;
                     }
-                    for (int j = 1; j < trs_two.size()/2; j++) {
+                    for (int j = 1; j < trs_two.size() / 2; j++) {
                         //hm.put(new Integer(k), tds2.get(m).text());
-                        list_indexEntity.add(new IndexEntity(k,trs_two.get(j).text()));
+                        list_indexEntity.add(new IndexEntity(k, trs_two.get(j).text()));
+                        k++;
+                    }
+                } else {
+                    for (int j = 0; j < trs_two.size() / 2; j++) {
+                        //hm.put(new Integer(k), tds2.get(m).text());
+                        list_indexEntity.add(new IndexEntity(k, trs_two.get(j).text()));
                         k++;
                     }
                 }
-                else{
-                    for (int j = 0; j < trs_two.size()/2; j++) {
-                        //hm.put(new Integer(k), tds2.get(m).text());
-                        list_indexEntity.add(new IndexEntity(k,trs_two.get(j).text()));
-                        k++;
-                    }
-                }
-            }
-            else {
-                if(trs_two.size()<4){
-                    for (int i = 0;i<trs_three.size();i++) {
-                        list_indexEntity.add(new IndexEntity(k,trs_three.get(i).text()));
+            } else {
+                if (trs_two.size() < 4) {
+                    for (int i = 0; i < trs_three.size(); i++) {
+                        list_indexEntity.add(new IndexEntity(k, trs_three.get(i).text()));
                         k++;
                     }
                     for (int j = 1; j < trs_two.size(); j++) {
                         //hm.put(new Integer(k), tds2.get(m).text());
-                        list_indexEntity.add(new IndexEntity(k,trs_two.get(j).text()));
+                        list_indexEntity.add(new IndexEntity(k, trs_two.get(j).text()));
                         k++;
                     }
-                }
-                else {
+                } else {
                     for (int j = 0; j < trs_two.size(); j++) {
                         //hm.put(new Integer(k), tds2.get(m).text());
-                        list_indexEntity.add(new IndexEntity(k,trs_two.get(j).text()));
+                        list_indexEntity.add(new IndexEntity(k, trs_two.get(j).text()));
                         k++;
                     }
                 }
