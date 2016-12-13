@@ -19,7 +19,7 @@ public class ShareHolderSniffer extends Sniffer {
 
     @Override
     public int[] getColCnt(String table) {
-        int[] result ={-1,-1};
+        int[] result = {1, 1};
         return result;
     }
 

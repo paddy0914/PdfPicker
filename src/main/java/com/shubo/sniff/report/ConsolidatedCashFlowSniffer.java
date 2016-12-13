@@ -24,7 +24,8 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
     }
 
     /**
-     *   需要完善
+     * 需要完善
+     *
      * @param table
      * @return
      */
@@ -47,7 +48,7 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
                     break;
                 }
             }
-            if(sum>4)
+            if (sum > 4)
                 break;
         }
         int compare = value_place[0];

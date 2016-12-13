@@ -42,7 +42,7 @@ public class ConsolidatedBalanceShellSniffer extends Sniffer {
                     break;
                 }
             }
-            if(sum>4)
+            if (sum > 4)
                 break;
         }
         int compare = value_place[0];

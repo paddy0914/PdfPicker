@@ -223,8 +223,7 @@ abstract public class Sniffer {
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
 //                                            System.out.println("设置域 " + field.getName());
                                         } else {
-                                            datas.add(contents[result[1]].replace(" ",""));
-                                            data.getClass().getDeclaredField(field.getName()).set(data, datas);
+                                            data.getClass().getDeclaredField(field.getName()).set(data, contents[result[1]]);
                                         }
                                         needKickoutField = field;
                                         found = true;
