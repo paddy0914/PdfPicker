@@ -7,6 +7,7 @@ import com.shubo.entity.Nrgal;
  * Created by horseman on 2016/11/22.
  */
 @Todd(key = "Nrgal",
+        index = 10,
         suffix = ".nrgal",
         folder = "非经常性损益")
 public class NrgalSniffer extends Sniffer {

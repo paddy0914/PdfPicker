@@ -1,4 +1,4 @@
-package com.shubo.entity;
+package com.shubo;
 
 /**
  * Created by YW on 2016/12/9.

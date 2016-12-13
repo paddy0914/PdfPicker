@@ -14,5 +14,6 @@ public @interface Todd {
     String key();
     String folder();
     String suffix();
+    int index();
     String[] title() default {};
 }

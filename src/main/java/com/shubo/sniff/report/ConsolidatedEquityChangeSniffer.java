@@ -3,10 +3,10 @@ package com.shubo.sniff.report;
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
 import com.shubo.annotation.Todd;
+import com.shubo.stastics.AnalyticalResult;
 import com.shubo.entity.report.ConsolidatedEquityChange;
 import com.shubo.entity.report.EquityChange;
-import com.shubo.entity.report.IndexEntity;
-import com.shubo.sniff.ShareHolderSniffer;
+import com.shubo.exception.AnnotationException;
 import com.shubo.sniff.Sniffer;
 import com.shubo.sniff.TableSniffer;
 import com.shubo.util.HorsemanUtils;
@@ -26,6 +26,7 @@ import java.util.List;
  * 合并所有者权益变动表
  */
 @Todd(key = "ConsolidatedEquityChange",
+        index = 2,
         suffix = ".ces",
         folder = "合并所有者权益变动表",
         title = {"合并所有者权益变动表"})
@@ -84,7 +85,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         likedKeyWordsSet.add(likedKeyWord4);
     }
 
-    private List<IndexEntity> getHeaders(String tableStr) {
+    private List<IndexEntity> getHeaders(String tableStr) throws AnnotationException{
 
         tableStr = HorsemanUtils.removeBlank(tableStr);
         String[] lines = tableStr.split("\n");
@@ -145,6 +146,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         if (colCnt - 1 !=
                 keyWords1.size() + keyWords2.size() + keyWords3.size() + keyWords4.size()) {
             HorsemanUtils.doSomeThing();
+            AnalyticalResult.results[getIndex()] = "识别头部错误";
             return null;
         }
 
@@ -163,8 +165,11 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
     }
 
     @Override
-    public String[] generateEntityJson(String content) {
+    public String[] generateEntityJson(String content) throws AnnotationException {
         List<IndexEntity> indexes = getHeaders(content);
+        if (indexes == null) {
+            return null;
+        }
         return generateEntityJson(content, indexes);
     }
 
@@ -222,7 +227,8 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                                         }
                                     }
                                     if (found) {
-                                        generateEntity(contents, indexes);
+                                        EquityChange ec = generateEntity(contents, indexes);
+                                        field.set(data, ec);
                                     }
                                 }
                             }
@@ -244,6 +250,8 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                             }
                         }
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
 

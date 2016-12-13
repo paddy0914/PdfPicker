@@ -8,6 +8,7 @@ import com.shubo.entity.Finance;
  * 主要财务数据
  */
 @Todd(key = "Finance",
+        index = 8,
         suffix = ".finance",
         folder = "主要财务数据")
 public class FinanceSniffer extends Sniffer {

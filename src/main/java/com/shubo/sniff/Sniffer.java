@@ -27,6 +27,18 @@ import java.util.regex.Pattern;
  * Created by horseman on 2016/11/22.
  */
 abstract public class Sniffer {
+    public int getIndex() throws AnnotationException {
+        Annotation[] annotations = getClass().getAnnotations();
+        if (annotations != null && annotations.length > 0) {
+            Annotation annotation = annotations[0];
+            Todd todd = (Todd) annotation;
+
+            return todd.index();
+        }
+
+        throw new AnnotationException();
+    }
+
     public String getKey() throws AnnotationException {
         Annotation[] annotations = getClass().getAnnotations();
         if (annotations != null && annotations.length > 0) {
@@ -97,7 +109,7 @@ abstract public class Sniffer {
 
     // 从content中获取JSON,保存在返回数组的第一个String
     // 把content去除匹配成功的字符，保存在返回数组的第二个String
-    public abstract String[] generateEntityJson(String content);
+    public abstract String[] generateEntityJson(String content) throws AnnotationException;
 
     public Logger logger = LoggerFactory.getLogger(Sniffer.class);
 

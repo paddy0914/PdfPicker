@@ -7,6 +7,7 @@ import com.shubo.entity.ShareHolderNoLimit;
  * Created by horseman on 2016/11/23.
  */
 @Todd(key = "ShareHolderNL",
+        index = 11,
         suffix = ".shareHolderNL",
         folder = "前10名无限售条件股东持股情况")
 public class ShareHolderNLSniffer extends Sniffer {

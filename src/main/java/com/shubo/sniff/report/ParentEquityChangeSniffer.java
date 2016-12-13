@@ -7,6 +7,7 @@ import com.shubo.entity.report.ConsolidatedEquityChange;
  * Created by horseman on 2016/11/29.
  */
 @Todd(key = "ParentEquityChangeSniffer",
+        index = 6,
         suffix = ".pces",
         folder = "母公司所有者权益变动表",
         title = {"母公司所有者权益变动表"})

@@ -1,12 +1,12 @@
-package com.shubo.entity.report;
+package com.shubo.sniff.report;
 
 /**
  * Created by liujinping on 2016/12/12.
  */
 public class IndexEntity {
-    public int index;
+    private int index;
 
-    public String AttributeName;
+    private String AttributeName;
 
     public int getIndex() {
         return index;

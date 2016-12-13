@@ -7,6 +7,7 @@ import com.shubo.entity.CashFlow;
  * Created by horseman on 2016/11/23.
  */
 @Todd(key = "CashFlow",
+        index = 9,
         suffix = ".cashflow",
         folder = "现金流")
 public class CashFlowSniffer extends Sniffer {

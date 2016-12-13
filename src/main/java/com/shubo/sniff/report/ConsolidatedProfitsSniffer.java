@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * Created by horseman on 2016/11/28.
  */
 @Todd(key = "ConsolidatedProfits",
+        index = 3,
         suffix = ".cp",
         folder = "合并利润表",
         title = {"合并利润表"})

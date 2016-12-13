@@ -1,6 +1,6 @@
 package com.shubo;
 
-import com.shubo.exception.AnnotationException;
+import com.shubo.stastics.AnalyticalResult;
 import com.shubo.parser.PDF2TXT;
 import com.shubo.sniff.TableSniffer;
 import org.apache.commons.io.FileUtils;
@@ -51,7 +51,11 @@ public class ReportParser {
                                         && file.getName().contains("年度报告")
                                         && !file.getName().contains("半年度报告")) {
 
+                                    AnalyticalResult.reset();
+
                                     String needHandleFileName = subFolder.getName() + "-" + file.getName();
+                                    AnalyticalResult.filename = needHandleFileName;
+
                                     String needHandleFilePath = yearReportFolder + File.separator + needHandleFileName;
 
                                     FileUtils.copyFile(file, new File(needHandleFilePath));
@@ -61,22 +65,10 @@ public class ReportParser {
                                     /* 存储除了八大表以外的其他表字符串 */
                                     List<String> otherEntityString = new ArrayList<>();
                                     String title = "";
-                                    /*
-                                    //添加测试的代码
-                                    int i=1;
-                                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("D:\\年报解析\\list.txt", true)));
-                                    for (String str : list) {
-                                        bw.write(i+" "+str+"\r\n");
-                                        bw.flush();
-                                        i++;
-                                    }
-                                    bw.close();
-                                    */
-                                    //int j=0;
+
                                     // 记录已经获取过实体的类，防止重复获取
                                     List<String> capturedEntityKeys = new ArrayList<>();
                                     for (String str : list) {
-                                        //System.out.println(j++);
                                         if (str.startsWith(typeTitle + splitChar)) {
                                             title = str;
                                         } else if (str.startsWith(typeTable + splitChar)) {
@@ -90,6 +82,8 @@ public class ReportParser {
 
                                     // 其他
                                     TableSniffer.sniffEachEntity(otherEntityString, needHandleFileName);
+
+                                    AnalyticalResult.writeToCsv();
                                 }
                             }
                         }

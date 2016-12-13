@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * Created by horseman on 2016/11/28.
  */
 @Todd(key = "ConsolidatedBalanceShell",
+        index = 0,
         suffix = ".cbs",
         folder = "合并资产负债表",
         title = {"合并资产负债表"})

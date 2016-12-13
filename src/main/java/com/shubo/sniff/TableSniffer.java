@@ -1,10 +1,9 @@
 package com.shubo.sniff;
 
 import com.shubo.AppContext;
-import com.shubo.ReportParser;
-import com.shubo.entity.report.IndexEntity;
+import com.shubo.stastics.AnalyticalResult;
+import com.shubo.sniff.report.IndexEntity;
 import com.shubo.exception.AnnotationException;
-import com.shubo.exception.ExceptionEnum;
 import com.shubo.sniff.report.*;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
@@ -12,11 +11,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.print.Doc;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 //import static com.shubo.ReportParser.analyticalResultList;
@@ -34,21 +31,21 @@ public class TableSniffer {
 
     static {
 
-//        reportSniffers.add(new ConsolidatedCashFlowSniffer());
-//        reportSniffers.add(new ConsolidatedBalanceShellSniffer());
+        reportSniffers.add(new ConsolidatedCashFlowSniffer());
+        reportSniffers.add(new ConsolidatedBalanceShellSniffer());
         reportSniffers.add(new ConsolidatedEquityChangeSniffer());
-//        reportSniffers.add(new ConsolidatedProfitsSniffer());
+        reportSniffers.add(new ConsolidatedProfitsSniffer());
 
-//        reportSniffers.add(new ParentBalanceShellSniffer());
-//        reportSniffers.add(new ParentCashFlowSniffer());
-//        reportSniffers.add(new ParentEquityChangeSniffer());
-//        reportSniffers.add(new ParentProfitsSniffer());
-//
-//        otherSniffers.add(new FinanceSniffer());
-//        otherSniffers.add(new NrgalSniffer());
-//        otherSniffers.add(new ShareHolderSniffer());
-//        otherSniffers.add(new ShareHolderNLSniffer());
-//        otherSniffers.add(new CashFlowSniffer());
+        reportSniffers.add(new ParentBalanceShellSniffer());
+        reportSniffers.add(new ParentCashFlowSniffer());
+        reportSniffers.add(new ParentEquityChangeSniffer());
+        reportSniffers.add(new ParentProfitsSniffer());
+
+        otherSniffers.add(new FinanceSniffer());
+        otherSniffers.add(new NrgalSniffer());
+        otherSniffers.add(new ShareHolderSniffer());
+        otherSniffers.add(new ShareHolderNLSniffer());
+        otherSniffers.add(new CashFlowSniffer());
     }
 
     /*
@@ -72,18 +69,10 @@ public class TableSniffer {
 
             if (sniffer.sniffWithTitle(title) && !capturedKeys.contains(sniffer.getKey())) {
 
-                //ReportParser.sum++;//测试
-                String tableStr = getTableContent(Jsoup.parse(table));
-//                List<IndexEntity> indexList = getTableStructure(table);
 
-                // 母公司权益变动表中，有两个table，一个是本期，一个是上期，这里取第一个本期的
-                if (sniffer instanceof ParentEquityChangeSniffer) {
-                    Document doc = Jsoup.parse(table);
-//                    Elements elements = doc.select("tbody");
-//                    if (elements.size() > 0) {
-//                        tableStr = getTableContent(doc);
-//                    }
-                }
+
+                String tableStr = getTableContent(Jsoup.parse(table));
+
                 System.out.println("sniff " + fileName);
                 String[] result = sniffer.generateEntityJson(tableStr);
 
@@ -97,13 +86,15 @@ public class TableSniffer {
 
                         FileUtils.write(new File(outputPath), result[0], false);
                         capturedKeys.add(sniffer.getKey());
+                        AnalyticalResult.results[sniffer.getIndex()] = "成功";
                         return true;
                     } else {
-                        //解析失败，可以设置解析失败的原因
+                        AnalyticalResult.results[sniffer.getIndex()] = "Json空";
                         return false;
                     }
 
                 } else {
+                    AnalyticalResult.results[sniffer.getIndex()] += "-失败";
                     return false;
                 }
             }
