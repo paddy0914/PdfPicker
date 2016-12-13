@@ -25,6 +25,15 @@ public class ConsolidatedBalanceShellSniffer extends Sniffer {
 
     @Override
     public int[] getColCnt(String table) {
+        int[] result = new int[3];
+        result[0] = 2;
+        result[1] = 1;
+        result[2] = 2;
+
+        return result;
+    }
+
+    public int[] getColCnt2(String table) {
         int[] result = new int[2];
         result[0] = 1;
         String lines[] = table.split("\n");

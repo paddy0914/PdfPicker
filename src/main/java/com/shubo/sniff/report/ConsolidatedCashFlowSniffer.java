@@ -23,14 +23,23 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
         return sniffByKeywords(content, CCFKeyWords, 3);
     }
 
+    @Override
+    public int[] getColCnt(String table) {
+        int[] result = new int[3];
+        result[0] = 2;
+        result[1] = 1;
+        result[2] = 2;
+
+        return result;
+    }
+
     /**
      * 需要完善
      *
      * @param table
      * @return
      */
-    @Override
-    public int[] getColCnt(String table) {
+    public int[] getColCnt2(String table) {
         int[] result = new int[2];
         result[0] = 1;
         String lines[] = table.split("\n");

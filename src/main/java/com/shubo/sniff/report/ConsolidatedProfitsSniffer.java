@@ -23,12 +23,21 @@ public class ConsolidatedProfitsSniffer extends Sniffer {
         return sniffByKeywords(content, CPKeyWords, 6);
     }
 
+    @Override
+    public int[] getColCnt(String table) {
+        int[] result = new int[3];
+        result[0] = 2;
+        result[1] = 1;
+        result[2] = 2;
+
+        return result;
+    }
+
     /**
      * @param table
      * @return int[2] : 1,需要几列数据; 2, 数据在哪一列
      */
-    @Override
-    public int[] getColCnt(String table) {
+    public int[] getColCnt2(String table) {
         int[] result = new int[2];
         result[0] = 1;
         String lines[] = table.split("\n");

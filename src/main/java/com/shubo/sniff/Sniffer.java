@@ -91,7 +91,11 @@ abstract public class Sniffer {
 
     /**
      * @param table
-     * @return int[2] : 1,需要几列数据; 2, 数据在哪一列
+     * @return int[n] : 1,需要几列数据; 2, 数据在哪一列
+     * 数组的第一个值为需要几列数据
+     * 后面跟上每一列数据的index
+     * 比如 只有一列数据在第2 列时,返回 [1, 2]
+     * 比如 有两列数据在第 3,4列时,返回 [2, 3, 4]
      */
     public abstract int[] getColCnt(String table);
 
@@ -135,17 +139,18 @@ abstract public class Sniffer {
     public String[] generateEntityJson(String content, Class clazz) {
         return generateEntityJson(content, clazz, 1);
     }
-/*
-    private static int computeCols(int len, int[] options) {
-        for (int i : options) {
-            if (i == len) {
-                return i;
-            }
-        }
 
-        return -1;
-    }
-*/
+    /*
+        private static int computeCols(int len, int[] options) {
+            for (int i : options) {
+                if (i == len) {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+    */
     /*
      * 把处理过后的表格内容识别为对应实体,并作为json返回
      * @Param content : 待转换内容
@@ -176,9 +181,6 @@ abstract public class Sniffer {
             Collections.addAll(fields, declaredFields);
 
             List<String> needKickoutLines = new ArrayList<>();
-
-            // 财务报表中，有些年报中间多了一列“注释”,不许要这个字段
-            boolean containsNote = false;
 
             int[] result = getColCnt(content);//获得数据中有用数据有几个、哪一列是需要的数据
 
@@ -218,12 +220,15 @@ abstract public class Sniffer {
                                         if (colCnt > 1) {
                                             //List<String> datas = new ArrayList<>();
                                             for (int k = 0; k < colCnt; k++) {
-                                                datas.add(contents[k + (containsNote ? 2 : 1)].replace(" ", ""));
+                                                if ((k + 1) < contents.length) {
+                                                    datas.add(contents[result[k + 1]].replace(" ", ""));
+                                                }
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
-//                                            System.out.println("设置域 " + field.getName());
                                         } else {
-                                            data.getClass().getDeclaredField(field.getName()).set(data, contents[result[1]]);
+                                            if ( result[1] < contents.length) {
+                                                data.getClass().getDeclaredField(field.getName()).set(data, contents[result[1]]);
+                                            }
                                         }
                                         needKickoutField = field;
                                         found = true;
@@ -256,9 +261,6 @@ abstract public class Sniffer {
                         e.printStackTrace();
                     }
 
-                }
-                if (isReportEntity(clazz) && line.contains("注释")) {
-                    containsNote = true;
                 }
             }
             // 匹配过的行去掉
