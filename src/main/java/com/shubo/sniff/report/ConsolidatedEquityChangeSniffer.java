@@ -228,13 +228,9 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                                         }
                                     }
                                     if (found) {
-<<<<<<< HEAD
-                                        quityChange = generateEntity(contents, indexes);
-                                        data.getClass().getDeclaredField(field.getName()).set(data, quityChange);
-=======
                                         EquityChange ec = generateEntity(contents, indexes);
                                         field.set(data, ec);
->>>>>>> a89e4115363349066cc5ad63336b93b83e9f5813
+
                                     }
                                 }
                             }
@@ -259,11 +255,6 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                         e.printStackTrace();
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
-<<<<<<< HEAD
-                    } catch (NoSuchFieldException e) {
-                        e.printStackTrace();
-=======
->>>>>>> a89e4115363349066cc5ad63336b93b83e9f5813
                     }
 
                 }
