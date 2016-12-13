@@ -165,6 +165,9 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
     @Override
     public String[] generateEntityJson(String content) {
         List<IndexEntity> indexes = getHeaders(content);
+        if (indexes == null) {
+            return null;
+        }
         return generateEntityJson(content, indexes);
     }
 
@@ -202,6 +205,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                         Field needKickoutField = null;
                         boolean found = false;
                         for (Field field : fields) {
+                            EquityChange quityChange = null;
                             Annotation[] annotations = field.getAnnotations();
                             if (annotations.length > 0) {
                                 Horseman horsemen = (Horseman) annotations[0];
@@ -222,7 +226,8 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                                         }
                                     }
                                     if (found) {
-                                        generateEntity(contents, indexes);
+                                        quityChange = generateEntity(contents, indexes);
+                                        data.getClass().getDeclaredField(field.getName()).set(data, quityChange);
                                     }
                                 }
                             }
@@ -244,6 +249,10 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                             }
                         }
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchFieldException e) {
                         e.printStackTrace();
                     }
 
