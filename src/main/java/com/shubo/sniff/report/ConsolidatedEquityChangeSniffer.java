@@ -3,12 +3,12 @@ package com.shubo.sniff.report;
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
 import com.shubo.annotation.Todd;
-import com.shubo.stastics.AnalyticalResult;
 import com.shubo.entity.report.ConsolidatedEquityChange;
 import com.shubo.entity.report.EquityChange;
 import com.shubo.exception.AnnotationException;
 import com.shubo.sniff.Sniffer;
 import com.shubo.sniff.TableSniffer;
+import com.shubo.stastics.AnalyticalResult;
 import com.shubo.util.HorsemanUtils;
 import com.shubo.util.SimilarityUtils;
 import org.apache.commons.io.FileUtils;
@@ -85,7 +85,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         likedKeyWordsSet.add(likedKeyWord4);
     }
 
-    private List<IndexEntity> getHeaders(String tableStr) throws AnnotationException{
+    private List<IndexEntity> getHeaders(String tableStr) throws AnnotationException {
 
         tableStr = HorsemanUtils.removeBlank(tableStr);
         String[] lines = tableStr.split("\n");
@@ -230,7 +230,6 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                                     if (found) {
                                         EquityChange ec = generateEntity(contents, indexes);
                                         field.set(data, ec);
-
                                     }
                                 }
                             }
@@ -256,7 +255,6 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
             // 匹配过的行去掉
