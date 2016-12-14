@@ -3,15 +3,15 @@ package com.shubo;
 import com.shubo.stastics.AnalyticalResult;
 import com.shubo.parser.PDF2TXT;
 import com.shubo.sniff.TableSniffer;
+import com.shubo.util.HorsemanUtils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import static com.shubo.parser.PDF2TXT.splitChar;
-import static com.shubo.parser.PDF2TXT.typeTable;
-import static com.shubo.parser.PDF2TXT.typeTitle;
+import static com.shubo.parser.PDF2TXT.*;
 
 /**
  * Created by horseman on 2016/11/28.
@@ -69,11 +69,15 @@ public class ReportParser {
 
                                     // 记录已经获取过实体的类，防止重复获取
                                     List<String> capturedEntityKeys = new ArrayList<>();
+
+                                    //keyQueue.
                                     for (String str : list) {
                                         if (str.startsWith(typeTitle + splitChar)) {
-                                            title = str;
+                                            HorsemanUtils.saveText(str);
+                                        } else if (str.startsWith(typeText + splitChar)) {
+                                            HorsemanUtils.saveText(str);
                                         } else if (str.startsWith(typeTable + splitChar)) {
-                                            if (!TableSniffer.sniffEntity(str, title, needHandleFileName, capturedEntityKeys)) {
+                                            if (!TableSniffer.sniffEntity(str, HorsemanUtils.getPossibleKeys(), needHandleFileName, capturedEntityKeys)) {
                                                 otherEntityString.add(str);
                                             }
                                         } else {

@@ -95,16 +95,18 @@ abstract public class Sniffer {
      * 数组的第一个值为需要几列数据
      * 后面跟上每一列数据的index
      * 比如 只有一列数据在第2 列时,返回 [1, 2]
-     * 比如 有两列数据在第 3,4列时,返回 [2, 3, 4]
+     * 比如 有两列数据在第 3,4列时,返回 [2, 3, 4] [2,1,2]
      */
     public abstract int[] getColCnt(String table);
 
-    public boolean sniffWithTitle(String title) throws AnnotationException {
-        String[] titles = getTitle();
+    public boolean sniffWithTitle(List<String> titles) throws AnnotationException {
+        String[] annotationTitles = getTitle();
 
-        for (String sniffTitle : titles) {
-            if (title.contains(sniffTitle)) {
-                return true;
+        for (String sniffTitle : annotationTitles) {
+            for (String title : titles) {
+                if (title.contains(sniffTitle)) {
+                    return true;
+                }
             }
         }
 

@@ -62,12 +62,12 @@ public class TableSniffer {
      *  通过title名识别表格
      *  适用于八大表
      */
-    public static boolean sniffEntity(String table, String title, String fileName, List<String> capturedKeys) throws IOException, AnnotationException {
+    public static boolean sniffEntity(String table, List<String> titles, String fileName, List<String> capturedKeys) throws IOException, AnnotationException {
 
 //        System.out.println("title=" + title);
         for (Sniffer sniffer : reportSniffers) {
 
-            if (sniffer.sniffWithTitle(title) && !capturedKeys.contains(sniffer.getKey())) {
+            if (sniffer.sniffWithTitle(titles) && !capturedKeys.contains(sniffer.getKey())) {
 
                 String tableStr = getTableContent(Jsoup.parse(table));
 
