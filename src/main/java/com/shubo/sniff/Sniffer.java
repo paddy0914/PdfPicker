@@ -184,7 +184,7 @@ abstract public class Sniffer {
 
             List<String> needKickoutLines = new ArrayList<>();
 
-            int[] result = getColCnt(content);//获得数据中有用数据有几个、哪一列是需要的数据
+            int[] result = getColCnt(content);
 
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
@@ -223,13 +223,20 @@ abstract public class Sniffer {
                                             //List<String> datas = new ArrayList<>();
                                             for (int k = 0; k < colCnt; k++) {
                                                 if ((k + 1) < contents.length) {
-                                                    datas.add(contents[result[k + 1]].replace(" ", ""));
+                                                    if (result[k + 1] < contents.length)//防止有的contents的size过小
+                                                        datas.add(contents[result[k + 1]].replace(" ", ""));
+                                                    else
+                                                        datas.add("");
                                                 }
+
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
                                         } else {
-                                            if ( result[1] < contents.length) {
-                                                data.getClass().getDeclaredField(field.getName()).set(data, contents[result[1]]);
+                                            if (result[1] < contents.length) {
+                                                if (result[1] < contents.length)//防止有的contents的size过小
+                                                    data.getClass().getDeclaredField(field.getName()).set(data, contents[result[1]].replace(" ", ""));
+                                                else
+                                                    data.getClass().getDeclaredField(field.getName()).set(data, "");
                                             }
                                         }
                                         needKickoutField = field;
@@ -262,7 +269,6 @@ abstract public class Sniffer {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
             // 匹配过的行去掉
