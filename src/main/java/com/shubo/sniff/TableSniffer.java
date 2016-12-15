@@ -85,14 +85,18 @@ public class TableSniffer {
                         FileUtils.write(new File(outputPath), result[0], false);
                         capturedKeys.add(sniffer.getKey());
                         AnalyticalResult.results[sniffer.getIndex()] = "成功";
+                        AnalyticalResult.singleFileResultNum[0]++;
+                        AnalyticalResult.singleFileResultNum[1]--;
                         return true;
                     } else {
                         AnalyticalResult.results[sniffer.getIndex()] = "Json空";
+                        //AnalyticalResult.singleFileResultNum[1]++;
                         return false;
                     }
 
                 } else {
                     AnalyticalResult.results[sniffer.getIndex()] += "-失败";
+                    //AnalyticalResult.singleFileResultNum[1]++;
                     return false;
                 }
             }
@@ -149,6 +153,8 @@ public class TableSniffer {
                     if (result[0].length() > 2) {
                         FileUtils.write(new File(outputPath), result[0], false);
                         AnalyticalResult.results[sniffer.getIndex()] = "成功";
+                        AnalyticalResult.singleFileResultNum[0]++;
+                        AnalyticalResult.singleFileResultNum[1]--;
                     } else {
                         AnalyticalResult.results[sniffer.getIndex()] = "JSON空";
                     }

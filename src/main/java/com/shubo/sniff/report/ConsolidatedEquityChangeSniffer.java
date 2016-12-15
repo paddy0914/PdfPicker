@@ -148,6 +148,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                 keyWords1.size() + keyWords2.size() + keyWords3.size() + keyWords4.size()) {
             HorsemanUtils.doSomeThing();
             AnalyticalResult.results[getIndex()] = "识别头部错误";
+            //AnalyticalResult.singleFileResultNum[1]++;
             return null;
         }
 

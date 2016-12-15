@@ -103,6 +103,20 @@ public class ReportParser {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                String resultTitleName = "所有表解析成功总数量" + ","
+                        + "所有表解析失败总数量" + "\n";
+                FileUtils.write(new File(AppContext.rootFolder + File.separator + "resultTotal.csv"), resultTitleName, false);
+                String resultTotal = "";
+                for (int i = 0; i < 2; i++) {
+                    resultTotal += AnalyticalResult.allFileResultNum[i] + ",";
+                }
+                resultTotal += "\n";
+                FileUtils.write(new File(AppContext.rootFolder + File.separator + "resultTotal.csv"), resultTotal, true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
