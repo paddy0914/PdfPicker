@@ -22,9 +22,13 @@ public class FinanceSniffer extends Sniffer {
     }
 
     @Override
-    public int[] getColCnt(String table) {
-        int[] result = {1, 1};
-        return result;
+    public ColResult getColCnt(String table, Class clazz) {
+        ColResult colResult=new ColResult();
+        colResult.isList=false;
+        colResult.where=new int[]{1};
+        colResult.colCnt=1;
+        colResult.maxCol=1;
+        return colResult;
     }
 
     public String[] generateEntityJson(String content) {

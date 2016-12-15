@@ -97,7 +97,7 @@ abstract public class Sniffer {
      * 比如 只有一列数据在第2 列时,返回 [1, 2]
      * 比如 有两列数据在第 3,4列时,返回 [2, 3, 4] [2,1,2]
      */
-    public abstract int[] getColCnt(String table);
+    public abstract ColResult getColCnt(String table, Class clazz);
 
     public boolean sniffWithTitle(List<String> titles) throws AnnotationException {
         String[] annotationTitles = getTitle();
@@ -184,12 +184,20 @@ abstract public class Sniffer {
 
             List<String> needKickoutLines = new ArrayList<>();
 
-            int[] result = getColCnt(content);
+            ColResult result = getColCnt(content, clazz);
+            int colCnt = result.colCnt;//数据中有用数据的个数
+
+            if (result.isList && colCnt < 2) {
+                return null;
+            }
+
 
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
-                int colCnt = result[0];//数据中有用数据的个数
+                if (contents.length < result.maxCol) {
+                    continue;
+                }
 
                 if (contents != null && colCnt > 0) {
 
@@ -223,8 +231,8 @@ abstract public class Sniffer {
                                             //List<String> datas = new ArrayList<>();
                                             for (int k = 0; k < colCnt; k++) {
                                                 if ((k + 1) < contents.length) {
-                                                    if (result[k + 1] < contents.length)//防止有的contents的size过小
-                                                        datas.add(contents[result[k + 1]].replace(" ", ""));
+                                                    if (result.where[k] < contents.length)//防止有的contents的size过小
+                                                        datas.add(contents[result.where[k]].replace(" ", ""));
                                                     else
                                                         datas.add("");
                                                 }
@@ -232,11 +240,8 @@ abstract public class Sniffer {
                                             }
                                             data.getClass().getDeclaredField(field.getName()).set(data, datas);
                                         } else {
-                                            if (result[1] < contents.length) {
-                                                if (result[1] < contents.length)//防止有的contents的size过小
-                                                    data.getClass().getDeclaredField(field.getName()).set(data, contents[result[1]].replace(" ", ""));
-                                                else
-                                                    data.getClass().getDeclaredField(field.getName()).set(data, "");
+                                            if (result.where[0] < contents.length) {
+                                                data.getClass().getDeclaredField(field.getName()).set(data, contents[result.where[0]].replace(" ", ""));
                                             }
                                         }
                                         needKickoutField = field;
@@ -436,7 +441,7 @@ abstract public class Sniffer {
     /*
      * 针对财务报表四大表中的特殊情况作判断
      */
-    private boolean isReportEntity(Class clazz) {
+    public static boolean isReportEntity(Class clazz) {
         if (clazz == ConsolidatedBalanceSheet.class ||
                 clazz == ConsolidatedCashFlow.class ||
                 clazz == ConsolidatedProfits.class ||
@@ -445,5 +450,16 @@ abstract public class Sniffer {
         }
 
         return false;
+    }
+
+    public static class ColResult {
+        //有用数据有几列
+        public int colCnt;
+        //有用数据在那些列
+        public int[] where;
+        //是否是List
+        public boolean isList;
+        //最大的列数
+        public int maxCol;
     }
 }

@@ -21,7 +21,7 @@ public class ReportParser {
         System.out.println("------");
         try {
             String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报";
-
+            //String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报test";
             String yearReportFolder = AppContext.rootFolder + File.separator + AppContext.YEAR_REPORT_FOLDER;
 
             File f = new File(yearReportFolder);
@@ -42,7 +42,6 @@ public class ReportParser {
                     /* subFolder : 000001 002625 */
                     if (subFolder.isDirectory()) {
                         File yrFolder = new File(subFolder.getAbsolutePath() + File.separator + "年报");
-
                         if (yrFolder.exists() && yrFolder.isDirectory()) {
                             for (File file : yrFolder.listFiles()) {
                                 if (file.getName().endsWith("html")
@@ -75,6 +74,10 @@ public class ReportParser {
                                         if (str.startsWith(typeTitle + splitChar)) {
                                             HorsemanUtils.saveText(str);
                                         } else if (str.startsWith(typeText + splitChar)) {
+                                            HorsemanUtils.saveText(str);
+                                        } else if (str.startsWith(typeTitle)) {
+                                            HorsemanUtils.saveText(str);
+                                        } else if (str.startsWith(typeText)) {
                                             HorsemanUtils.saveText(str);
                                         } else if (str.startsWith(typeTable + splitChar)) {
                                             if (!TableSniffer.sniffEntity(str, HorsemanUtils.getPossibleKeys(), needHandleFileName, capturedEntityKeys)) {

@@ -37,15 +37,16 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         return sniffByKeywords(content, CECKeyWords, 4);
     }
 
+    @Override
+    public ColResult getColCnt(String table, Class clazz) {
+        return null;
+    }
+
     /**
      * @param table 需要完善
      * @return
      */
-    @Override
-    public int[] getColCnt(String table) {
-        int[] result = {-1, -1};
-        return result;
-    }
+
 
     private static final List<String> likedKeyWord1 = new ArrayList<>();
     private static final List<String> likedKeyWord2 = new ArrayList<>();
