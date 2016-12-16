@@ -39,15 +39,15 @@ public class FileExtraction {
                             for (SmbFile smbfile : yrFolder.listFiles()) {
                                 if (smbfile.getName().endsWith("html")) {
                                     //File localFile=new File();
-                                    System.out.println("start: "+yrFolder.getName().replace("//","")+"-"+smbfile.getName());
+                                    System.out.println("start: " + yrFolder.getName().replace("//", "") + "-" + smbfile.getName());
                                     String localFileUrl = localUrl + "年报" + "/" + smbfile.getName();
-                                    File rfile=new File(localUrl+"年报");
-                                    if(!rfile.exists()){
+                                    File rfile = new File(localUrl + "年报");
+                                    if (!rfile.exists()) {
                                         rfile.mkdir();
                                     }
 
                                     File file = new File(localFileUrl);
-                                    if(!file.exists()){
+                                    if (!file.exists()) {
                                         file.createNewFile();
                                     }
                                     in = new BufferedInputStream(new SmbFileInputStream(smbfile));
