@@ -6,6 +6,7 @@ import com.shubo.stastics.AnalyticalResult;
 import com.shubo.sniff.report.IndexEntity;
 import com.shubo.exception.AnnotationException;
 import com.shubo.sniff.report.*;
+import com.shubo.util.HorsemanUtils;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -72,7 +73,7 @@ public class TableSniffer {
 
                 String tableStr = getTableContent(Jsoup.parse(table));
 
-                System.out.println("sniff " + fileName);
+                System.out.println("获取 " + HorsemanUtils.subment(sniffer.getFolder()) + " " + fileName);
                 String[] result = sniffer.generateEntityJson(tableStr);
 
                 if (result != null && result.length == 2) {

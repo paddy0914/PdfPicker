@@ -12,15 +12,15 @@ public class HorsemanUtils {
     }
 
     public static void main(String args[]) {
-        Queue<String> keyQueue = new LinkedBlockingQueue<>(4);
-        keyQueue.add("1");
-        keyQueue.add("2");
-        keyQueue.add("3");
-        keyQueue.add("4");
-        keyQueue.add("5");
-        keyQueue.add("6");
+        String str4 = "母公司利润";
+        String str1 = "母公司利润表";
+        String str2 = "合并现金流量表";
+        String str3 = "合并现金流量表表";
 
-        String[] keys = (String[]) keyQueue.toArray();
+        System.out.println(subment(str1) + "&&");
+        System.out.println(subment(str2) + "&&");
+        System.out.println(subment(str3) + "&&");
+        System.out.println(subment(str4) + "&&");
         String str = "helloworld";
         int cnt = 5;
         moveStr(str, cnt);
@@ -29,7 +29,18 @@ public class HorsemanUtils {
 
     public static void moveStr(String contents, int cnt) {
         contents = contents.replace("h", "oo");
-        cnt --;
+        cnt--;
+    }
+
+    public static String subment(String contents) {
+        byte[] bytes = contents.getBytes();
+        int len = bytes.length / 3 * 2;
+        while (len < 24) {
+            contents += " ";
+            len = len + 1;
+        }
+
+        return contents;
     }
 
     public static String removeBlank(String content) {
@@ -64,7 +75,7 @@ public class HorsemanUtils {
     public static List<String> getPossibleKeys(String fileName) {
         List<String> possibleKeys = new ArrayList<>();
         String[] keys = keysMap.get(fileName);
-        for (int i = 0; i < 4; i ++) {
+        for (int i = 0; i < 4; i++) {
             if (!keys[i].equals("")) {
                 possibleKeys.add(keys[i]);
             }

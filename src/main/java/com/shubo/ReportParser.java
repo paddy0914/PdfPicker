@@ -88,7 +88,7 @@ public class ReportParser {
 
             AnalyticalResult.createResult(needHandleFileName);
 
-            System.out.println("start:" + needHandleFileName);
+            System.out.println("开始识别:" + needHandleFileName);
             String needHandleFilePath = AppContext.yearReportFolder + File.separator + needHandleFileName;
 
             FileUtils.copyFile(file, new File(needHandleFilePath));
