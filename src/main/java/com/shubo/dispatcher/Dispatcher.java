@@ -8,11 +8,12 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Created by horseman on 2016/12/16.
  */
 public class Dispatcher {
+    public static final int DEFAULT_THREAD_CNT = 10;
     public static void setThreadCnt(int cnt) {
         currentThreadCnt = cnt;
     }
-    private static int currentThreadCnt  = 10;
-    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
+    private static int currentThreadCnt  = DEFAULT_THREAD_CNT;
+    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(currentThreadCnt);
 
     protected static int getActiveCount() {
         return ((ThreadPoolExecutor) fixedThreadPool).getActiveCount();

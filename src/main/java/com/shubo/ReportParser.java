@@ -19,7 +19,10 @@ import static com.shubo.parser.PDF2TXT.*;
  */
 public class ReportParser {
     public static void main(String args[]) {
-        System.out.println("------");
+        System.out.println("------开始处理-------");
+        if (args.length > 0) {
+            Dispatcher.setThreadCnt(Integer.valueOf(args[0]));
+        }
         try {
             String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报";
             //String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报test";
@@ -98,18 +101,19 @@ public class ReportParser {
             // 记录已经获取过实体的类，防止重复获取
             List<String> capturedEntityKeys = new ArrayList<>();
 
+            HorsemanUtils.createKeys(needHandleFileName);
             //keyQueue.
             for (String str : list) {
                 if (str.startsWith(typeTitle + splitChar)) {
-                    HorsemanUtils.saveText(str);
+                    HorsemanUtils.saveText(needHandleFileName, str);
                 } else if (str.startsWith(typeText + splitChar)) {
-                    HorsemanUtils.saveText(str);
+                    HorsemanUtils.saveText(needHandleFileName, str);
                 } else if (str.startsWith(typeTitle)) {
-                    HorsemanUtils.saveText(str);
+                    HorsemanUtils.saveText(needHandleFileName, str);
                 } else if (str.startsWith(typeText)) {
-                    HorsemanUtils.saveText(str);
+                    HorsemanUtils.saveText(needHandleFileName, str);
                 } else if (str.startsWith(typeTable + splitChar)) {
-                    if (!TableSniffer.sniffEntity(str, HorsemanUtils.getPossibleKeys(), needHandleFileName, capturedEntityKeys)) {
+                    if (!TableSniffer.sniffEntity(str, HorsemanUtils.getPossibleKeys(needHandleFileName), needHandleFileName, capturedEntityKeys)) {
                         otherEntityString.add(str);
                     }
                 } else {

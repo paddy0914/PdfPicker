@@ -1,8 +1,6 @@
 package com.shubo.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -42,18 +40,30 @@ public class HorsemanUtils {
 
     }
 
-    public static int index = 0;
-    public static String[] keys = new String[4];
-    public static void saveText(String str) {
+    public static Map<String, String[]> keysMap = new HashMap<>();
+    public static Map<String, Integer> indexMap = new HashMap<>();
+
+    public static void saveText(String fileName, String str) {
+        String[] keys = keysMap.get(fileName);
+        int index = indexMap.get(fileName);
+
         keys[index] = str;
         index = index + 1;
         if (index == 4) {
             index = 0;
         }
+        indexMap.put(fileName, index);
     }
 
-    public static List<String> getPossibleKeys() {
+    public static void createKeys(String fileName) {
+        String[] keys = new String[4];
+        keysMap.put(fileName, keys);
+        indexMap.put(fileName, 0);
+    }
+
+    public static List<String> getPossibleKeys(String fileName) {
         List<String> possibleKeys = new ArrayList<>();
+        String[] keys = keysMap.get(fileName);
         for (int i = 0; i < 4; i ++) {
             if (!keys[i].equals("")) {
                 possibleKeys.add(keys[i]);
