@@ -1,6 +1,7 @@
 package com.shubo.sniff.report;
 
 import com.alibaba.fastjson.JSON;
+import com.shubo.ExceptionString;
 import com.shubo.annotation.Horseman;
 import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedEquityChange;
@@ -147,7 +148,6 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         if (colCnt - 1 !=
                 keyWords1.size() + keyWords2.size() + keyWords3.size() + keyWords4.size()) {
             HorsemanUtils.doSomeThing();
-            AnalyticalResult.results[getIndex()] = "识别头部错误";
             //AnalyticalResult.singleFileResultNum[1]++;
             return null;
         }
@@ -170,7 +170,9 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
     public String[] generateEntityJson(String content) throws AnnotationException {
         List<IndexEntity> indexes = getHeaders(content);
         if (indexes == null) {
-            return null;
+            String[] result = new String[2];
+            result[0] = ExceptionString.HEADER_SNIFF_ERR;
+            return result;
         }
         return generateEntityJson(content, indexes);
     }

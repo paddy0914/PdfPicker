@@ -6,14 +6,14 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 文件解析情况的结果
  * Created by liujinping on 2016/12/9.
  */
 public class AnalyticalResult {
-    //文件名
-    public static String filename;
     /*
     * 0,合并资产负债表
     * 1,合并现金流表
@@ -32,8 +32,11 @@ public class AnalyticalResult {
     * 13,解析成功数量
     * 14,解析失败数量
      */
-    public static String[] results = new String[13];
+    public static Map<String, String[]> resultsMap = new HashMap<>();
+    public static Map<String, int[]> singleResultMap = new HashMap<>();
+
     public static int[] singleFileResultNum = new int[2];
+
     public static int[] allFileResultNum = new int[]{0, 0};
 
     static {
@@ -51,36 +54,55 @@ public class AnalyticalResult {
         }
     }
 
-    public static void reset() {
-        filename = "";
+    public static void setResultValue(String fileName, int index, String value) {
+        String[] results = resultsMap.get(fileName);
+        results[index] = value;
+    }
+
+    public static void setSingleResult(String fileName, int index, String value) {
+        String[] results = resultsMap.get(fileName);
+        results[index] = value;
+    }
+
+    public static void createResult(String filename) {
+        String[] results = new String[13];
         for (int i = 0; i < 13; i++) {
             results[i] = "未识别";
         }
-        singleFileResultNum[0]=0;
-        singleFileResultNum[1]=13;
 
+        int[] singleTotal = new int[2];
+        singleTotal[0] = 0;
+        singleTotal[1] = 13;
+
+        resultsMap.put(filename, results);
+        singleResultMap.put(filename, singleTotal);
     }
 
-    public static void writeToCsv() {
+    private static Object writeFileLock = new Object();
+    public static void writeToCsv(String filename) {
 
-        for (int i = 0; i < 2; i++) {
-            allFileResultNum[i] += singleFileResultNum[i];
-        }
+        synchronized (writeFileLock) {
+            for (int i = 0; i < 2; i++) {
+                allFileResultNum[i] += singleFileResultNum[i];
+            }
 
-        try {
-            String str = filename;
-            for (String s : results) {
-                str += "," + s;
+            try {
+                String str = filename;
+                String[] results = resultsMap.get(filename);
+                for (String s : results) {
+                    str += "," + s;
+                }
+                for (int i : singleFileResultNum) {
+                    str += "," + i;
+                }
+                str += "\n";
+                FileUtils.write(new File(AppContext.rootFolder + File.separator + "error.csv"), str, true);
+
+                resultsMap.remove(filename);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
             }
-            for (int i : singleFileResultNum) {
-                str += "," + i;
-            }
-            str += "\n";
-            FileUtils.write(new File(AppContext.rootFolder + File.separator + "error.csv"), str, true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            reset();
         }
     }
 }

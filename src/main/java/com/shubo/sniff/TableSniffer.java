@@ -1,6 +1,7 @@
 package com.shubo.sniff;
 
 import com.shubo.AppContext;
+import com.shubo.ExceptionString;
 import com.shubo.stastics.AnalyticalResult;
 import com.shubo.sniff.report.IndexEntity;
 import com.shubo.exception.AnnotationException;
@@ -76,7 +77,9 @@ public class TableSniffer {
 
                 if (result != null && result.length == 2) {
                     //如果得到的result[0]的内容为{}表示解析失败
-                    if (result[0].length() > 2) {
+                    if (result[0].equals(ExceptionString.HEADER_SNIFF_ERR)) {
+                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), ExceptionString.HEADER_SNIFF_ERR);
+                    } else if (result[0].length() > 2) {
                         String outputPath = AppContext.rootFolder +
                                 File.separator + AppContext.JSON_OUTPUT_DIR +
                                 File.separator + sniffer.getFolder() +
@@ -84,18 +87,22 @@ public class TableSniffer {
 
                         FileUtils.write(new File(outputPath), result[0], false);
                         capturedKeys.add(sniffer.getKey());
-                        AnalyticalResult.results[sniffer.getIndex()] = "成功";
+
+                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "成功");
+
+                        /* TODO */
                         AnalyticalResult.singleFileResultNum[0]++;
                         AnalyticalResult.singleFileResultNum[1]--;
+
                         return true;
                     } else {
-                        AnalyticalResult.results[sniffer.getIndex()] = "Json空";
+                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "Json空");
                         //AnalyticalResult.singleFileResultNum[1]++;
                         return false;
                     }
 
                 } else {
-                    AnalyticalResult.results[sniffer.getIndex()] += "-失败";
+                    AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "-失败");
                     //AnalyticalResult.singleFileResultNum[1]++;
                     return false;
                 }
@@ -152,15 +159,15 @@ public class TableSniffer {
                 if (result != null && result.length == 2) {
                     if (result[0].length() > 2) {
                         FileUtils.write(new File(outputPath), result[0], false);
-                        AnalyticalResult.results[sniffer.getIndex()] = "成功";
+                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "成功");
                         AnalyticalResult.singleFileResultNum[0]++;
                         AnalyticalResult.singleFileResultNum[1]--;
                     } else {
-                        AnalyticalResult.results[sniffer.getIndex()] = "JSON空";
+                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "JSON空");
                     }
                     break;
                 } else {
-                    AnalyticalResult.results[sniffer.getIndex()] += "-失败";
+                    AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "失败");
                 }
             }
         }
