@@ -32,6 +32,7 @@ public class AnalyticalResult {
     * 13,解析成功数量
     * 14,解析失败数量
      */
+    public static Object resultsMapLock = new Object();
     public static Map<String, String[]> resultsMap = new HashMap<>();
     public static Map<String, int[]> singleResultMap = new HashMap<>();
 
@@ -55,8 +56,10 @@ public class AnalyticalResult {
     }
 
     public static void setResultValue(String fileName, int index, String value) {
-        String[] results = resultsMap.get(fileName);
-        results[index] = value;
+        synchronized (resultsMapLock) {
+            String[] results = resultsMap.get(fileName);
+            results[index] = value;
+        }
     }
 
     public static void setSingleResult(String fileName, int index, String value) {
@@ -74,8 +77,10 @@ public class AnalyticalResult {
         singleTotal[0] = 0;
         singleTotal[1] = 13;
 
-        resultsMap.put(filename, results);
-        singleResultMap.put(filename, singleTotal);
+        synchronized (resultsMapLock) {
+            resultsMap.put(filename, results);
+            singleResultMap.put(filename, singleTotal);
+        }
     }
 
     private static Object writeFileLock = new Object();
@@ -98,7 +103,9 @@ public class AnalyticalResult {
                 str += "\n";
                 FileUtils.write(new File(AppContext.rootFolder + File.separator + "error.csv"), str, true);
 
-                resultsMap.remove(filename);
+                synchronized (resultsMapLock) {
+                    resultsMap.remove(filename);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
