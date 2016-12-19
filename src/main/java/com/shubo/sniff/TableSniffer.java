@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shubo.stastics.AnalyticalResult.singleResultOperation;
+
 //import static com.shubo.ReportParser.analyticalResultList;
 
 /**
@@ -30,8 +32,6 @@ public class TableSniffer {
 
     public static List<Sniffer> reportSniffers = new ArrayList();
     public static List<Sniffer> otherSniffers = new ArrayList();
-
-    public static Object singleResultMapLock = new Object();//锁
 
     static {
 
@@ -92,21 +92,16 @@ public class TableSniffer {
                         capturedKeys.add(sniffer.getKey());
 
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "成功");
-
-                        synchronized (singleResultMapLock){
-                            AnalyticalResult.singleResultMap.get(fileName)[0]++;
-                            AnalyticalResult.singleResultMap.get(fileName)[1]--;
-                        }
+                        ////统计解析情况
+                        singleResultOperation(fileName);
                         return true;
                     } else {
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "Json空");
-                        //AnalyticalResult.singleFileResultNum[1]++;
                         return false;
                     }
 
                 } else {
                     AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "-失败");
-                    //AnalyticalResult.singleFileResultNum[1]++;
                     return false;
                 }
             }
@@ -163,10 +158,8 @@ public class TableSniffer {
                     if (result[0].length() > 2) {
                         FileUtils.write(new File(outputPath), result[0], false);
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "成功");
-                        synchronized (singleResultMapLock){
-                            AnalyticalResult.singleResultMap.get(fileName)[0]++;
-                            AnalyticalResult.singleResultMap.get(fileName)[1]--;
-                        }
+                        //统计解析情况
+                        singleResultOperation(fileName);
                     } else {
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "JSON空");
                     }
@@ -222,7 +215,6 @@ public class TableSniffer {
     //专门处理所有者权益变动表
 
     /**
-     *
      * @param table
      * @return
      */

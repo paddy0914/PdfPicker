@@ -33,10 +33,9 @@ public class AnalyticalResult {
     * 14,解析失败数量
      */
     public static Object resultsMapLock = new Object();
+    public static Object singleResultMapLock = new Object();
     public static Map<String, String[]> resultsMap = new HashMap<>();
     public static Map<String, int[]> singleResultMap = new HashMap<>();
-
-    //public static int[] singleFileResultNum = new int[2];
 
     public static int[] allFileResultNum = new int[]{0, 0};
 
@@ -62,9 +61,11 @@ public class AnalyticalResult {
         }
     }
 
-    public static void setSingleResult(String fileName, int index, String value) {
-        String[] results = resultsMap.get(fileName);
-        results[index] = value;
+    public static void singleResultOperation(String fileName) {
+        synchronized (singleResultMapLock){
+            singleResultMap.get(fileName)[0]++;
+            singleResultMap.get(fileName)[1]--;
+        }
     }
 
     public static void createResult(String filename) {
@@ -85,6 +86,7 @@ public class AnalyticalResult {
 
     private static Object writeFileLock = new Object();
     public static void writeToCsv(String filename) {
+        //hard(filename);
 
         synchronized (writeFileLock) {
             for (int i = 0; i < 2; i++) {
@@ -112,6 +114,13 @@ public class AnalyticalResult {
                 e.printStackTrace();
             } finally {
             }
+        }
+    }
+
+    private static void hard(String fileName) {
+        if (fileName.equals("ddddd")) {
+            String[] results = resultsMap.get(fileName);
+            results[4] = "xxxxyyyxx";
         }
     }
 }
