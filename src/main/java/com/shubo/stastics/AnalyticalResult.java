@@ -36,7 +36,7 @@ public class AnalyticalResult {
     public static Map<String, String[]> resultsMap = new HashMap<>();
     public static Map<String, int[]> singleResultMap = new HashMap<>();
 
-    public static int[] singleFileResultNum = new int[2];
+    //public static int[] singleFileResultNum = new int[2];
 
     public static int[] allFileResultNum = new int[]{0, 0};
 
@@ -88,7 +88,7 @@ public class AnalyticalResult {
 
         synchronized (writeFileLock) {
             for (int i = 0; i < 2; i++) {
-                allFileResultNum[i] += singleFileResultNum[i];
+                allFileResultNum[i] += singleResultMap.get(filename)[i];
             }
 
             try {
@@ -97,14 +97,16 @@ public class AnalyticalResult {
                 for (String s : results) {
                     str += "," + s;
                 }
-                for (int i : singleFileResultNum) {
+                for (int i : singleResultMap.get(filename)) {
                     str += "," + i;
                 }
+
                 str += "\n";
                 FileUtils.write(new File(AppContext.rootFolder + File.separator + "error.csv"), str, true);
 
                 synchronized (resultsMapLock) {
                     resultsMap.remove(filename);
+                    singleResultMap.remove(filename);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
