@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static com.shubo.parser.PDF2TXT.*;
@@ -18,6 +19,9 @@ import static com.shubo.parser.PDF2TXT.*;
  * Created by horseman on 2016/11/28.
  */
 public class ReportParser {
+
+    public static CountDownLatch latch = new CountDownLatch(1);
+
     public static void main(String args[]) {
         System.out.println("------开始处理-------");
         if (args.length > 0) {
@@ -29,7 +33,7 @@ public class ReportParser {
 
             for (File subFolder : folder.listFiles()) {
 
-                    /* subFolder : 000001 002625 */
+                /* subFolder : 000001 002625 */
                 if (subFolder.isDirectory()) {
                     for (File file : subFolder.listFiles()) {
                         if (!file.getName().contains("英文版")
@@ -51,7 +55,13 @@ public class ReportParser {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            System.out.println("任务派发完毕，等待任务执行");
+
             try {
+
+                latch.await();
+                System.out.println("任务执行完毕");
+
                 String resultTitleName = "所有表解析成功总数量" + ","
                         + "所有表解析失败总数量" + "\n";
                 FileUtils.write(new File(AppContext.rootFolder + File.separator + "resultTotal.csv"), resultTitleName, false);
@@ -63,13 +73,16 @@ public class ReportParser {
                 FileUtils.write(new File(AppContext.rootFolder + File.separator + "resultTotal.csv"), resultTotal, true);
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+
+            Dispatcher.shutdown();
         }
     }
 
     public static void handle(File file, String stockCode) {
         try {
-
             String needHandleFileName = stockCode + "-" + file.getName();
 
             AnalyticalResult.createResult(needHandleFileName);
@@ -103,7 +116,7 @@ public class ReportParser {
                         otherEntityString.add(str);
                     }
                 } else {
-                                            /* what's this */
+                    /* what's this */
                 }
             }
 
@@ -113,6 +126,9 @@ public class ReportParser {
             AnalyticalResult.writeToCsv(needHandleFileName);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            System.out.println(file.getName() + " 执行完毕");
+            Dispatcher.decrease();
         }
     }
 }
