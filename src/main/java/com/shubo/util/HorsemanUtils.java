@@ -51,6 +51,7 @@ public class HorsemanUtils {
 
     }
 
+    public static Object mapLock = new Object();
     public static Map<String, String[]> keysMap = new HashMap<>();
     public static Map<String, Integer> indexMap = new HashMap<>();
 
@@ -63,13 +64,17 @@ public class HorsemanUtils {
         if (index == 4) {
             index = 0;
         }
-        indexMap.put(fileName, index);
+        synchronized (mapLock) {
+            indexMap.put(fileName, index);
+        }
     }
 
     public static void createKeys(String fileName) {
         String[] keys = new String[4];
-        keysMap.put(fileName, keys);
-        indexMap.put(fileName, 0);
+        synchronized (mapLock) {
+            keysMap.put(fileName, keys);
+            indexMap.put(fileName, 0);
+        }
     }
 
     public static List<String> getPossibleKeys(String fileName) {
