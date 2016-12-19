@@ -25,7 +25,7 @@ public class ReportParser {
         }
         try {
             String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报";
-            //String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报test";
+//            String srcYRReportFolder = "E://年报解析";
 
             File f = new File(AppContext.yearReportFolder);
             if (!f.exists()) {

@@ -31,6 +31,8 @@ public class TableSniffer {
     public static List<Sniffer> reportSniffers = new ArrayList();
     public static List<Sniffer> otherSniffers = new ArrayList();
 
+    public static Object singleResultMapLock = new Object();//锁
+
     static {
 
         reportSniffers.add(new ConsolidatedCashFlowSniffer());
@@ -91,10 +93,10 @@ public class TableSniffer {
 
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "成功");
 
-                        /* TODO */
-                        AnalyticalResult.singleFileResultNum[0]++;
-                        AnalyticalResult.singleFileResultNum[1]--;
-
+                        synchronized (singleResultMapLock){
+                            AnalyticalResult.singleResultMap.get(fileName)[0]++;
+                            AnalyticalResult.singleResultMap.get(fileName)[1]--;
+                        }
                         return true;
                     } else {
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "Json空");
@@ -161,8 +163,10 @@ public class TableSniffer {
                     if (result[0].length() > 2) {
                         FileUtils.write(new File(outputPath), result[0], false);
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "成功");
-                        AnalyticalResult.singleFileResultNum[0]++;
-                        AnalyticalResult.singleFileResultNum[1]--;
+                        synchronized (singleResultMapLock){
+                            AnalyticalResult.singleResultMap.get(fileName)[0]++;
+                            AnalyticalResult.singleResultMap.get(fileName)[1]--;
+                        }
                     } else {
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "JSON空");
                     }
