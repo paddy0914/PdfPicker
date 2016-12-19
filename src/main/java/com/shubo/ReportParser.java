@@ -24,39 +24,25 @@ public class ReportParser {
             Dispatcher.setThreadCnt(Integer.valueOf(args[0]));
         }
         try {
-            String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报";
-            //String srcYRReportFolder = AppContext.rootFolder + File.separator + "年报test";
-
-            File f = new File(AppContext.yearReportFolder);
-            if (!f.exists()) {
-                f.mkdir();
-            }
-
             /* 年报解析/年报 */
-            File folder = new File(srcYRReportFolder);
+            File folder = new File(AppContext.srcFolder);
 
             for (File subFolder : folder.listFiles()) {
-                /*
-                if (Integer.valueOf(subFolder.getName()) != 5) {
-                    continue;
-                }
-                */
+
                     /* subFolder : 000001 002625 */
                 if (subFolder.isDirectory()) {
-                    File yrFolder = new File(subFolder.getAbsolutePath() + File.separator + "年报");
-                    if (yrFolder.exists() && yrFolder.isDirectory()) {
-                        for (File file : yrFolder.listFiles()) {
-                            if (file.getName().endsWith("html")
-                                    && !file.getName().contains("英文版")
-                                    && !file.getName().contains("摘要")
-                                    && file.getName().contains("年度报告")
-                                    && !file.getName().contains("半年度报告")) {
+                    for (File file : subFolder.listFiles()) {
+                        if (!file.getName().contains("英文版")
+                                && !file.getName().contains("摘要")
+                                && file.getName().contains("年度报告")
+                                && !file.getName().contains("半年度报告")) {
 
-                                try {
-                                    Dispatcher.startTaskSync(() -> {handle(file, subFolder.getName());});
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                            try {
+                                Dispatcher.startTaskSync(() -> {
+                                    handle(file, subFolder.getName());
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                     }

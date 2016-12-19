@@ -12,5 +12,6 @@ public class AppContext {
     public static final String YEAR_REPORT_FOLDER = "年度报告";
 
     public static final String yearReportFolder = AppContext.rootFolder + File.separator + AppContext.YEAR_REPORT_FOLDER;
-    public static String rootFolder = "d:\\年报解析";
+    public static String rootFolder = "e:\\年报解析";
+    public static String srcFolder = "e:\\年报解析" + File.separator + "html";
 }
