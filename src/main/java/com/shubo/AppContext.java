@@ -1,6 +1,8 @@
 package com.shubo;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by horseman on 2016/11/25.
@@ -14,4 +16,5 @@ public class AppContext {
     public static final String yearReportFolder = AppContext.rootFolder + File.separator + AppContext.YEAR_REPORT_FOLDER;
     public static String rootFolder = "e:\\年报解析";
     public static String srcFolder = rootFolder + File.separator + "html";
+    public static String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 }

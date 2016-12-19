@@ -47,7 +47,7 @@ public class AnalyticalResult {
                     + "主要财务数据,现金流量表,非经常性损益,前10名无限售条件股东持股情况,前10名股东持股情况"
                     + ",解析成功数量"
                     + ",解析失败数量" + "\n";
-            FileUtils.write(new File(AppContext.rootFolder + File.separator + "error.csv"), initStr, false);
+            FileUtils.write(new File(AppContext.rootFolder + File.separator + AppContext.dateStr + "-" + "error.csv"), initStr, false);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class AnalyticalResult {
     }
 
     public static void singleResultOperation(String fileName) {
-        synchronized (singleResultMapLock){
+        synchronized (singleResultMapLock) {
             singleResultMap.get(fileName)[0]++;
             singleResultMap.get(fileName)[1]--;
         }
@@ -85,6 +85,7 @@ public class AnalyticalResult {
     }
 
     private static Object writeFileLock = new Object();
+
     public static void writeToCsv(String filename) {
         //hard(filename);
 
@@ -104,7 +105,7 @@ public class AnalyticalResult {
                 }
 
                 str += "\n";
-                FileUtils.write(new File(AppContext.rootFolder + File.separator + "error.csv"), str, true);
+                FileUtils.write(new File(AppContext.rootFolder + File.separator + AppContext.dateStr + "-" + "error.csv"), str, true);
 
                 synchronized (resultsMapLock) {
                     resultsMap.remove(filename);

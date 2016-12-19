@@ -64,7 +64,7 @@ public class ReportParser {
 
                 String resultTitleName = "所有表解析成功总数量" + ","
                         + "所有表解析失败总数量" + "," + "解析成功率" + "\n";
-                FileUtils.write(new File(AppContext.rootFolder + File.separator + "resultTotal.csv"), resultTitleName, false);
+                FileUtils.write(new File(AppContext.rootFolder + File.separator + AppContext.dateStr +"-"+"resultTotal.csv"), resultTitleName, false);
                 String resultTotal = "";
                 for (int i = 0; i < 2; i++) {
                     resultTotal += AnalyticalResult.allFileResultNum[i] + ",";
@@ -72,7 +72,7 @@ public class ReportParser {
                 double successRate = (double) AnalyticalResult.allFileResultNum[0] / (double) (AnalyticalResult.allFileResultNum[0] + AnalyticalResult.allFileResultNum[1]);
                 resultTotal += successRate;
                 resultTotal += "\n";
-                FileUtils.write(new File(AppContext.rootFolder + File.separator + "resultTotal.csv"), resultTotal, true);
+                FileUtils.write(new File(AppContext.rootFolder + File.separator +AppContext.dateStr+"-"+"resultTotal.csv"), resultTotal, true);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
