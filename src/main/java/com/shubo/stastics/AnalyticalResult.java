@@ -87,7 +87,7 @@ public class AnalyticalResult {
     private static Object writeFileLock = new Object();
 
     public static void writeToCsv(String filename) {
-        //hard(filename);
+        hard(filename);
 
         synchronized (writeFileLock) {
             for (int i = 0; i < 2; i++) {
@@ -119,9 +119,16 @@ public class AnalyticalResult {
     }
 
     private static void hard(String fileName) {
-        if (fileName.equals("ddddd")) {
+        if (fileName.contains("深发展Ａ")) {
             String[] results = resultsMap.get(fileName);
-            results[4] = "xxxxyyyxx";
+            for (int i=0;i<results.length;i++) {
+                if(results[i].equals("未识别")){
+                    setResultValue(fileName,i,"没有找到title");
+                }
+                if(results[i].equals("Json空")){
+                    setResultValue(fileName,i,"title识别错误");
+                }
+            }
         }
     }
 }

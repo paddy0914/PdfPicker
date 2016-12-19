@@ -143,17 +143,6 @@ abstract public class Sniffer {
     }
 
     /*
-        private static int computeCols(int len, int[] options) {
-            for (int i : options) {
-                if (i == len) {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-    */
-    /*
      * 把处理过后的表格内容识别为对应实体,并作为json返回
      * @Param content : 待转换内容
      * @Param clazz : 实体
@@ -190,8 +179,6 @@ abstract public class Sniffer {
             if (result.isList && colCnt < 2) {
                 return null;
             }
-
-
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
@@ -226,7 +213,7 @@ abstract public class Sniffer {
                                     }
                                     if (found) {
                                         List<String> datas = new ArrayList<>();
-                                        //当colCnt>1的时候说明，表中需要解析的数据不止一列，这种情况暂时没有考虑
+                                        //当colCnt>1的时候说明，表中需要解析的数据不止一列
                                         if (colCnt > 1) {
                                             //List<String> datas = new ArrayList<>();
                                             for (int k = 0; k < colCnt; k++) {

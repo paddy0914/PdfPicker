@@ -45,6 +45,8 @@ public class TableSniffer {
         reportSniffers.add(new ParentEquityChangeSniffer());
         reportSniffers.add(new ParentProfitsSniffer());
 
+        reportSniffers.add(new BalanceShellSniffer());
+
         otherSniffers.add(new FinanceSniffer());
         otherSniffers.add(new NrgalSniffer());
         otherSniffers.add(new ShareHolderSniffer());
@@ -100,13 +102,44 @@ public class TableSniffer {
                         return false;
                     }
 
-                } else {
-                    AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "-失败");
-                    return false;
+                } else if (result != null && result.length == 3) {
+                    if (result[0].equals(ExceptionString.HEADER_SNIFF_ERR)) {
+                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), ExceptionString.HEADER_SNIFF_ERR);
+                    } else if (result[0].length() > 2) {
+                        if (sniffer instanceof BalanceShellSniffer) {
+                            ConsolidatedBalanceShellSniffer snifferCBS = new ConsolidatedBalanceShellSniffer();
+                            ParentBalanceShellSniffer snifferPBS = new ParentBalanceShellSniffer();
+                            String outputPath1 = AppContext.rootFolder +
+                                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                                    File.separator + snifferCBS.getFolder() +
+                                    File.separator + fileName.replace("html", "json");
+
+                            String outputPath2 = AppContext.rootFolder +
+                                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                                    File.separator + snifferPBS.getFolder() +
+                                    File.separator + fileName.replace("html", "json");
+
+                            FileUtils.write(new File(outputPath1), result[0], false);
+                            FileUtils.write(new File(outputPath2), result[1], false);
+                            capturedKeys.add(sniffer.getKey());
+
+                            AnalyticalResult.setResultValue(fileName, snifferCBS.getIndex(), "成功");
+                            AnalyticalResult.setResultValue(fileName, snifferPBS.getIndex(), "成功");
+                            ////统计解析情况
+                            singleResultOperation(fileName);
+                            singleResultOperation(fileName);
+                            return true;
+                        } else {
+                            AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "Json空");
+                            return false;
+                        }
+                    } else {
+                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "-失败");
+                        return false;
+                    }
                 }
             }
         }
-
         return false;
     }
         /*
