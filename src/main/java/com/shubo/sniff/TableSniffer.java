@@ -46,6 +46,7 @@ public class TableSniffer {
         reportSniffers.add(new ParentProfitsSniffer());
 
         reportSniffers.add(new BalanceShellSniffer());
+        reportSniffers.add(new CashFlowNumberSniffer());
 
         otherSniffers.add(new FinanceSniffer());
         otherSniffers.add(new NrgalSniffer());
@@ -129,12 +130,34 @@ public class TableSniffer {
                             singleResultOperation(fileName);
                             singleResultOperation(fileName);
                             return true;
+                        } else if (sniffer instanceof CashFlowNumberSniffer) {
+                            ConsolidatedCashFlowSniffer snifferCCF = new ConsolidatedCashFlowSniffer();
+                            ParentCashFlowSniffer snifferPCF = new ParentCashFlowSniffer();
+                            String outputPath1 = AppContext.rootFolder +
+                                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                                    File.separator + snifferCCF.getFolder() +
+                                    File.separator + fileName.replace("html", "json");
+
+                            String outputPath2 = AppContext.rootFolder +
+                                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                                    File.separator + snifferPCF.getFolder() +
+                                    File.separator + fileName.replace("html", "json");
+
+                            FileUtils.write(new File(outputPath1), result[0], false);
+                            FileUtils.write(new File(outputPath2), result[1], false);
+                            capturedKeys.add(sniffer.getKey());
+
+                            AnalyticalResult.setResultValue(fileName, snifferCCF.getIndex(), "成功");
+                            AnalyticalResult.setResultValue(fileName, snifferPCF.getIndex(), "成功");
+                            ////统计解析情况
+                            singleResultOperation(fileName);
+                            singleResultOperation(fileName);
                         } else {
                             AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "Json空");
                             return false;
                         }
                     } else {
-                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "-失败");
+                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "失败");
                         return false;
                     }
                 }

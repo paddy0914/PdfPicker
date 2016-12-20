@@ -4,17 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
 import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedBalanceSheet;
-import com.shubo.entity.report.ConsolidatedEquityChange;
-import com.shubo.entity.report.EquityChange;
-import com.shubo.exception.AnnotationException;
-import com.shubo.sniff.ShareHolderSniffer;
+import com.shubo.entity.report.ConsolidatedCashFlow;
 import com.shubo.sniff.Sniffer;
 import com.shubo.sniff.TableSniffer;
 import com.shubo.util.SimilarityUtils;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,16 +20,16 @@ import java.util.regex.Pattern;
 /**
  * Created by liujinping on 2016/12/19.
  */
-@Todd(key = "BalanceShell",
-        index = 14,
-        suffix = ".bs",
-        folder = "合并及公司资产负债表",
-        title = {"合并及公司资产负债表"})
-public class BalanceShellSniffer extends Sniffer {
+@Todd(key = "CashFlowNumber",
+        index = 15,
+        suffix = ".cfn",
+        folder = "合并及公司现金流量表",
+        title = {"合并及公司现金流量表"})
+public class CashFlowNumberSniffer extends Sniffer {
 
     @Override
     public boolean sniff(String content) {
-        return sniffByKeywords(content, BSKeyWords, 7);
+        return sniffByKeywords(content, CFNKeyWords, 7);
     }
 
     @Override
@@ -125,8 +119,8 @@ public class BalanceShellSniffer extends Sniffer {
             Object data1 = null;
             Object data2 = null;
             try {
-                data1 = ConsolidatedBalanceSheet.class.newInstance();
-                data2 = ConsolidatedBalanceSheet.class.newInstance();
+                data1 = ConsolidatedCashFlow.class.newInstance();
+                data2 = ConsolidatedCashFlow.class.newInstance();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -144,7 +138,7 @@ public class BalanceShellSniffer extends Sniffer {
 
             List<String> needKickoutLines = new ArrayList<>();
 
-            ColResult result = getColCnt(content, ConsolidatedBalanceSheet.class);
+            ColResult result = getColCnt(content, ConsolidatedCashFlow.class);
 
             int colCnt = result.colCnt;//数据中有用数据的个数
 
@@ -235,8 +229,6 @@ public class BalanceShellSniffer extends Sniffer {
                 content = content.replace(deleteStr + "\n", "");
             }
 
-//            System.out.println();
-
             String[] res = new String[3];
             res[0] = JSON.toJSONString(data1);
             res[1] = JSON.toJSONString(data2);
@@ -248,16 +240,13 @@ public class BalanceShellSniffer extends Sniffer {
         return null;
     }
 
-    private static final String[] BSKeyWords = {
-            "固定资产清理固定资产清理",
-            "生产性生物资产",
-            "长期待摊费用",
-            "吸收存款及同业存放",
-            "衍生金融负债",
-            "卖出回购金融资产款",
-            "应付职工薪酬",
-            "划分为持有待售的负债",
-            "递延所得税负债",
-            "永续债"
+    private static final String[] CFNKeyWords = {
+            "客户存款和同业存放款项净增加额",
+            "向中央银行借款净增加额",
+            "收到原保险合同保费取得的现金",
+            "收到再保险业务现金净额",
+            "保户储金及投资款净增加额",
+            "拆入资金净增加额",
+            "回购业务资金净增加额"
     };
 }
