@@ -15,6 +15,12 @@ public class AppContext {
     public static final String YEAR_REPORT_FOLDER = "年度报告";
 
     public static final String yearReportFolder = AppContext.rootFolder + File.separator + AppContext.YEAR_REPORT_FOLDER;
+
+    public static void setRootFolder(String folder) {
+        rootFolder = folder;
+        srcFolder = rootFolder + File.separator + "html";
+    }
+
     public static String rootFolder = "e:\\年报解析";
     public static String srcFolder = rootFolder + File.separator + "html";
     //public static String srcFolder = rootFolder + File.separator + "年报";//测试用

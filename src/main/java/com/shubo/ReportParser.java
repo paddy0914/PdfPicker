@@ -24,8 +24,9 @@ public class ReportParser {
 
     public static void main(String args[]) {
         System.out.println("------开始处理-------");
-        if (args.length > 0) {
+        if (args.length > 1) {
             Dispatcher.setThreadCnt(Integer.valueOf(args[0]));
+            AppContext.setRootFolder(args[1]);
         }
         try {
             /* 年报解析/年报 */
