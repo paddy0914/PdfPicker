@@ -83,7 +83,7 @@ public class TableSniffer {
                 System.out.println("获取 " + HorsemanUtils.subment(sniffer.getFolder()) + " " + fileName);
                 String[] result = sniffer.generateEntityJson(tableStr);
 
-                if (result != null && result.length == 2) {
+                if (result != null && result.length == 2 && Sniffer.isReportSniffer(sniffer.getClass())) {
                     //如果得到的result[0]的内容为{}表示解析失败
                     if (result[0].equals(ExceptionString.HEADER_SNIFF_ERR)) {
                         AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), ExceptionString.HEADER_SNIFF_ERR);
@@ -154,7 +154,8 @@ public class TableSniffer {
                             ////统计解析情况
                             singleResultOperation(fileName);
                             singleResultOperation(fileName);
-                        } else if(sniffer instanceof ProfitsSniffer){
+                            return true;
+                        } else if (sniffer instanceof ProfitsSniffer) {
                             ConsolidatedProfitsSniffer snifferCP = new ConsolidatedProfitsSniffer();
                             ParentProfitsSniffer snifferPP = new ParentProfitsSniffer();
                             String outputPath1 = AppContext.rootFolder +
@@ -176,14 +177,51 @@ public class TableSniffer {
                             ////统计解析情况
                             singleResultOperation(fileName);
                             singleResultOperation(fileName);
-                        }else {
-                            AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "Json空");
-                            return false;
+                            return true;
                         }
+                        return false;
                     } else {
-                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "失败");
+                        if (sniffer instanceof BalanceShellSniffer) {
+                            ConsolidatedBalanceShellSniffer cbss = new ConsolidatedBalanceShellSniffer();
+                            ParentBalanceShellSniffer pbss = new ParentBalanceShellSniffer();
+                            AnalyticalResult.setResultValue(fileName, cbss.getIndex(), "Json空");
+                            AnalyticalResult.setResultValue(fileName, pbss.getIndex(), "Json空");
+                        }
+                        if (sniffer instanceof CashFlowNumberSniffer) {
+                            ConsolidatedCashFlowSniffer ccfs = new ConsolidatedCashFlowSniffer();
+                            ParentCashFlowSniffer pcfs = new ParentCashFlowSniffer();
+                            AnalyticalResult.setResultValue(fileName, ccfs.getIndex(), "Json空");
+                            AnalyticalResult.setResultValue(fileName, pcfs.getIndex(), "Json空");
+                        }
+                        if (sniffer instanceof ProfitsSniffer) {
+                            ConsolidatedProfitsSniffer cps = new ConsolidatedProfitsSniffer();
+                            ParentProfitsSniffer pps = new ParentProfitsSniffer();
+                            AnalyticalResult.setResultValue(fileName, cps.getIndex(), "Json空");
+                            AnalyticalResult.setResultValue(fileName, pps.getIndex(), "Json空");
+                        }
                         return false;
                     }
+
+                } else {
+                    if (sniffer instanceof BalanceShellSniffer) {
+                        ConsolidatedBalanceShellSniffer cbss = new ConsolidatedBalanceShellSniffer();
+                        ParentBalanceShellSniffer pbss = new ParentBalanceShellSniffer();
+                        AnalyticalResult.setResultValue(fileName, cbss.getIndex(), "Json空");
+                        AnalyticalResult.setResultValue(fileName, pbss.getIndex(), "Json空");
+                    }
+                    if (sniffer instanceof CashFlowNumberSniffer) {
+                        ConsolidatedCashFlowSniffer ccfs = new ConsolidatedCashFlowSniffer();
+                        ParentCashFlowSniffer pcfs = new ParentCashFlowSniffer();
+                        AnalyticalResult.setResultValue(fileName, ccfs.getIndex(), "Json空");
+                        AnalyticalResult.setResultValue(fileName, pcfs.getIndex(), "Json空");
+                    }
+                    if (sniffer instanceof ProfitsSniffer) {
+                        ConsolidatedProfitsSniffer cps = new ConsolidatedProfitsSniffer();
+                        ParentProfitsSniffer pps = new ParentProfitsSniffer();
+                        AnalyticalResult.setResultValue(fileName, cps.getIndex(), "Json空");
+                        AnalyticalResult.setResultValue(fileName, pps.getIndex(), "Json空");
+                    }
+                    return false;
                 }
             }
         }

@@ -157,7 +157,7 @@ public class CashFlowNumberSniffer extends Sniffer {
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
-                if (contents.length < result.maxCol) {
+                if (contents.length < result.maxCol + 1) {
                     continue;
                 }
 
@@ -217,11 +217,11 @@ public class CashFlowNumberSniffer extends Sniffer {
                             needKickoutLines.add(line);
                         } else {
                             if (!contents[0].equals("")) {
-                                File folder = new File(AppContext.MATCH_FAILD_FOLDER);
+                                File folder = new File(AppContext.matchFaildFolder);
                                 if (!folder.exists()) {
                                     folder.mkdir();
                                 }
-                                FileUtils.write(new File(AppContext.MATCH_FAILD_FOLDER + File.separator + getFolder() + ".txt"), contents[0], true);
+                                FileUtils.write(new File(AppContext.matchFaildFolder + File.separator + getFolder() + ".txt"), contents[0], true);
                             }
 
                         }

@@ -30,15 +30,15 @@ import java.util.regex.Pattern;
         suffix = ".pf",
         folder = "合并及公司利润表",
         title = {"合并及公司利润表"})
-public class ProfitsSniffer extends Sniffer{
+public class ProfitsSniffer extends Sniffer {
     @Override
     public boolean sniff(String content) {
         return sniffByKeywords(content, PFSKeyWords, 9);
     }
 
     @Override
-    public Sniffer.ColResult getColCnt(String table, Class clazz) {
-        Sniffer.ColResult colResult = new Sniffer.ColResult();
+    public ColResult getColCnt(String table, Class clazz) {
+        ColResult colResult = new ColResult();
         int result[] = null;
         int[] colWhere;
         if (Sniffer.isReportEntity(clazz)) {
@@ -156,7 +156,7 @@ public class ProfitsSniffer extends Sniffer{
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
-                if (contents.length < result.maxCol) {
+                if (contents.length < result.maxCol + 1) {
                     continue;
                 }
 
@@ -216,11 +216,11 @@ public class ProfitsSniffer extends Sniffer{
                             needKickoutLines.add(line);
                         } else {
                             if (!contents[0].equals("")) {
-                                File folder = new File(AppContext.MATCH_FAILD_FOLDER);
+                                File folder = new File(AppContext.matchFaildFolder);
                                 if (!folder.exists()) {
                                     folder.mkdir();
                                 }
-                                FileUtils.write(new File(AppContext.MATCH_FAILD_FOLDER + File.separator + getFolder() + ".txt"), contents[0], true);
+                                FileUtils.write(new File(AppContext.matchFaildFolder + File.separator + getFolder() + ".txt"), contents[0], true);
                             }
                         }
                     } catch (IllegalAccessException e) {

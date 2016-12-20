@@ -70,7 +70,7 @@ public class HorsemanUtils {
     }
 
     public static void createKeys(String fileName) {
-        String[] keys = new String[4];
+        String[] keys = new String[]{"","","",""};
         synchronized (mapLock) {
             keysMap.put(fileName, keys);
             indexMap.put(fileName, 0);

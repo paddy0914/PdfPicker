@@ -9,6 +9,7 @@ import com.shubo.entity.report.ConsolidatedCashFlow;
 import com.shubo.entity.report.ConsolidatedEquityChange;
 import com.shubo.entity.report.ConsolidatedProfits;
 import com.shubo.exception.AnnotationException;
+import com.shubo.sniff.report.*;
 import com.shubo.util.SimilarityUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -183,7 +184,7 @@ abstract public class Sniffer {
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
-                if (contents.length < result.maxCol) {
+                if (contents.length < result.maxCol + 1) {
                     continue;
                 }
 
@@ -249,11 +250,11 @@ abstract public class Sniffer {
                             needKickoutLines.add(line);
                         } else {
                             if (!contents[0].equals("")) {
-                                File folder = new File(AppContext.MATCH_FAILD_FOLDER);
+                                File folder = new File(AppContext.matchFaildFolder);
                                 if (!folder.exists()) {
                                     folder.mkdir();
                                 }
-                                FileUtils.write(new File(AppContext.MATCH_FAILD_FOLDER + File.separator + getFolder() + ".txt"), contents[0], true);
+                                FileUtils.write(new File(AppContext.matchFaildFolder + File.separator + getFolder() + ".txt"), contents[0], true);
                             }
                         }
                     } catch (IllegalAccessException e) {
@@ -437,6 +438,21 @@ abstract public class Sniffer {
                 clazz == ConsolidatedCashFlow.class ||
                 clazz == ConsolidatedProfits.class ||
                 clazz == ConsolidatedEquityChange.class) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isReportSniffer(Class clazz) {
+        if (clazz == ConsolidatedBalanceShellSniffer.class ||
+                clazz == ConsolidatedCashFlowSniffer.class ||
+                clazz == ConsolidatedProfitsSniffer.class ||
+                clazz == ConsolidatedEquityChangeSniffer.class ||
+                clazz == ParentBalanceShellSniffer.class ||
+                clazz == ParentCashFlowSniffer.class ||
+                clazz == ParentProfitsSniffer.class ||
+                clazz == ParentEquityChangeSniffer.class) {
             return true;
         }
 
