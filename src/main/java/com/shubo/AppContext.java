@@ -21,8 +21,7 @@ public class AppContext {
         srcFolder = rootFolder + File.separator + "html";
     }
 
-    public static String rootFolder = "e:\\年报解析";
+    public static String rootFolder = "e:\\年报解析2";
     public static String srcFolder = rootFolder + File.separator + "html";
     //public static String srcFolder = rootFolder + File.separator + "年报";//测试用
-    public static String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 }

@@ -59,23 +59,12 @@ public class ReportParser {
             System.out.println("任务派发完毕，等待任务执行");
 
             try {
-
                 latch.await();
-                System.out.println("任务执行完毕");
+                System.out.println("任务执行完毕,准备写入结果文件");
 
-                String resultTitleName = "所有表解析成功总数量" + ","
-                        + "所有表解析失败总数量" + "," + "解析成功率" + "\n";
-                FileUtils.write(new File(AppContext.rootFolder + File.separator + AppContext.dateStr +"-"+"resultTotal.csv"), resultTitleName, false);
-                String resultTotal = "";
-                for (int i = 0; i < 2; i++) {
-                    resultTotal += AnalyticalResult.allFileResultNum[i] + ",";
-                }
-                double successRate = (double) AnalyticalResult.allFileResultNum[0] / (double) (AnalyticalResult.allFileResultNum[0] + AnalyticalResult.allFileResultNum[1]);
-                resultTotal += successRate;
-                resultTotal += "\n";
-                FileUtils.write(new File(AppContext.rootFolder + File.separator +AppContext.dateStr+"-"+"resultTotal.csv"), resultTotal, true);
-            } catch (IOException e) {
-                e.printStackTrace();
+                AnalyticalResult.writeTotalToCsv();
+
+                System.out.println("写入结果文件结束,程序退出");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
