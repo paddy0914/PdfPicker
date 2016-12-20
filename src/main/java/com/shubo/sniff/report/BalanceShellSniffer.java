@@ -1,6 +1,7 @@
 package com.shubo.sniff.report;
 
 import com.alibaba.fastjson.JSON;
+import com.shubo.AppContext;
 import com.shubo.annotation.Horseman;
 import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedBalanceSheet;
@@ -217,15 +218,23 @@ public class BalanceShellSniffer extends Sniffer {
                             fields.remove(needKickoutField);
                             needKickoutLines.add(line);
                         } else {
-//                            logger.info("{} [{}] [{}]", this.getClass().getName(), contents[0], contents[1]);
-//                                filteredPrint(contents[0]);
-                            //String name = "D:\\年报解析\\test\\";
-                            //FileUtils.write(new File(name + contents[0]), "", false);
+                            if (!contents[0].equals("")) {
+                                File folder = new File(AppContext.MATCH_FAILD_FOLDER);
+                                if (!folder.exists()) {
+                                    folder.mkdir();
+                                }
+                                FileUtils.write(new File(AppContext.MATCH_FAILD_FOLDER + File.separator + getFolder() + ".txt"), contents[0], true);
+                            }
 
                         }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    catch (AnnotationException e){
                         e.printStackTrace();
                     }
                 }

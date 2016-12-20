@@ -12,10 +12,5 @@ import com.shubo.entity.report.ConsolidatedEquityChange;
         folder = "母公司所有者权益变动表",
         title = {"母公司所有者权益变动表"})
 public class ParentEquityChangeSniffer extends ConsolidatedEquityChangeSniffer {
-     /*
-    @Override
-    public String[] generateEntityJson(String content) {
-        return generateEntityJson(content, ConsolidatedEquityChange.class, 11, 8);
-    }
-    */
+
 }
