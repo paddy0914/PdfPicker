@@ -2,6 +2,7 @@ package com.shubo.sniff;
 
 import com.shubo.AppContext;
 import com.shubo.ExceptionString;
+import com.shubo.entity.report.ConsolidatedProfits;
 import com.shubo.stastics.AnalyticalResult;
 import com.shubo.sniff.report.IndexEntity;
 import com.shubo.exception.AnnotationException;
@@ -47,6 +48,7 @@ public class TableSniffer {
 
         reportSniffers.add(new BalanceShellSniffer());
         reportSniffers.add(new CashFlowNumberSniffer());
+        reportSniffers.add(new ProfitsSniffer());
 
         otherSniffers.add(new FinanceSniffer());
         otherSniffers.add(new NrgalSniffer());
@@ -152,7 +154,29 @@ public class TableSniffer {
                             ////统计解析情况
                             singleResultOperation(fileName);
                             singleResultOperation(fileName);
-                        } else {
+                        } else if(sniffer instanceof ProfitsSniffer){
+                            ConsolidatedProfitsSniffer snifferCP = new ConsolidatedProfitsSniffer();
+                            ParentProfitsSniffer snifferPP = new ParentProfitsSniffer();
+                            String outputPath1 = AppContext.rootFolder +
+                                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                                    File.separator + snifferCP.getFolder() +
+                                    File.separator + fileName.replace("html", "json");
+
+                            String outputPath2 = AppContext.rootFolder +
+                                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                                    File.separator + snifferPP.getFolder() +
+                                    File.separator + fileName.replace("html", "json");
+
+                            FileUtils.write(new File(outputPath1), result[0], false);
+                            FileUtils.write(new File(outputPath2), result[1], false);
+                            capturedKeys.add(sniffer.getKey());
+
+                            AnalyticalResult.setResultValue(fileName, snifferCP.getIndex(), "成功");
+                            AnalyticalResult.setResultValue(fileName, snifferPP.getIndex(), "成功");
+                            ////统计解析情况
+                            singleResultOperation(fileName);
+                            singleResultOperation(fileName);
+                        }else {
                             AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "Json空");
                             return false;
                         }
