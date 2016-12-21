@@ -10,7 +10,7 @@ import com.shubo.entity.report.ConsolidatedEquityChange;
         index = 6,
         suffix = ".pces",
         folder = "母公司所有者权益变动表",
-        title = {"母公司所有者权益变动表"})
+        title = {"母公司所有者权益变动表","公司股东权益变动表","母公司股东权益变动表","股东权益变动表"})
 public class ParentEquityChangeSniffer extends ConsolidatedEquityChangeSniffer {
 
 }

@@ -31,7 +31,7 @@ import java.util.List;
         index = 2,
         suffix = ".ces",
         folder = "合并所有者权益变动表",
-        title = {"合并所有者权益变动表"})
+        title = {"合并所有者权益变动表", "合并股东权益变动表"})
 public class ConsolidatedEquityChangeSniffer extends Sniffer {
 
     @Override
@@ -60,6 +60,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
     static {
         likedKeyWord1.add("实收资本或股本");
         likedKeyWord1.add("实收资本（或股本）");
+        likedKeyWord1.add("实收资本(或股本)");
         likedKeyWord1.add("实收资本（或股本");
         likedKeyWord1.add("实收资本");
         likedKeyWord1.add("股本");
@@ -73,6 +74,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         likedKeyWord3.add("减:库存股");
         likedKeyWord3.add("减：库存股");
         likedKeyWord3.add("专项储备");
+        likedKeyWord3.add(":专项储备");
         likedKeyWord3.add("盈余公积");
         likedKeyWord3.add("一般风险准备");
         likedKeyWord3.add("未分配利润");
@@ -119,9 +121,11 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
         int lastIndex = 0;
 
         for (String line : lines) {
+
             if (line.contains("年末余额") || line.contains("期末余额")) {
                 break;
             }
+
             String elements[] = line.split(TableSniffer.ELEMENT_DIVIDOR);
             for (String element : elements) {
                 element = HorsemanUtils.removeBlank(element);
@@ -151,19 +155,34 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
             HorsemanUtils.doSomeThing();
             //AnalyticalResult.singleFileResultNum[1]++;
             return null;
+        } else if (colCnt > 15) {
+            if (keyWords1.size() % 2 != 0 || keyWords2.size() % 2 != 0 || keyWords3.size() % 2 != 0 || keyWords4.size() % 2 != 0) {
+                return null;
+            }
         }
+
 
         // 4,对搜索到的关键子排序
         // 一般把少数股东权益跟所有者权益合计放到后面
         int index = 1;
+        List<String> sameKeys = new ArrayList<>();
         List<IndexEntity> indexEntities = new ArrayList<>();
         for (List<String> keys : keywords) {
             for (String key : keys) {
-                IndexEntity indexEntity = new IndexEntity(index++, key);
-                indexEntities.add(indexEntity);
+                Boolean flag = true;
+                for (String samekey : sameKeys) {
+                    if (key.equals(samekey)) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    IndexEntity indexEntity = new IndexEntity(index++, key);
+                    indexEntities.add(indexEntity);
+                    sameKeys.add(key);
+                }
             }
         }
-
         return indexEntities;
     }
 

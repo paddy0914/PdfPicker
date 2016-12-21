@@ -36,8 +36,8 @@ public class TableSniffer {
 
     static {
 
-        reportSniffers.add(new ConsolidatedCashFlowSniffer());
         reportSniffers.add(new ConsolidatedBalanceShellSniffer());
+        reportSniffers.add(new ConsolidatedCashFlowSniffer());
         reportSniffers.add(new ConsolidatedEquityChangeSniffer());
         reportSniffers.add(new ConsolidatedProfitsSniffer());
 
@@ -45,10 +45,6 @@ public class TableSniffer {
         reportSniffers.add(new ParentCashFlowSniffer());
         reportSniffers.add(new ParentEquityChangeSniffer());
         reportSniffers.add(new ParentProfitsSniffer());
-
-        //reportSniffers.add(new BalanceShellSniffer());
-        //reportSniffers.add(new CashFlowNumberSniffer());
-        //reportSniffers.add(new ProfitsSniffer());
 
         otherSniffers.add(new FinanceSniffer());
         otherSniffers.add(new NrgalSniffer());
