@@ -2,6 +2,7 @@ package com.shubo.sniff.report;
 
 import com.shubo.annotation.Todd;
 import com.shubo.entity.report.ConsolidatedCashFlow;
+import com.shubo.exception.AnnotationException;
 import com.shubo.sniff.Sniffer;
 import com.shubo.sniff.TableSniffer;
 
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
         index = 1,
         suffix = ".ccf",
         folder = "合并现金流量表",
-        title = {"合并现金流量表"})
+        title = {"合并现金流量表","合并及公司现金流量表"})
 public class ConsolidatedCashFlowSniffer extends Sniffer {
 
     @Override
@@ -105,7 +106,13 @@ public class ConsolidatedCashFlowSniffer extends Sniffer {
     }
 
     @Override
-    public String[] generateEntityJson(String content) {
+    public String[] generateEntityJson(String content) throws AnnotationException {
+        ColResult colResult = new ColResult();
+        colResult = getColCnt(content, ConsolidatedCashFlow.class);
+        if (colResult.colCnt == 4) {
+            CashFlowNumberSniffer cfns = new CashFlowNumberSniffer();
+            return cfns.generateEntityJson(content);
+        }
         return generateEntityJson(content, ConsolidatedCashFlow.class, 2, 3);
     }
 

@@ -46,9 +46,9 @@ public class TableSniffer {
         reportSniffers.add(new ParentEquityChangeSniffer());
         reportSniffers.add(new ParentProfitsSniffer());
 
-        reportSniffers.add(new BalanceShellSniffer());
-        reportSniffers.add(new CashFlowNumberSniffer());
-        reportSniffers.add(new ProfitsSniffer());
+        //reportSniffers.add(new BalanceShellSniffer());
+        //reportSniffers.add(new CashFlowNumberSniffer());
+        //reportSniffers.add(new ProfitsSniffer());
 
         otherSniffers.add(new FinanceSniffer());
         otherSniffers.add(new NrgalSniffer());
@@ -107,120 +107,15 @@ public class TableSniffer {
 
                 } else if (result != null && result.length == 3) {
                     if (result[0].equals(ExceptionString.HEADER_SNIFF_ERR)) {
-                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), ExceptionString.HEADER_SNIFF_ERR);
+                        writeAnalyticalResult(fileName,sniffer,ExceptionString.HEADER_SNIFF_ERR);
                     } else if (result[0].length() > 2) {
-                        if (sniffer instanceof BalanceShellSniffer) {
-                            ConsolidatedBalanceShellSniffer snifferCBS = new ConsolidatedBalanceShellSniffer();
-                            ParentBalanceShellSniffer snifferPBS = new ParentBalanceShellSniffer();
-                            String outputPath1 = AppContext.rootFolder +
-                                    File.separator + AppContext.JSON_OUTPUT_DIR +
-                                    File.separator + snifferCBS.getFolder() +
-                                    File.separator + fileName.replace("html", "json");
-
-                            String outputPath2 = AppContext.rootFolder +
-                                    File.separator + AppContext.JSON_OUTPUT_DIR +
-                                    File.separator + snifferPBS.getFolder() +
-                                    File.separator + fileName.replace("html", "json");
-
-                            FileUtils.write(new File(outputPath1), result[0], false);
-                            FileUtils.write(new File(outputPath2), result[1], false);
-                            capturedKeys.add(sniffer.getKey());
-
-                            AnalyticalResult.setResultValue(fileName, snifferCBS.getIndex(), "成功");
-                            AnalyticalResult.setResultValue(fileName, snifferPBS.getIndex(), "成功");
-                            ////统计解析情况
-                            singleResultOperation(fileName);
-                            singleResultOperation(fileName);
-                            return true;
-                        } else if (sniffer instanceof CashFlowNumberSniffer) {
-                            ConsolidatedCashFlowSniffer snifferCCF = new ConsolidatedCashFlowSniffer();
-                            ParentCashFlowSniffer snifferPCF = new ParentCashFlowSniffer();
-                            String outputPath1 = AppContext.rootFolder +
-                                    File.separator + AppContext.JSON_OUTPUT_DIR +
-                                    File.separator + snifferCCF.getFolder() +
-                                    File.separator + fileName.replace("html", "json");
-
-                            String outputPath2 = AppContext.rootFolder +
-                                    File.separator + AppContext.JSON_OUTPUT_DIR +
-                                    File.separator + snifferPCF.getFolder() +
-                                    File.separator + fileName.replace("html", "json");
-
-                            FileUtils.write(new File(outputPath1), result[0], false);
-                            FileUtils.write(new File(outputPath2), result[1], false);
-                            capturedKeys.add(sniffer.getKey());
-
-                            AnalyticalResult.setResultValue(fileName, snifferCCF.getIndex(), "成功");
-                            AnalyticalResult.setResultValue(fileName, snifferPCF.getIndex(), "成功");
-                            ////统计解析情况
-                            singleResultOperation(fileName);
-                            singleResultOperation(fileName);
-                            return true;
-                        } else if (sniffer instanceof ProfitsSniffer) {
-                            ConsolidatedProfitsSniffer snifferCP = new ConsolidatedProfitsSniffer();
-                            ParentProfitsSniffer snifferPP = new ParentProfitsSniffer();
-                            String outputPath1 = AppContext.rootFolder +
-                                    File.separator + AppContext.JSON_OUTPUT_DIR +
-                                    File.separator + snifferCP.getFolder() +
-                                    File.separator + fileName.replace("html", "json");
-
-                            String outputPath2 = AppContext.rootFolder +
-                                    File.separator + AppContext.JSON_OUTPUT_DIR +
-                                    File.separator + snifferPP.getFolder() +
-                                    File.separator + fileName.replace("html", "json");
-
-                            FileUtils.write(new File(outputPath1), result[0], false);
-                            FileUtils.write(new File(outputPath2), result[1], false);
-                            capturedKeys.add(sniffer.getKey());
-
-                            AnalyticalResult.setResultValue(fileName, snifferCP.getIndex(), "成功");
-                            AnalyticalResult.setResultValue(fileName, snifferPP.getIndex(), "成功");
-                            ////统计解析情况
-                            singleResultOperation(fileName);
-                            singleResultOperation(fileName);
-                            return true;
-                        }
-                        return false;
+                        return writeJsonFile(fileName,result,sniffer,capturedKeys);
                     } else {
-                        if (sniffer instanceof BalanceShellSniffer) {
-                            ConsolidatedBalanceShellSniffer cbss = new ConsolidatedBalanceShellSniffer();
-                            ParentBalanceShellSniffer pbss = new ParentBalanceShellSniffer();
-                            AnalyticalResult.setResultValue(fileName, cbss.getIndex(), "Json空");
-                            AnalyticalResult.setResultValue(fileName, pbss.getIndex(), "Json空");
-                        }
-                        if (sniffer instanceof CashFlowNumberSniffer) {
-                            ConsolidatedCashFlowSniffer ccfs = new ConsolidatedCashFlowSniffer();
-                            ParentCashFlowSniffer pcfs = new ParentCashFlowSniffer();
-                            AnalyticalResult.setResultValue(fileName, ccfs.getIndex(), "Json空");
-                            AnalyticalResult.setResultValue(fileName, pcfs.getIndex(), "Json空");
-                        }
-                        if (sniffer instanceof ProfitsSniffer) {
-                            ConsolidatedProfitsSniffer cps = new ConsolidatedProfitsSniffer();
-                            ParentProfitsSniffer pps = new ParentProfitsSniffer();
-                            AnalyticalResult.setResultValue(fileName, cps.getIndex(), "Json空");
-                            AnalyticalResult.setResultValue(fileName, pps.getIndex(), "Json空");
-                        }
+                        writeAnalyticalResult(fileName,sniffer,"Json空");
                         return false;
                     }
-
                 } else {
-                    if (sniffer instanceof BalanceShellSniffer) {
-                        ConsolidatedBalanceShellSniffer cbss = new ConsolidatedBalanceShellSniffer();
-                        ParentBalanceShellSniffer pbss = new ParentBalanceShellSniffer();
-                        AnalyticalResult.setResultValue(fileName, cbss.getIndex(), "Json空");
-                        AnalyticalResult.setResultValue(fileName, pbss.getIndex(), "Json空");
-                    }
-                    if (sniffer instanceof CashFlowNumberSniffer) {
-                        ConsolidatedCashFlowSniffer ccfs = new ConsolidatedCashFlowSniffer();
-                        ParentCashFlowSniffer pcfs = new ParentCashFlowSniffer();
-                        AnalyticalResult.setResultValue(fileName, ccfs.getIndex(), "Json空");
-                        AnalyticalResult.setResultValue(fileName, pcfs.getIndex(), "Json空");
-                    }
-                    if (sniffer instanceof ProfitsSniffer) {
-                        ConsolidatedProfitsSniffer cps = new ConsolidatedProfitsSniffer();
-                        ParentProfitsSniffer pps = new ParentProfitsSniffer();
-                        AnalyticalResult.setResultValue(fileName, cps.getIndex(), "Json空");
-                        AnalyticalResult.setResultValue(fileName, pps.getIndex(), "Json空");
-                    }
+                    writeAnalyticalResult(fileName,sniffer,"失败");
                     return false;
                 }
             }
@@ -328,6 +223,100 @@ public class TableSniffer {
         }
 
         return result;
+    }
+
+    public static Boolean writeJsonFile(String fileName,String[] result,Sniffer sniffer,List<String> capturedKeys) throws AnnotationException, IOException {
+        if (sniffer instanceof ConsolidatedBalanceShellSniffer||sniffer instanceof ParentBalanceShellSniffer) {
+            ConsolidatedBalanceShellSniffer snifferCBS = new ConsolidatedBalanceShellSniffer();
+            ParentBalanceShellSniffer snifferPBS = new ParentBalanceShellSniffer();
+            String outputPath1 = AppContext.rootFolder +
+                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                    File.separator + snifferCBS.getFolder() +
+                    File.separator + fileName.replace("html", "json");
+
+            String outputPath2 = AppContext.rootFolder +
+                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                    File.separator + snifferPBS.getFolder() +
+                    File.separator + fileName.replace("html", "json");
+
+            FileUtils.write(new File(outputPath1), result[0], false);
+            FileUtils.write(new File(outputPath2), result[1], false);
+            capturedKeys.add(sniffer.getKey());
+
+            AnalyticalResult.setResultValue(fileName, snifferCBS.getIndex(), "成功");
+            AnalyticalResult.setResultValue(fileName, snifferPBS.getIndex(), "成功");
+            ////统计解析情况
+            singleResultOperation(fileName);
+            singleResultOperation(fileName);
+            return true;
+        } else if (sniffer instanceof ConsolidatedCashFlowSniffer||sniffer instanceof ParentCashFlowSniffer) {
+            ConsolidatedCashFlowSniffer snifferCCF = new ConsolidatedCashFlowSniffer();
+            ParentCashFlowSniffer snifferPCF = new ParentCashFlowSniffer();
+            String outputPath1 = AppContext.rootFolder +
+                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                    File.separator + snifferCCF.getFolder() +
+                    File.separator + fileName.replace("html", "json");
+
+            String outputPath2 = AppContext.rootFolder +
+                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                    File.separator + snifferPCF.getFolder() +
+                    File.separator + fileName.replace("html", "json");
+
+            FileUtils.write(new File(outputPath1), result[0], false);
+            FileUtils.write(new File(outputPath2), result[1], false);
+            capturedKeys.add(sniffer.getKey());
+
+            AnalyticalResult.setResultValue(fileName, snifferCCF.getIndex(), "成功");
+            AnalyticalResult.setResultValue(fileName, snifferPCF.getIndex(), "成功");
+            ////统计解析情况
+            singleResultOperation(fileName);
+            singleResultOperation(fileName);
+            return true;
+        } else if (sniffer instanceof ConsolidatedProfitsSniffer||sniffer instanceof ParentProfitsSniffer) {
+            ConsolidatedProfitsSniffer snifferCP = new ConsolidatedProfitsSniffer();
+            ParentProfitsSniffer snifferPP = new ParentProfitsSniffer();
+            String outputPath1 = AppContext.rootFolder +
+                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                    File.separator + snifferCP.getFolder() +
+                    File.separator + fileName.replace("html", "json");
+
+            String outputPath2 = AppContext.rootFolder +
+                    File.separator + AppContext.JSON_OUTPUT_DIR +
+                    File.separator + snifferPP.getFolder() +
+                    File.separator + fileName.replace("html", "json");
+
+            FileUtils.write(new File(outputPath1), result[0], false);
+            FileUtils.write(new File(outputPath2), result[1], false);
+            capturedKeys.add(sniffer.getKey());
+
+            AnalyticalResult.setResultValue(fileName, snifferCP.getIndex(), "成功");
+            AnalyticalResult.setResultValue(fileName, snifferPP.getIndex(), "成功");
+            ////统计解析情况
+            singleResultOperation(fileName);
+            singleResultOperation(fileName);
+            return true;
+        }
+        return false;
+    }
+    public static void writeAnalyticalResult(String fileName,Sniffer sniffer,String resultStr) throws AnnotationException {
+        if (sniffer instanceof ConsolidatedBalanceShellSniffer||sniffer instanceof ParentBalanceShellSniffer) {
+            ConsolidatedBalanceShellSniffer cbss = new ConsolidatedBalanceShellSniffer();
+            ParentBalanceShellSniffer pbss = new ParentBalanceShellSniffer();
+            AnalyticalResult.setResultValue(fileName, cbss.getIndex(), resultStr);
+            AnalyticalResult.setResultValue(fileName, pbss.getIndex(), resultStr);
+        }
+        if (sniffer instanceof ConsolidatedCashFlowSniffer||sniffer instanceof ParentCashFlowSniffer) {
+            ConsolidatedCashFlowSniffer ccfs = new ConsolidatedCashFlowSniffer();
+            ParentCashFlowSniffer pcfs = new ParentCashFlowSniffer();
+            AnalyticalResult.setResultValue(fileName, ccfs.getIndex(), resultStr);
+            AnalyticalResult.setResultValue(fileName, pcfs.getIndex(), resultStr);
+        }
+        if (sniffer instanceof ConsolidatedProfitsSniffer||sniffer instanceof ParentProfitsSniffer) {
+            ConsolidatedProfitsSniffer cps = new ConsolidatedProfitsSniffer();
+            ParentProfitsSniffer pps = new ParentProfitsSniffer();
+            AnalyticalResult.setResultValue(fileName, cps.getIndex(), resultStr);
+            AnalyticalResult.setResultValue(fileName, pps.getIndex(), resultStr);
+        }
     }
 
     //专门处理所有者权益变动表

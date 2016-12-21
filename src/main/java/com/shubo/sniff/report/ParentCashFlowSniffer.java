@@ -9,6 +9,6 @@ import com.shubo.annotation.Todd;
         index = 5,
         suffix = ".pccf",
         folder = "母公司现金流量表",
-        title = {"母公司现金流量表"})
+        title = {"母公司现金流量表","现金流量表"})
 public class ParentCashFlowSniffer extends ConsolidatedCashFlowSniffer {
 }
