@@ -22,8 +22,17 @@ public class ReportParser {
 
     public static CountDownLatch latch = new CountDownLatch(1);
 
+    public static void test() {
+        handle(new File("E:/年报解析/html/000415/渤海租赁2013年年度报告.html"), "000415");
+    }
     public static void main(String args[]) {
         System.out.println("------开始处理-------");
+
+        // 单个文件调试专用
+        if (args.length == 1 && args[0].equals("test")) {
+            test();
+            return;
+        }
         if (args.length > 1) {
             Dispatcher.setThreadCnt(Integer.valueOf(args[0]));
             AppContext.setRootFolder(args[1]);

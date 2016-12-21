@@ -55,6 +55,8 @@ public class TableSniffer {
         otherSniffers.add(new ShareHolderSniffer());
         otherSniffers.add(new ShareHolderNLSniffer());
         otherSniffers.add(new CashFlowSniffer());
+
+        otherSniffers.add(new RelatedTransactionSniffer());
     }
 
     /*

@@ -31,8 +31,10 @@ public class AnalyticalResult {
     * 10,非经常性损益
     * 11,前10名无限售条件股东持股情况
     * 12,前10名股东持股情况
-    * 13,解析成功数量
-    * 14,解析失败数量
+    * 13,关联交易
+    * 14,解析成功数量
+    * 15,解析失败数量
+    *
      */
     public static Object resultsMapLock = new Object();
     public static Object singleResultMapLock = new Object();
@@ -80,6 +82,7 @@ public class AnalyticalResult {
                 + "合并资产负债表,合并现金流量表,合并所有者权益变动表,合并利润表,"
                 + "母公司资产负债表,母公司现金流量表,母公司所有者权益变动表,母公司利润表,"
                 + "主要财务数据,现金流量表,非经常性损益,前10名无限售条件股东持股情况,前10名股东持股情况"
+                + "关联交易"
                 + ",解析成功数量"
                 + ",解析失败数量" + "\n";
         sb.append(initStr);
