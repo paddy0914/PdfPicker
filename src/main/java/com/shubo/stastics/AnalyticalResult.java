@@ -58,14 +58,14 @@ public class AnalyticalResult {
     }
 
     public static void createResult(String filename) {
-        String[] results = new String[13];
-        for (int i = 0; i < 13; i++) {
+        String[] results = new String[14];
+        for (int i = 0; i < 14; i++) {
             results[i] = "未识别";
         }
 
         int[] singleTotal = new int[2];
         singleTotal[0] = 0;
-        singleTotal[1] = 13;
+        singleTotal[1] = 14;
 
         synchronized (resultsMapLock) {
             resultsMap.put(filename, results);
@@ -82,7 +82,7 @@ public class AnalyticalResult {
                 + "合并资产负债表,合并现金流量表,合并所有者权益变动表,合并利润表,"
                 + "母公司资产负债表,母公司现金流量表,母公司所有者权益变动表,母公司利润表,"
                 + "主要财务数据,现金流量表,非经常性损益,前10名无限售条件股东持股情况,前10名股东持股情况"
-                + "关联交易"
+                + ",关联交易"
                 + ",解析成功数量"
                 + ",解析失败数量" + "\n";
         sb.append(initStr);
