@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
         index = 0,
         suffix = ".cbs",
         folder = "合并资产负债表",
-        title = {"合并资产负债表"})
+        title = {"合并资产负债表","合并及公司资产负债表"})
 public class ConsolidatedBalanceShellSniffer extends Sniffer {
 
     @Override
@@ -103,6 +103,12 @@ public class ConsolidatedBalanceShellSniffer extends Sniffer {
 
     @Override
     public String[] generateEntityJson(String content) {
+        ColResult colResult = new ColResult();
+        colResult = getColCnt(content, ConsolidatedBalanceSheet.class);
+        if (colResult.colCnt == 4) {
+            BalanceShellSniffer bss = new BalanceShellSniffer();
+            return bss.generateEntityJson(content);
+        }
         return generateEntityJson(content, ConsolidatedBalanceSheet.class, 2, 3);
     }
 

@@ -9,6 +9,6 @@ import com.shubo.annotation.Todd;
         index = 7,
         suffix = ".pcp",
         folder = "母公司利润表",
-        title = {"母公司利润表"})
+        title = {"母公司利润表","利润表"})
 public class ParentProfitsSniffer extends ConsolidatedProfitsSniffer {
 }

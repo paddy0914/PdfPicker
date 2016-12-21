@@ -10,6 +10,6 @@ import com.shubo.sniff.Sniffer;
         index = 4,
         suffix = ".pcbs",
         folder = "母公司资产负债表",
-        title = {"母公司资产负债表"})
+        title = {"母公司资产负债表","资产负债表"})
 public class ParentBalanceShellSniffer extends ConsolidatedBalanceShellSniffer {
 }

@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
         index = 3,
         suffix = ".cp",
         folder = "合并利润表",
-        title = {"合并利润表"})
+        title = {"合并利润表","合并及公司利润表"})
 public class ConsolidatedProfitsSniffer extends Sniffer {
 
     @Override
@@ -107,6 +107,12 @@ public class ConsolidatedProfitsSniffer extends Sniffer {
 
     @Override
     public String[] generateEntityJson(String content) {
+        ColResult colResult = new ColResult();
+        colResult = getColCnt(content, ConsolidatedProfits.class);
+        if (colResult.colCnt == 4) {
+            ProfitsSniffer ps = new ProfitsSniffer();
+            return ps.generateEntityJson(content);
+        }
         return generateEntityJson(content, ConsolidatedProfits.class, 2, 3);
     }
 
