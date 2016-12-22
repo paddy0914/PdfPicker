@@ -272,7 +272,7 @@ public class ConsolidatedEquityChangeSniffer extends Sniffer {
                                 if (!folder.exists()) {
                                     folder.mkdir();
                                 }
-                                FileUtils.write(new File(AppContext.matchFaildFolder + File.separator + getFolder() + ".txt"), contents[0], true);
+                                FileUtils.write(new File(AppContext.matchFaildFolder + File.separator + getFolder() + ".txt"), contents[0] + "\n", true);
                             }
                         }
                     } catch (IOException e) {
