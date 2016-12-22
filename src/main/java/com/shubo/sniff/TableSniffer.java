@@ -36,21 +36,21 @@ public class TableSniffer {
 
     static {
 
-        reportSniffers.add(new ConsolidatedBalanceShellSniffer());
-        reportSniffers.add(new ConsolidatedCashFlowSniffer());
-        reportSniffers.add(new ConsolidatedEquityChangeSniffer());
-        reportSniffers.add(new ConsolidatedProfitsSniffer());
+        //reportSniffers.add(new ConsolidatedBalanceShellSniffer());
+        //reportSniffers.add(new ConsolidatedCashFlowSniffer());
+        //reportSniffers.add(new ConsolidatedEquityChangeSniffer());
+        //reportSniffers.add(new ConsolidatedProfitsSniffer());
 
-        reportSniffers.add(new ParentBalanceShellSniffer());
-        reportSniffers.add(new ParentCashFlowSniffer());
-        reportSniffers.add(new ParentEquityChangeSniffer());
-        reportSniffers.add(new ParentProfitsSniffer());
+        //reportSniffers.add(new ParentBalanceShellSniffer());
+        //reportSniffers.add(new ParentCashFlowSniffer());
+        //reportSniffers.add(new ParentEquityChangeSniffer());
+        //reportSniffers.add(new ParentProfitsSniffer());
 
-        otherSniffers.add(new FinanceSniffer());
-        otherSniffers.add(new NrgalSniffer());
-        otherSniffers.add(new ShareHolderSniffer());
-        otherSniffers.add(new ShareHolderNLSniffer());
-        otherSniffers.add(new CashFlowSniffer());
+        //otherSniffers.add(new FinanceSniffer());
+        //otherSniffers.add(new NrgalSniffer());
+        //otherSniffers.add(new ShareHolderSniffer());
+        //otherSniffers.add(new ShareHolderNLSniffer());
+        //otherSniffers.add(new CashFlowSniffer());
 
         otherSniffers.add(new RelatedTransactionSniffer());
     }
