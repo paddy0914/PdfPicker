@@ -83,10 +83,22 @@ public class RelatedTransactionSniffer extends Sniffer {
         }
         int index = 0;
         for (Field field : fields) {
-            for (int i = 0; i < tableStructures.length; i++) {
-                if (tableStructures[i] != "") {
-                    if (field.getName().equals(tableStructures[i].replace(" ", ""))) {
-                        result[index] = i;
+            Annotation[] annotations = field.getAnnotations();
+            if (annotations.length > 0) {
+                Horseman horsemen = (Horseman) annotations[0];
+                String[] keys = horsemen.keys();
+                for (String key : keys) {
+                    boolean flag = false;
+                    for (int i = 0; i < tableStructures.length; i++) {
+                        if (tableStructures[i] != "") {
+                            if (key.equals(tableStructures[i].replace(" ", ""))) {
+                                result[index] = i;
+                                flag = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (flag) {
                         break;
                     }
                 }
@@ -133,26 +145,18 @@ public class RelatedTransactionSniffer extends Sniffer {
                     continue;
                 }
                 if (result.where != null) {
-                    for (int j = 0; j < fields.size(); j++) {
-                        if (result.where[j] != -1) {
-                            try {
-                                relatedTransaction.getClass().getDeclaredField(fields.get(j).getName()).set(relatedTransaction, contents[result.where[j]]);
-
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            } catch (NoSuchFieldException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
+                    try {
+                        for (int j = 0; j < fields.size(); j++) {
+                            if (result.where[j] != -1) {
+                                relatedTransaction.getClass().getDeclaredField(fields.get(j).getName()).set(relatedTransaction, contents[result.where[j]].replace(" ",""));
+                            } else {
                                 relatedTransaction.getClass().getDeclaredField(fields.get(j).getName()).set(relatedTransaction, "");
-
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            } catch (NoSuchFieldException e) {
-                                e.printStackTrace();
                             }
                         }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
                     }
                     listRelatedTransactions.add(relatedTransaction);
                 } else {
@@ -160,8 +164,6 @@ public class RelatedTransactionSniffer extends Sniffer {
                 }
 
             }
-
-//            System.out.println();
 
             String[] res = new String[2];
             res[0] = JSON.toJSONString(listRelatedTransactions);
