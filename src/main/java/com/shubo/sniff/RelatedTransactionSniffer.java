@@ -141,14 +141,14 @@ public class RelatedTransactionSniffer extends Sniffer {
             for (int i = 1; i < lines.length; i++) {
                 RelatedTransaction relatedTransaction = new RelatedTransaction();
                 String[] contents = lines[i].split(TableSniffer.ELEMENT_DIVIDOR, -1);
-                if (contents.length < result.where.length) {
+                if (contents.length < result.where.length || result.colCnt > contents.length - 1) {
                     continue;
                 }
                 if (result.where != null) {
                     try {
                         for (int j = 0; j < fields.size(); j++) {
                             if (result.where[j] != -1) {
-                                relatedTransaction.getClass().getDeclaredField(fields.get(j).getName()).set(relatedTransaction, contents[result.where[j]].replace(" ",""));
+                                relatedTransaction.getClass().getDeclaredField(fields.get(j).getName()).set(relatedTransaction, contents[result.where[j]].replace(" ", ""));
                             } else {
                                 relatedTransaction.getClass().getDeclaredField(fields.get(j).getName()).set(relatedTransaction, "");
                             }

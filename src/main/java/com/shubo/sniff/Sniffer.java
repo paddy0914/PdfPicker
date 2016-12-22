@@ -177,10 +177,12 @@ abstract public class Sniffer {
 
             ColResult result = getColCnt(content, clazz);
             int colCnt = result.colCnt;//数据中有用数据的个数
-
+            //也有是八大表的，但是只有一列数据有用
+            /*
             if (result.isList && colCnt < 2) {
                 return null;
             }
+            */
             for (String line : lines) {
                 String[] contents = line.split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
@@ -216,7 +218,7 @@ abstract public class Sniffer {
                                     if (found) {
                                         List<String> datas = new ArrayList<>();
                                         //当colCnt>1的时候说明，表中需要解析的数据不止一列
-                                        if (colCnt > 1) {
+                                        if (result.isList) {
                                             //List<String> datas = new ArrayList<>();
                                             for (int k = 0; k < colCnt; k++) {
                                                 if ((k + 1) < contents.length) {
