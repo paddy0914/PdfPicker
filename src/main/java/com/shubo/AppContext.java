@@ -17,12 +17,14 @@ public class AppContext {
     public static void setRootFolder(String folder) {
         rootFolder = folder;
         srcFolder = rootFolder + File.separator + "html";
+        yearReportFolder = rootFolder + File.separator + YEAR_REPORT_FOLDER;
+        matchFaildFolder = rootFolder + File.separator + MATCH_FAILD_FOLDER;
     }
 
     //public static String rootFolder = "e:\\年报解析2";
     public static String rootFolder = "e:\\年报解析";
     public static String srcFolder = rootFolder + File.separator + "html";
     //public static String srcFolder = rootFolder + File.separator + "年报";//测试用
-    public static String yearReportFolder = AppContext.rootFolder + File.separator + YEAR_REPORT_FOLDER;
-    public static String matchFaildFolder = AppContext.rootFolder + File.separator + MATCH_FAILD_FOLDER;
+    public static String yearReportFolder = rootFolder + File.separator + YEAR_REPORT_FOLDER;
+    public static String matchFaildFolder = rootFolder + File.separator + MATCH_FAILD_FOLDER;
 }
