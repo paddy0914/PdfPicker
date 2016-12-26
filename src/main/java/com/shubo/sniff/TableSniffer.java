@@ -63,6 +63,8 @@ public class TableSniffer {
         otherSniffers.add(new FiveCustomerInfoSniffer());
 
         otherSniffers.add(new MainSubcompanySniffer());
+
+        otherSniffers.add(new GuarantySituationSniffer());
     }
 
     /*

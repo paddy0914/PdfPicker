@@ -36,6 +36,7 @@ public class AnalyticalResult {
     * 16,现任高级管理人员
     * 17,5大客户资料
     * 18,主要子公司、参股公司分析
+    * 19,担保情况
     * 解析成功数量
     * 解析失败数量
     *
@@ -44,7 +45,7 @@ public class AnalyticalResult {
     public static Object singleResultMapLock = new Object();
     public static Map<String, String[]> resultsMap = new HashMap<>();
     public static Map<String, int[]> singleResultMap = new HashMap<>();
-    public static int tableNumber = 19;
+    public static int tableNumber = 20;
 
     public static int[] allFileResultNum = new int[]{0, 0};
 
@@ -89,7 +90,10 @@ public class AnalyticalResult {
                 + "母公司资产负债表,母公司现金流量表,母公司所有者权益变动表,母公司利润表,"
                 + "主要财务数据,现金流量表,非经常性损益,前10名无限售条件股东持股情况,前10名股东持股情况"
                 + ",关联交易"
-                +",现任董事会成员,现任监事会成员,现任高级管理人员"
+                + ",现任董事会成员,现任监事会成员,现任高级管理人员"
+                + ",5大客户资料"
+                + ",主要子公司、参股公司分析"
+                + ",担保情况"
                 + ",解析成功数量"
                 + ",解析失败数量" + "\n";
         sb.append(initStr);

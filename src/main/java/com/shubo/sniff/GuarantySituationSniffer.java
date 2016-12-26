@@ -3,7 +3,7 @@ package com.shubo.sniff;
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
 import com.shubo.annotation.Todd;
-import com.shubo.entity.FiveCustomerInformation;
+import com.shubo.entity.GuarantySituation;
 import com.shubo.entity.MainSubcompany;
 import com.shubo.exception.AnnotationException;
 
@@ -16,14 +16,18 @@ import java.util.List;
 /**
  * Created by liujinping on 2016/12/26.
  */
-@Todd(key = "MainSubcompany",
-        index = 18,
-        suffix = ".mainSubcompany",
-        folder = "主要子公司、参股公司分析")
-public class MainSubcompanySniffer extends Sniffer{
+@Todd(key = "GuarantySituation",
+        index = 19,
+        suffix = ".guarantySituation",
+        folder = "担保情况")
+public class GuarantySituationSniffer extends Sniffer {
+
+    public static int startPlace = 0;
+    //public static int continuePlace = 0;
+
     @Override
     public boolean sniff(String content) {
-        return sniffByKeywords(content, MainSubcompanyKeyWords, MATCH_CNT);
+        return sniffByKeywords(content, GuarantySituationKeyWords, MATCH_CNT);
     }
 
     @Override
@@ -55,6 +59,11 @@ public class MainSubcompanySniffer extends Sniffer{
     public int[] getColWhere(String table, Class clazz) {
         String lines[] = table.split("\n");
         String[] tableStructures = lines[0].split(TableSniffer.ELEMENT_DIVIDOR, -1);
+        String[] temp = lines[1].split(TableSniffer.ELEMENT_DIVIDOR, -1);
+        if (tableStructures.length / (double) temp.length < 0.5) {
+            tableStructures = temp;
+            startPlace = 2;
+        }
 
         Object data = null;
         try {
@@ -105,9 +114,24 @@ public class MainSubcompanySniffer extends Sniffer{
         return result;
     }
 
+    /**
+     *  是否是表头
+     * @param contents
+     * @return  flag
+     */
+    public Boolean isContainHead(String[] contents) {
+        Boolean flag = false;
+        for (int i = 0; i < contents.length; i++) {
+            if (contents[i].equals(GuarantySituationKeyWords[i])) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
     @Override
     public String[] generateEntityJson(String content) throws AnnotationException {
-        return generateEntityJson(content, MainSubcompany.class);
+        return generateEntityJson(content, GuarantySituation.class);
     }
 
     public String[] generateEntityJson(String content, Class clazz) {
@@ -128,27 +152,30 @@ public class MainSubcompanySniffer extends Sniffer{
                 return null;
             }
 
-            List<MainSubcompany> listMainSubcompany = new ArrayList<>();
-            ColResult result = getColCnt(content, MainSubcompany.class);
+            List<GuarantySituation> listGuarantySituation = new ArrayList<>();
+            ColResult result = getColCnt(content, GuarantySituation.class);
 
             Field[] declaredFields = data.getClass().getDeclaredFields();
             List<Field> fields = new ArrayList<>();
 
             Collections.addAll(fields, declaredFields);
-            for (int i = 1; i < lines.length; i++) {
-                MainSubcompany mainSubcompany = new MainSubcompany();
+            for (int i = startPlace; i < lines.length; i++) {
+                GuarantySituation guarantySituation = new GuarantySituation();
                 String[] contents = lines[i].split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
                 if (contents.length - 1 < result.maxCol) {
+                    continue;
+                }
+                if(isContainHead(contents)){
                     continue;
                 }
                 if (result.where != null) {
                     try {
                         for (int j = 0; j < fields.size(); j++) {
                             if (result.where[j] != -1) {
-                                mainSubcompany.getClass().getDeclaredField(fields.get(j).getName()).set(mainSubcompany, contents[result.where[j]].replace(" ", ""));
+                                guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, contents[result.where[j]].replace(" ", ""));
                             } else {
-                                mainSubcompany.getClass().getDeclaredField(fields.get(j).getName()).set(mainSubcompany, "");
+                                guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, "");
                             }
                         }
                     } catch (IllegalAccessException e) {
@@ -156,7 +183,8 @@ public class MainSubcompanySniffer extends Sniffer{
                     } catch (NoSuchFieldException e) {
                         e.printStackTrace();
                     }
-                    listMainSubcompany.add(mainSubcompany);
+
+                    listGuarantySituation.add(guarantySituation);
                 } else {
 
                 }
@@ -164,7 +192,7 @@ public class MainSubcompanySniffer extends Sniffer{
             }
 
             String[] res = new String[2];
-            res[0] = JSON.toJSONString(listMainSubcompany);
+            res[0] = JSON.toJSONString(listGuarantySituation);
             res[1] = content;
 
             return res;
@@ -173,18 +201,17 @@ public class MainSubcompanySniffer extends Sniffer{
         return null;
     }
 
-    private static final int MATCH_CNT = 7;
+    private static final int MATCH_CNT = 8;
 
-    private static final String[] MainSubcompanyKeyWords = {
-            "公司名称",
-            "公司类型",
-            "所处行业",
-            "主要产品或服务",
-            "注册资本",
-            "总资产",
-            "净资产",
-            "营业收入",
-            "营业利润",
-            "净利润",
+    private static final String[] GuarantySituationKeyWords = {
+            "担保对象名称",
+            "担保额度相关公告披露日期",
+            "担保额度",
+            "实际发生日期（协议签署日）",
+            "实际担保金额",
+            "担保类型",
+            "担保期",
+            "是否履行完毕",
+            "是否为关联方担保",
     };
 }
