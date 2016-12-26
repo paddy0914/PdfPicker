@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * Created by liujinping on 2016/12/19.
  */
 @Todd(key = "BalanceShell",
-        index = 14,
+        index = -1,
         suffix = ".bs",
         folder = "合并及公司资产负债表",
         title = {"合并及公司资产负债表"})

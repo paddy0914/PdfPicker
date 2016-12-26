@@ -40,6 +40,7 @@ public class AnalyticalResult {
     public static Object singleResultMapLock = new Object();
     public static Map<String, String[]> resultsMap = new HashMap<>();
     public static Map<String, int[]> singleResultMap = new HashMap<>();
+    public static int tableNumber = 17;
 
     public static int[] allFileResultNum = new int[]{0, 0};
 
@@ -58,14 +59,15 @@ public class AnalyticalResult {
     }
 
     public static void createResult(String filename) {
-        String[] results = new String[14];
-        for (int i = 0; i < 14; i++) {
+
+        String[] results = new String[tableNumber];
+        for (int i = 0; i < results.length; i++) {
             results[i] = "未识别";
         }
 
         int[] singleTotal = new int[2];
         singleTotal[0] = 0;
-        singleTotal[1] = 14;
+        singleTotal[1] = tableNumber;
 
         synchronized (resultsMapLock) {
             resultsMap.put(filename, results);

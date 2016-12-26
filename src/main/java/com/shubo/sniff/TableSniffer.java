@@ -3,6 +3,9 @@ package com.shubo.sniff;
 import com.shubo.AppContext;
 import com.shubo.ExceptionString;
 import com.shubo.entity.report.ConsolidatedProfits;
+import com.shubo.sniff.Employee.DirectorSniffer;
+import com.shubo.sniff.Employee.SeniorManagerSniffer;
+import com.shubo.sniff.Employee.SupervisorSniffer;
 import com.shubo.stastics.AnalyticalResult;
 import com.shubo.sniff.report.IndexEntity;
 import com.shubo.exception.AnnotationException;
@@ -53,6 +56,10 @@ public class TableSniffer {
         otherSniffers.add(new CashFlowSniffer());
 
         otherSniffers.add(new RelatedTransactionSniffer());
+
+        otherSniffers.add(new DirectorSniffer());
+        otherSniffers.add(new SupervisorSniffer());
+        otherSniffers.add(new SeniorManagerSniffer());
     }
 
     /*
@@ -105,15 +112,15 @@ public class TableSniffer {
 
                 } else if (result != null && result.length == 3) {
                     if (result[0].equals(ExceptionString.HEADER_SNIFF_ERR)) {
-                        writeAnalyticalResult(fileName,sniffer,ExceptionString.HEADER_SNIFF_ERR);
+                        writeAnalyticalResult(fileName, sniffer, ExceptionString.HEADER_SNIFF_ERR);
                     } else if (result[0].length() > 2) {
-                        return writeJsonFile(fileName,result,sniffer,capturedKeys);
+                        return writeJsonFile(fileName, result, sniffer, capturedKeys);
                     } else {
-                        writeAnalyticalResult(fileName,sniffer,"Json空");
+                        writeAnalyticalResult(fileName, sniffer, "Json空");
                         return false;
                     }
                 } else {
-                    writeAnalyticalResult(fileName,sniffer,"失败");
+                    writeAnalyticalResult(fileName, sniffer, "失败");
                     return false;
                 }
             }
@@ -163,6 +170,7 @@ public class TableSniffer {
                         File.separator + sniffer.getFolder() +
                         File.separator + fileName.replace("html", "json");
 
+                System.out.println("获取 " + HorsemanUtils.subment(sniffer.getFolder()) + " " + fileName);
                 String[] result = sniffer.generateEntityJson(table);
 
                 if (result != null && result.length == 2) {
@@ -223,8 +231,8 @@ public class TableSniffer {
         return result;
     }
 
-    public static Boolean writeJsonFile(String fileName,String[] result,Sniffer sniffer,List<String> capturedKeys) throws AnnotationException, IOException {
-        if (sniffer instanceof ConsolidatedBalanceShellSniffer||sniffer instanceof ParentBalanceShellSniffer) {
+    public static Boolean writeJsonFile(String fileName, String[] result, Sniffer sniffer, List<String> capturedKeys) throws AnnotationException, IOException {
+        if (sniffer instanceof ConsolidatedBalanceShellSniffer || sniffer instanceof ParentBalanceShellSniffer) {
             ConsolidatedBalanceShellSniffer snifferCBS = new ConsolidatedBalanceShellSniffer();
             ParentBalanceShellSniffer snifferPBS = new ParentBalanceShellSniffer();
             String outputPath1 = AppContext.rootFolder +
@@ -247,7 +255,7 @@ public class TableSniffer {
             singleResultOperation(fileName);
             singleResultOperation(fileName);
             return true;
-        } else if (sniffer instanceof ConsolidatedCashFlowSniffer||sniffer instanceof ParentCashFlowSniffer) {
+        } else if (sniffer instanceof ConsolidatedCashFlowSniffer || sniffer instanceof ParentCashFlowSniffer) {
             ConsolidatedCashFlowSniffer snifferCCF = new ConsolidatedCashFlowSniffer();
             ParentCashFlowSniffer snifferPCF = new ParentCashFlowSniffer();
             String outputPath1 = AppContext.rootFolder +
@@ -270,7 +278,7 @@ public class TableSniffer {
             singleResultOperation(fileName);
             singleResultOperation(fileName);
             return true;
-        } else if (sniffer instanceof ConsolidatedProfitsSniffer||sniffer instanceof ParentProfitsSniffer) {
+        } else if (sniffer instanceof ConsolidatedProfitsSniffer || sniffer instanceof ParentProfitsSniffer) {
             ConsolidatedProfitsSniffer snifferCP = new ConsolidatedProfitsSniffer();
             ParentProfitsSniffer snifferPP = new ParentProfitsSniffer();
             String outputPath1 = AppContext.rootFolder +
@@ -296,20 +304,21 @@ public class TableSniffer {
         }
         return false;
     }
-    public static void writeAnalyticalResult(String fileName,Sniffer sniffer,String resultStr) throws AnnotationException {
-        if (sniffer instanceof ConsolidatedBalanceShellSniffer||sniffer instanceof ParentBalanceShellSniffer) {
+
+    public static void writeAnalyticalResult(String fileName, Sniffer sniffer, String resultStr) throws AnnotationException {
+        if (sniffer instanceof ConsolidatedBalanceShellSniffer || sniffer instanceof ParentBalanceShellSniffer) {
             ConsolidatedBalanceShellSniffer cbss = new ConsolidatedBalanceShellSniffer();
             ParentBalanceShellSniffer pbss = new ParentBalanceShellSniffer();
             AnalyticalResult.setResultValue(fileName, cbss.getIndex(), resultStr);
             AnalyticalResult.setResultValue(fileName, pbss.getIndex(), resultStr);
         }
-        if (sniffer instanceof ConsolidatedCashFlowSniffer||sniffer instanceof ParentCashFlowSniffer) {
+        if (sniffer instanceof ConsolidatedCashFlowSniffer || sniffer instanceof ParentCashFlowSniffer) {
             ConsolidatedCashFlowSniffer ccfs = new ConsolidatedCashFlowSniffer();
             ParentCashFlowSniffer pcfs = new ParentCashFlowSniffer();
             AnalyticalResult.setResultValue(fileName, ccfs.getIndex(), resultStr);
             AnalyticalResult.setResultValue(fileName, pcfs.getIndex(), resultStr);
         }
-        if (sniffer instanceof ConsolidatedProfitsSniffer||sniffer instanceof ParentProfitsSniffer) {
+        if (sniffer instanceof ConsolidatedProfitsSniffer || sniffer instanceof ParentProfitsSniffer) {
             ConsolidatedProfitsSniffer cps = new ConsolidatedProfitsSniffer();
             ParentProfitsSniffer pps = new ParentProfitsSniffer();
             AnalyticalResult.setResultValue(fileName, cps.getIndex(), resultStr);

@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * Created by liujinping on 2016/12/19.
  */
 @Todd(key = "CashFlowNumber",
-        index = 15,
+        index = -1,
         suffix = ".cfn",
         folder = "合并及公司现金流量表",
         title = {"合并及公司现金流量表"})

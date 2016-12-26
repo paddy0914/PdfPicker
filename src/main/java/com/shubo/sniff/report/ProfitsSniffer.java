@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * Created by liujinping on 2016/12/20.
  */
 @Todd(key = "Profits",
-        index = 16,
+        index = -1,
         suffix = ".pf",
         folder = "合并及公司利润表",
         title = {"合并及公司利润表"})
