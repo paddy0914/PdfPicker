@@ -141,7 +141,12 @@ public class RelatedTransactionSniffer extends Sniffer {
             for (int i = 1; i < lines.length; i++) {
                 RelatedTransaction relatedTransaction = new RelatedTransaction();
                 String[] contents = lines[i].split(TableSniffer.ELEMENT_DIVIDOR, -1);
+                /*
                 if (contents.length < result.where.length || result.colCnt > contents.length - 1) {
+                    continue;
+                }
+                */
+                if (contents.length - 1 < result.maxCol) {
                     continue;
                 }
                 if (result.where != null) {
