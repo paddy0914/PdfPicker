@@ -1,4 +1,4 @@
-package com.shubo.sniff.Employee;
+package com.shubo.sniff.employee;
 
 import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
@@ -19,7 +19,7 @@ import java.util.List;
 public class EmployeeSniffer extends Sniffer {
     @Override
     public boolean sniff(String content) {
-        return sniffByKeywords(content, RelatedTransactionKeyWords, MATCH_CNT);
+        return sniffByKeywords(content, EmployeeKeyWords, MATCH_CNT);
     }
 
     @Override
@@ -171,7 +171,7 @@ public class EmployeeSniffer extends Sniffer {
 
     private static final int MATCH_CNT = 4;
 
-    private static final String[] RelatedTransactionKeyWords = {
+    private static final String[] EmployeeKeyWords = {
             "姓名",
             "职务",
             "任职起始日期",

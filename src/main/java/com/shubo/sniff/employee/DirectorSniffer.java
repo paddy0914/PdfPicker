@@ -1,4 +1,4 @@
-package com.shubo.sniff.Employee;
+package com.shubo.sniff.employee;
 
 import com.shubo.annotation.Todd;
 

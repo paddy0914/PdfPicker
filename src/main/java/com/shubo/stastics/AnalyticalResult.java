@@ -42,7 +42,7 @@ public class AnalyticalResult {
     public static Object singleResultMapLock = new Object();
     public static Map<String, String[]> resultsMap = new HashMap<>();
     public static Map<String, int[]> singleResultMap = new HashMap<>();
-    public static int tableNumber = 17;
+    public static int tableNumber = 18;
 
     public static int[] allFileResultNum = new int[]{0, 0};
 

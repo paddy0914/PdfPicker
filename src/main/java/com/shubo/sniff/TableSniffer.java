@@ -2,10 +2,9 @@ package com.shubo.sniff;
 
 import com.shubo.AppContext;
 import com.shubo.ExceptionString;
-import com.shubo.entity.report.ConsolidatedProfits;
-import com.shubo.sniff.Employee.DirectorSniffer;
-import com.shubo.sniff.Employee.SeniorManagerSniffer;
-import com.shubo.sniff.Employee.SupervisorSniffer;
+import com.shubo.sniff.employee.DirectorSniffer;
+import com.shubo.sniff.employee.SeniorManagerSniffer;
+import com.shubo.sniff.employee.SupervisorSniffer;
 import com.shubo.stastics.AnalyticalResult;
 import com.shubo.sniff.report.IndexEntity;
 import com.shubo.exception.AnnotationException;
@@ -60,6 +59,8 @@ public class TableSniffer {
         otherSniffers.add(new DirectorSniffer());
         otherSniffers.add(new SupervisorSniffer());
         otherSniffers.add(new SeniorManagerSniffer());
+
+        otherSniffers.add(new FiveCustomerInfoSniffer());
     }
 
     /*
