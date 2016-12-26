@@ -34,6 +34,8 @@ public class AnalyticalResult {
     * 14,现任董事会成员
     * 15,现任监事会成员
     * 16,现任高级管理人员
+    * 17,5大客户资料
+    * 18,主要子公司、参股公司分析
     * 解析成功数量
     * 解析失败数量
     *
@@ -42,7 +44,7 @@ public class AnalyticalResult {
     public static Object singleResultMapLock = new Object();
     public static Map<String, String[]> resultsMap = new HashMap<>();
     public static Map<String, int[]> singleResultMap = new HashMap<>();
-    public static int tableNumber = 18;
+    public static int tableNumber = 19;
 
     public static int[] allFileResultNum = new int[]{0, 0};
 

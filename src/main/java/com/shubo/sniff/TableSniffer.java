@@ -61,6 +61,8 @@ public class TableSniffer {
         otherSniffers.add(new SeniorManagerSniffer());
 
         otherSniffers.add(new FiveCustomerInfoSniffer());
+
+        otherSniffers.add(new MainSubcompanySniffer());
     }
 
     /*
