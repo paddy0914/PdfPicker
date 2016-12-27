@@ -115,9 +115,10 @@ public class GuarantySituationSniffer extends Sniffer {
     }
 
     /**
-     *  是否是表头
+     * 是否是表头
+     *
      * @param contents
-     * @return  flag
+     * @return flag
      */
     public Boolean isContainHead(String[] contents) {
         Boolean flag = false;
@@ -159,23 +160,38 @@ public class GuarantySituationSniffer extends Sniffer {
             List<Field> fields = new ArrayList<>();
 
             Collections.addAll(fields, declaredFields);
+
+            String firstcontent = null;
             for (int i = startPlace; i < lines.length; i++) {
                 GuarantySituation guarantySituation = new GuarantySituation();
                 String[] contents = lines[i].split(TableSniffer.ELEMENT_DIVIDOR, -1);
 
-                if (contents.length - 1 < result.maxCol) {
+                if (contents.length < result.maxCol) {
                     continue;
                 }
-                if(isContainHead(contents)){
+                if (isContainHead(contents)) {
                     continue;
                 }
+
                 if (result.where != null) {
                     try {
-                        for (int j = 0; j < fields.size(); j++) {
-                            if (result.where[j] != -1) {
-                                guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, contents[result.where[j]].replace(" ", ""));
-                            } else {
-                                guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, "");
+                        if (contents.length - 1 == result.maxCol) {
+                            firstcontent = contents[result.where[0]].replace(" ", "");
+                            for (int j = 0; j < fields.size(); j++) {
+                                if (result.where[j] != -1) {
+                                    guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, contents[result.where[j]].replace(" ", ""));
+                                } else {
+                                    guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, "");
+                                }
+                            }
+                        } else {
+                            guarantySituation.getClass().getDeclaredField(fields.get(0).getName()).set(guarantySituation, firstcontent);
+                            for (int j = 1; j < fields.size(); j++) {
+                                if (result.where[j] != -1) {
+                                    guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, contents[result.where[j]-1].replace(" ", ""));
+                                } else {
+                                    guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, "");
+                                }
                             }
                         }
                     } catch (IllegalAccessException e) {
