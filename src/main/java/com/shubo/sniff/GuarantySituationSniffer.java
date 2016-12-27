@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.shubo.annotation.Horseman;
 import com.shubo.annotation.Todd;
 import com.shubo.entity.GuarantySituation;
-import com.shubo.entity.MainSubcompany;
 import com.shubo.exception.AnnotationException;
 
 import java.lang.annotation.Annotation;
@@ -22,7 +21,7 @@ import java.util.List;
         folder = "担保情况")
 public class GuarantySituationSniffer extends Sniffer {
 
-    public static int startPlace = 0;
+    public static int startPlace = 0;//找到表头的位置，取下一位置开始解析
     //public static int continuePlace = 0;
 
     @Override
@@ -115,15 +114,14 @@ public class GuarantySituationSniffer extends Sniffer {
     }
 
     /**
-     * 是否是表头
-     *
+     * 确认表中间还有表头存在
      * @param contents
-     * @return flag
+     * @return true表示有表头，false表示没有表头
      */
     public Boolean isContainHead(String[] contents) {
         Boolean flag = false;
         for (int i = 0; i < contents.length; i++) {
-            if (contents[i].equals(GuarantySituationKeyWords[i])) {
+            if (contents[i].equals(GuarantySituationKeyWords[0])) {
                 flag = true;
             }
         }
@@ -155,6 +153,17 @@ public class GuarantySituationSniffer extends Sniffer {
 
             List<GuarantySituation> listGuarantySituation = new ArrayList<>();
             ColResult result = getColCnt(content, GuarantySituation.class);
+
+            //去除找到错误的表格，防止出现在Json文件中有字段都是空的情况
+            boolean flag = false;
+            for (int k = 0; k < result.where.length; k++) {
+                if(result.where[k]!=-1){
+                    flag=true;
+                }
+            }
+            if(flag){
+                return null;
+            }
 
             Field[] declaredFields = data.getClass().getDeclaredFields();
             List<Field> fields = new ArrayList<>();
@@ -188,7 +197,7 @@ public class GuarantySituationSniffer extends Sniffer {
                             guarantySituation.getClass().getDeclaredField(fields.get(0).getName()).set(guarantySituation, firstcontent);
                             for (int j = 1; j < fields.size(); j++) {
                                 if (result.where[j] != -1) {
-                                    guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, contents[result.where[j]-1].replace(" ", ""));
+                                    guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, contents[result.where[j] - 1].replace(" ", ""));
                                 } else {
                                     guarantySituation.getClass().getDeclaredField(fields.get(j).getName()).set(guarantySituation, "");
                                 }

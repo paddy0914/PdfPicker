@@ -93,11 +93,7 @@ abstract public class Sniffer {
 
     /**
      * @param table
-     * @return int[n] : 1,需要几列数据; 2, 数据在哪一列
-     * 数组的第一个值为需要几列数据
-     * 后面跟上每一列数据的index
-     * 比如 只有一列数据在第2 列时,返回 [1, 2]
-     * 比如 有两列数据在第 3,4列时,返回 [2, 3, 4] [2,1,2]
+     * @return ColResult: 1,有用数据的列数; 2, 数据在哪几列；3，数据
      */
     public abstract ColResult getColCnt(String table, Class clazz);
 
@@ -252,6 +248,7 @@ abstract public class Sniffer {
                             needKickoutLines.add(line);
                         } else {
                             if (!contents[0].equals("")) {
+                                //contents[0]字段的内容与对应的实体类的属性的注解不能匹配的情况
                                 File folder = new File(AppContext.matchFaildFolder);
                                 if (!folder.exists()) {
                                     folder.mkdir();
@@ -445,7 +442,7 @@ abstract public class Sniffer {
 
         return false;
     }
-
+    //是否是八大表的Sniffer
     public static boolean isReportSniffer(Class clazz) {
         if (clazz == ConsolidatedBalanceShellSniffer.class ||
                 clazz == ConsolidatedCashFlowSniffer.class ||
@@ -460,15 +457,15 @@ abstract public class Sniffer {
 
         return false;
     }
-
+    //解析表格的情况
     public static class ColResult {
         //有用数据有几列
         public int colCnt;
         //有用数据在那些列
         public int[] where;
-        //是否是List
+        //是否是八大表，八大表的属性对应的是List<String>，其他的表属性对应的是String
         public boolean isList;
-        //最大的列数
+        //最大的列数（where中最大的值）
         public int maxCol;
     }
 }

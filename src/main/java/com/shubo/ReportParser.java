@@ -49,7 +49,7 @@ public class ReportParser {
             AppContext.setRootFolder(args[1]);
         }
         try {
-            /* 年报解析/年报 */
+            /* 年报解析/html*/
             File folder = new File(AppContext.srcFolder);
 
             for (File subFolder : folder.listFiles()) {

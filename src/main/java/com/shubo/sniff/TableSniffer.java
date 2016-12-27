@@ -54,17 +54,17 @@ public class TableSniffer {
         otherSniffers.add(new ShareHolderNLSniffer());
         otherSniffers.add(new CashFlowSniffer());
 
-        otherSniffers.add(new RelatedTransactionSniffer());
+        otherSniffers.add(new RelatedTransactionSniffer());//与日常经营相关的关联交易
 
-        otherSniffers.add(new DirectorSniffer());
-        otherSniffers.add(new SupervisorSniffer());
-        otherSniffers.add(new SeniorManagerSniffer());
+        otherSniffers.add(new DirectorSniffer());//现任董事会成员
+        otherSniffers.add(new SupervisorSniffer());//现任监事会成员
+        otherSniffers.add(new SeniorManagerSniffer());//现任高级管理人员
 
-        otherSniffers.add(new FiveCustomerInfoSniffer());
+        otherSniffers.add(new FiveCustomerInfoSniffer());//公司前5大客户资料
 
-        otherSniffers.add(new MainSubcompanySniffer());
+        otherSniffers.add(new MainSubcompanySniffer());//主要子公司、参股公司分析（主要控股参股公司分析）
 
-        otherSniffers.add(new GuarantySituationSniffer());
+        otherSniffers.add(new GuarantySituationSniffer());//担保情况
     }
 
     /*
@@ -131,32 +131,6 @@ public class TableSniffer {
             }
         }
         return false;
-    }
-        /*
-         *  通过内容识别表格
-         *  适用于八大表
-         */
-
-    public static void ContentSniffEntity(String table, String fileName, List<String> snifferedRecords) throws AnnotationException, IOException {
-        for (Sniffer sniffer : reportSniffers) {
-
-            if (!snifferedRecords.contains(sniffer.getKey()) && sniffer.sniff(table)) {
-
-                snifferedRecords.add(sniffer.getKey());
-
-                String outputPath = AppContext.rootFolder +
-                        File.separator + AppContext.JSON_OUTPUT_DIR +
-                        File.separator + sniffer.getFolder() +
-                        File.separator + fileName.replace("html", "json");
-
-                String[] result = sniffer.generateEntityJson(table);
-
-                if (result != null && result.length == 2) {
-                    FileUtils.write(new File(outputPath), result[0], false);
-                    break;
-                }
-            }
-        }
     }
 
     /*
