@@ -8,8 +8,8 @@ import java.io.File;
 public class AppContext {
 
     public static final String TABLE_OUTPUT_DIR = "表格";
-    public static final String JSON_OUTPUT_DIR = "JSON";
-    //public static final String JSON_OUTPUT_DIR = "JSONtest";//测试用
+    //public static final String JSON_OUTPUT_DIR = "JSON";
+    public static final String JSON_OUTPUT_DIR = "JSONtest";//测试用
     public static final String YEAR_REPORT_FOLDER = "年度报告";
 
     public static final String MATCH_FAILD_FOLDER = "字段匹配失败";

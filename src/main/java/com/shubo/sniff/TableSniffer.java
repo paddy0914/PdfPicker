@@ -65,6 +65,7 @@ public class TableSniffer {
         otherSniffers.add(new MainSubcompanySniffer());//主要子公司、参股公司分析（主要控股参股公司分析）
 
         otherSniffers.add(new GuarantySituationSniffer());//担保情况
+
     }
 
     /*
@@ -137,33 +138,42 @@ public class TableSniffer {
      *  通过内容识别表格
      *  适用于八大表以外的其他表
      */
-    public static void SniffEntity(String table, String fileName, List<String> snifferedRecords) throws AnnotationException, IOException {
+    public static void SniffEntity(String table, String fileName, List<String> snifferedRecords, List<String> titles) throws AnnotationException, IOException {
         for (Sniffer sniffer : otherSniffers) {
-
+            Sniffer rightSniffer = null;
             if (!snifferedRecords.contains(sniffer.getKey()) && sniffer.sniff(table)) {
+                if (sniffer instanceof DirectorSniffer || sniffer instanceof SupervisorSniffer || sniffer instanceof SeniorManagerSniffer) {
+                    if (sniffer.sniffWithTitle(titles)) {
+                        rightSniffer = sniffer;
+                    } else {
+                        continue;
+                    }
+                } else {
+                    rightSniffer = sniffer;
+                }
 
-                snifferedRecords.add(sniffer.getKey());
+                snifferedRecords.add(rightSniffer.getKey());
 
                 String outputPath = AppContext.rootFolder +
                         File.separator + AppContext.JSON_OUTPUT_DIR +
-                        File.separator + sniffer.getFolder() +
+                        File.separator + rightSniffer.getFolder() +
                         File.separator + fileName.replace("html", "json");
 
-                System.out.println("获取 " + HorsemanUtils.subment(sniffer.getFolder()) + " " + fileName);
-                String[] result = sniffer.generateEntityJson(table);
+                System.out.println("获取 " + HorsemanUtils.subment(rightSniffer.getFolder()) + " " + fileName);
+                String[] result = rightSniffer.generateEntityJson(table);
 
                 if (result != null && result.length == 2) {
                     if (result[0].length() > 2) {
                         FileUtils.write(new File(outputPath), result[0], false);
-                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "成功");
+                        AnalyticalResult.setResultValue(fileName, rightSniffer.getIndex(), "成功");
                         //统计解析情况
                         singleResultOperation(fileName);
                     } else {
-                        AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "JSON空");
+                        AnalyticalResult.setResultValue(fileName, rightSniffer.getIndex(), "JSON空");
                     }
                     break;
                 } else {
-                    AnalyticalResult.setResultValue(fileName, sniffer.getIndex(), "失败");
+                    AnalyticalResult.setResultValue(fileName, rightSniffer.getIndex(), "失败");
                 }
             }
         }
@@ -172,7 +182,7 @@ public class TableSniffer {
     /*
      * 处理八大表之外的其他表
      */
-    public static void sniffEachEntity(List<String> tables, String fileName) throws IOException, AnnotationException {
+    public static void sniffEachEntity(List<String> tables, String fileName, List<String> titles) throws IOException, AnnotationException {
 
         // 用于记录已经探测到的sniffer,防止重复探测到某一个表
         // 每个文件只识别一个特定的表
@@ -180,7 +190,7 @@ public class TableSniffer {
 
         for (String table : tables) {
             String parsedTable = getTableContent(Jsoup.parse(table));
-            SniffEntity(parsedTable, fileName, snifferedRecords);
+            SniffEntity(parsedTable, fileName, snifferedRecords, titles);
         }
     }
 

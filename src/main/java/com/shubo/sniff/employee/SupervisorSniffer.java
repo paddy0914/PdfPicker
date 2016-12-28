@@ -8,6 +8,7 @@ import com.shubo.annotation.Todd;
 @Todd(key = "Supervisor",
         index = 15,
         suffix = ".supervisor",
-        folder = "现任监事会成员")
+        folder = "现任监事会成员",
+        title = {"现任监事会成员"})
 public class SupervisorSniffer extends EmployeeSniffer {
 }

@@ -23,9 +23,9 @@ public class ReportParser {
     public static CountDownLatch latch = new CountDownLatch(1);
 /*
     public static void test() {
-        handle(new File("E:/年报解析/html/000028/国药一致2012年年度报告.html"), "000028");
+        handle(new File("E:/年报解析/html/000037/深南电Ａ2008年年度报告.html"), "000037");
     }
-  */
+*/
     public static void main(String args[]) {
         System.out.println("------开始处理-------");
 
@@ -35,12 +35,13 @@ public class ReportParser {
             test();
             return;
         }
-        */
+*/
         /*
         if (args.length > 1) {
             Dispatcher.setThreadCnt(Integer.valueOf(args[0]));
             AppContext.setRootFolder(args[1]);
         }*/
+
         if(args.length==1){
             Dispatcher.setThreadCnt(Integer.valueOf(args[0]));
         }
@@ -48,6 +49,7 @@ public class ReportParser {
             Dispatcher.setThreadCnt(Integer.valueOf(args[0]));
             AppContext.setRootFolder(args[1]);
         }
+
         try {
             /* 年报解析/html*/
             File folder = new File(AppContext.srcFolder);
@@ -124,8 +126,12 @@ public class ReportParser {
                 } else if (str.startsWith(typeText)) {
                     HorsemanUtils.saveText(needHandleFileName, str);
                 } else if (str.startsWith(typeTable + splitChar)) {
+                    List<String> stringList = new ArrayList<>();
+                    stringList = HorsemanUtils.getPossibleKeys(needHandleFileName);
                     if (!TableSniffer.sniffEntity(str, HorsemanUtils.getPossibleKeys(needHandleFileName), needHandleFileName, capturedEntityKeys)) {
                         otherEntityString.add(str);
+                        TableSniffer.sniffEachEntity(otherEntityString, needHandleFileName, stringList);
+                        otherEntityString.remove(str);
                     }
                 } else {
                     /* what's this */
@@ -133,7 +139,7 @@ public class ReportParser {
             }
 
             // 其他
-            TableSniffer.sniffEachEntity(otherEntityString, needHandleFileName);
+            //TableSniffer.sniffEachEntity(otherEntityString, needHandleFileName,HorsemanUtils.getPossibleKeys(needHandleFileName));
 
             AnalyticalResult.writeToCsv(needHandleFileName);
         } catch (Exception e) {
